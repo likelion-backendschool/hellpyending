@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hellpyending
+    username: root  # username
+    password: test1234   # ????
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # drop , # update ...
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
