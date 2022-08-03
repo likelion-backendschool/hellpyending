@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop # drop , # update ...
+      ddl-auto: create-drop # drop , # update ....
     properties:
       hibernate:
         show_sql: true
