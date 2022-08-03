@@ -1,11 +1,11 @@
-package com.example.project_version_init.domain.user;
+package com.example.project_version_init.user.domain;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -28,7 +28,6 @@ public class User {
     private String email;
 
     @Column(length = 30)
-    @Nullable
     private String password;
 
     @Column(length = 20)
@@ -47,6 +46,7 @@ public class User {
 
     private String address;
 
+    @ColumnDefault("0")
     private Boolean deleteYn;
 
     private LocalDateTime createdAt;
