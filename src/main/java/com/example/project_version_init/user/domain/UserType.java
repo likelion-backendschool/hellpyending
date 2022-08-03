@@ -1,4 +1,4 @@
-package com.example.project_version_init.domain.user;
+package com.example.project_version_init.user.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
