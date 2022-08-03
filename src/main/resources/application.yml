@@ -16,3 +16,9 @@ spring:
   output:
     ansi:
       enabled: always
+
+
+  mvc:
+    view:
+      prefix: /views/
+      suffix: .jsp
