@@ -1,13 +1,13 @@
-package com.example.project_version_init;
+package com.example.hellpyending;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProjectVersionInitApplication {
+public class HellpyendingApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProjectVersionInitApplication.class, args);
+        SpringApplication.run(HellpyendingApplication.class, args);
     }
 
 }

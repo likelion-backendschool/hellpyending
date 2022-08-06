@@ -1,10 +1,10 @@
-package com.example.project_version_init;
+package com.example.hellpyending;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProjectVersionInitApplicationTests {
+class HellpyendingApplicationTests {
 
     @Test
     void contextLoads() {
