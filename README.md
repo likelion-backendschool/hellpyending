@@ -36,14 +36,14 @@ commit 생성 양식
 4. 사용자는 우리 프로젝트에서 2개를 이용할 수 있습니다.
     1. 사용자가 적용한 동네 주소를 기반으로, 저희가 사전에 DB에 등록한 헬스장을 지도에 마커 형태로 조회 할 수 있습니다. 아직 리스트업 하는 형태로 조회 하는 기능을 사용 할 지는 미정입니다.
         1. 지도에 마커 형태로 표시가 이해가 안된다고 하시면, 야놀자와 여기어때같은 숙박 플랫폼으로 지도기반 검색기능을 생각하시면 됩니다.(kakao api 사용 예정) 
+            ![image](https://user-images.githubusercontent.com/42793489/184270124-21f29fa9-99a8-4293-a12d-3a56095d6cbd.png)
             
-            ![image](https://user-images.githubusercontent.com/42793489/184270198-96859c80-19be-437d-adea-1c9cb6b7ddd2.png)
             
         2. 리스트업 한다고 하면 아래 샘플과 같이 구현 될 예정입니다. 
         (별도 운동시설 (요가, 헬스장, 필라테스) 기준으로 조회가 가능합니다. )
             
-            ![image](https://user-images.githubusercontent.com/42793489/184270124-21f29fa9-99a8-4293-a12d-3a56095d6cbd.png)
             
+            ![image](https://user-images.githubusercontent.com/42793489/184270198-96859c80-19be-437d-adea-1c9cb6b7ddd2.png)
         
     2. 사용자는 게시판에 들어가면, 사용자가 동네의 게시글을 볼 수 있습니다.
         1. 사용자가 동네를 변경하면, 게시글도 변경한 동네 기준으로 변경이 될 것입니다.
