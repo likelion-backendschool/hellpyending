@@ -1,7 +1,6 @@
 package com.example.hellpyending.domain.user;
 
 
-import com.example.hellpyending.domain.Article;
 import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;

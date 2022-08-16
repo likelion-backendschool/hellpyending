@@ -1,24 +1,29 @@
-package com.example.hellpyending.domain;
+package com.example.hellpyending.article;
 
+import com.example.hellpyending.domain.AuditingFields;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @ToString
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
         @Index(columnList = "createdAt"),
-        @Index(columnList = "createdBy")
 })
 @Entity
-public class Article extends AuditingFields {
+public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,6 +44,22 @@ public class Article extends AuditingFields {
     @OrderBy("id")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
+
+
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+
+    private boolean deleted = Boolean.FALSE;
+
+    @PrePersist
+    void createdAt() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    void modifiedAt() {
+        modifiedAt = LocalDateTime.now();
+    }
 
     // public, protected no-arg constructor -> entity
     protected Article() {

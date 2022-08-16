@@ -1,7 +1,9 @@
 package com.example.hellpyending.repository;
 
+import com.example.hellpyending.article.ArticleCommentRepository;
+import com.example.hellpyending.article.ArticleRepository;
 import com.example.hellpyending.config.JpaConfig;
-import com.example.hellpyending.domain.Article;
+import com.example.hellpyending.article.Article;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
