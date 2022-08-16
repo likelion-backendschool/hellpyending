@@ -119,15 +119,16 @@
 > 인증샷
 > 
 
-![08-08 회의](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/46a5d7bd-949a-4879-a4c1-4b31a387d687/08_08_%ED%9A%8C%EC%9D%98.png)
+![08_08 회의](https://user-images.githubusercontent.com/42793489/184843761-c46b8fa1-db68-45b5-b7e3-ecd1a75553c2.png)
 
 08-08 회의
 
-![08-10 협업 관련 연습위한 zoom](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a5b94fed-88b5-49fc-b998-1cfaf9b2dc3e/08_10_%EC%A4%8C%ED%9A%8C%EC%9D%98.png)
+![08-10 협업 관련 연습위한 zoom](https://user-images.githubusercontent.com/42793489/184843738-a2e482e3-8ca0-4eba-afd2-76327890ec00.png)
+
 
 08-10 협업 관련 연습위한 zoom
 
-![08-16 회의 및 개발 단위 작업](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/dedf91df-a433-4e6f-a7f0-db84c48d9d0f/08_16%EB%AA%A8%EC%9D%B8%EC%82%AC%EC%A7%84.png)
+![08-16 회의 및 개발 단위 작업](https://user-images.githubusercontent.com/42793489/184843844-f88af840-fb80-4013-ab16-507cbabb3103.PNG)
 
 08-16 회의 및 개발 단위 작업
 
