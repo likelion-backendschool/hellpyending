@@ -1,8 +1,8 @@
-package com.example.hellpyending.domain.user;
+package com.example.hellpyending.src.user.entity;
 
 
-import com.example.hellpyending.domain.Article;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
+@Setter
 @ToString
 @Table(indexes = {
         @Index(columnList = "userType")
@@ -62,7 +63,7 @@ public class User {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime updatedAt;
 
-    protected User() {
+    public User() {
     }
 
     @Override
