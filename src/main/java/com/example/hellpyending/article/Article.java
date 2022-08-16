@@ -89,5 +89,5 @@ public class Article {
         return Objects.hash(id);
     }
 
-    // junpyo 브랜치 추가합니다..
+    // junpyo 브랜치 추가
 }
