@@ -67,4 +67,6 @@ public class Article extends AuditingFields {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    // junpyo 브랜치 추가
 }
