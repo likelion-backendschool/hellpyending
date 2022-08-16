@@ -1,5 +1,6 @@
-package com.example.hellpyending.domain;
+package com.example.hellpyending.article;
 
+import com.example.hellpyending.domain.AuditingFields;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
