@@ -36,8 +36,6 @@ public class Article {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;  // 본문
 
-    @Setter
-    private String hashtag;  // 해시태그
 
     // mappedBy 를 걸지 않으면 두 entity 이름을 합쳐서 테이블을 하나 만듬
     @ToString.Exclude
@@ -45,6 +43,8 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
+    @Column(name = "hit_count", columnDefinition = "bigint default 0")
+    private Long hitCount;
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -65,15 +65,14 @@ public class Article {
     protected Article() {
     }
 
-    private Article(String title, String content, String hashtag) {
+    private Article(String title, String content) {
         this.title = title;
         this.content = content;
-        this.hashtag = hashtag;
     }
 
     // factory method
-    public static Article of(String title, String content, String hashtag) {
-        return new Article(title, content, hashtag);
+    public static Article of(String title, String content) {
+        return new Article(title, content);
     }
 
     @Override
