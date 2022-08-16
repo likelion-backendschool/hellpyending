@@ -39,7 +39,7 @@
     1. 확정 방법(08/08)
         - 각자 맡은 작업에 대해 issue 생성
             
-            ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9ea55527-2c9a-484f-9c1b-49ca6a71f965/Untitled.png)
+         
             
         - 맡은 작업에 대한 브랜치 생성
             
