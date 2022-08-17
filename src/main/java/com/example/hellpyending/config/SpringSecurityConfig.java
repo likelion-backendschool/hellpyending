@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        http.rememberMe();
         http.authorizeRequests()
                 .antMatchers("/**").permitAll();
         return http.build();
