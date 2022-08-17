@@ -17,6 +17,10 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    @GetMapping("/login")
+    String login(UserCreateForm userCreateForm){
+        return "user_login";
+    }
     @GetMapping("/signup")
     String signUp(UserCreateForm userCreateForm){
         return "user_signup";
