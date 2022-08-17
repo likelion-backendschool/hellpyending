@@ -1,16 +1,21 @@
-package com.example.hellpyending.domain;
+package com.example.hellpyending.article;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.example.hellpyending.src.user.entity.User;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE article SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
@@ -18,7 +23,7 @@ import java.util.Set;
         @Index(columnList = "createdBy")
 })
 @Entity
-public class Article extends AuditingFields {
+public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,25 +39,39 @@ public class Article extends AuditingFields {
     @Setter
     private String hashtag;  // 해시태그
 
-    // mappedBy 를 걸지 않으면 두 entity 이름을 합쳐서 테이블을 하나 만듬
     @ToString.Exclude
     @OrderBy("id")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
-    // public, protected no-arg constructor -> entity
-    protected Article() {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer hitCount;
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean deleted;
+
+    private String imageUrl;
+
+    private String areaName;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+
+    @PrePersist
+    void createdAt() {
+        createdAt = LocalDateTime.now();
     }
 
-    private Article(String title, String content, String hashtag) {
-        this.title = title;
-        this.content = content;
-        this.hashtag = hashtag;
-    }
-
-    // factory method
-    public static Article of(String title, String content, String hashtag) {
-        return new Article(title, content, hashtag);
+    @PreUpdate
+    void modifiedAt() {
+        updatedAt = LocalDateTime.now();
     }
 
     @Override
@@ -68,5 +87,4 @@ public class Article extends AuditingFields {
         return Objects.hash(id);
     }
 
-    // junpyo 브랜치 추가
 }
