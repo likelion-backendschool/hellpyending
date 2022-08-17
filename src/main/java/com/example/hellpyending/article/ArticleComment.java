@@ -1,21 +1,21 @@
-package com.example.hellpyending.domain;
+package com.example.hellpyending.article;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @ToString
 @Table(indexes = {
         @Index(columnList = "content"),
-        @Index(columnList = "createdAt"),
-        @Index(columnList = "createdBy")
+        @Index(columnList = "createdAt")
 })
 @Entity
-public class ArticleComment extends AuditingFields {
+public class ArticleComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +27,22 @@ public class ArticleComment extends AuditingFields {
     @Setter
     @Column(nullable = false, length = 500)
     private String content;  // 본문
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+
+    @PrePersist
+    void createdAt() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    void modifiedAt() {
+        updatedAt = LocalDateTime.now();
+    }
 
     protected ArticleComment() {
     }
