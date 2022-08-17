@@ -9,10 +9,9 @@
 </head>
 
 <body>
+<a th:href="@{/}">홈</a>
+<a th:href="@{/user/signup}">회원가입</a>
 <form method="post" th:object="${userCreateForm}" th:action="@{/user/signup}">
-    <div>
-        <a th:href="@{/}">홈</a>
-    </div>
     <div role="alert" th:if="${#fields.hasAnyErrors()}">
         <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
     </div>
