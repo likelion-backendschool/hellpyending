@@ -18,9 +18,7 @@ import java.util.Set;
 @Where(clause = "deleted = false")
 @Table(indexes = {
         @Index(columnList = "title"),
-        @Index(columnList = "hashtag"),
-        @Index(columnList = "createdAt"),
-        @Index(columnList = "createdBy")
+        @Index(columnList = "hashtag")
 })
 @Entity
 public class Article {

@@ -11,8 +11,7 @@ import java.util.Objects;
 @Getter
 @ToString
 @Table(indexes = {
-        @Index(columnList = "content"),
-        @Index(columnList = "createdAt")
+        @Index(columnList = "content")
 })
 @Entity
 public class ArticleComment {
