@@ -63,6 +63,7 @@ public class User {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime updatedAt;
 
+
     public User() {
     }
 

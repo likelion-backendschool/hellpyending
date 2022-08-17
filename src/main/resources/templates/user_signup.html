@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kakao API</title>
+</head>
+
+<body>
 <form method="post" th:object="${userCreateForm}" th:action="@{/user/signup}">
     <div>
         <a th:href="@{/}">홈</a>
@@ -39,5 +50,51 @@
     <div>
         <input type="text" name="address"/>
     </div>
+
+    <div>
+        <button type="button" id="search_addr">주소찾기</button>
+    </div>
+    <table>
+        <tr>
+            <th>광역시</th>
+            <td><input type="text" id="광역시" name="광역시"></td>
+        </tr>
+        <tr>
+            <th>시군구</th>
+            <td><input type="text" id="시군구" name="광역시"></td>
+        </tr>
+        <tr>
+            <th>동읍면리</th>
+            <td><input type="text" id="동읍면리" name="광역시"></td>
+        </tr>
+        <tr>
+            <th>동네</th>
+            <td><input type="text" id="동네" name="address" readonly /></td>
+        </tr>
+        <tr>
+            <th>검색어</th>
+            <td><input type="text" id="사용자등록한주소" name="address_detail" /></td>
+        </tr>
+    </table>
     <button type="submit">회원가입</button>
 </form>
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    window.onload = function() {
+        document.getElementById("search_addr").addEventListener("click", function() { //주소입력칸을 클릭하면
+            //카카오 지도 발생
+            new daum.Postcode({
+                oncomplete: function(data) { //선택시 입력값 세팅
+                    document.getElementById("동네").value = data.address; // 주소 넣기
+                    document.getElementById("광역시").value = data.sido;
+                    document.getElementById("시군구").value = data.sigungu;
+                    document.getElementById("동읍면리").value = data.bname;
+                    document.getElementById("사용자등록한주소").value = data.query; //상세입력 포커싱
+                }
+            }).open();
+        });
+    }
+</script>
+
+</html>
