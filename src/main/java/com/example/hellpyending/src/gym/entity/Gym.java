@@ -21,13 +21,11 @@ public class Gym {
     @Column
     private String gymName;
 
-
     @Column
     private String gymAddress;
 
     @Column
     private String gymPhoneNumber;
-
 
     @Column
     private int per_1_month;
@@ -40,7 +38,12 @@ public class Gym {
     @Column
     private int pt_price;
 
-
+    @Column(nullable = true)
+    private String address_1st;
+    @Column(nullable = true)
+    private String address_2st;
+    @Column(nullable = true)
+    private String address_3st;
     @Column
     private double lat;
 
