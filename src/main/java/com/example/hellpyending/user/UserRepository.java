@@ -1,8 +1,10 @@
 package com.example.hellpyending.user;
 
-import com.example.hellpyending.user.entity.User;
+import com.example.hellpyending.user.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User,Long> {
+import java.util.Optional;
 
+public interface UserRepository extends JpaRepository<Users,Long> {
+    Optional<Users> findByName(String name);
 }

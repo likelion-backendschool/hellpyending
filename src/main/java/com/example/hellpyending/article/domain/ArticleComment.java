@@ -1,6 +1,6 @@
 package com.example.hellpyending.article.domain;
 
-import com.example.hellpyending.user.entity.User;
+import com.example.hellpyending.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -42,7 +42,7 @@ public class ArticleComment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users users;
 
     @ManyToOne
     @JoinColumn(name = "board_id")

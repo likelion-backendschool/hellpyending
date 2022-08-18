@@ -2,14 +2,15 @@ package com.example.hellpyending.user.entity;
 
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,7 +22,7 @@ import java.util.Objects;
 @Table(indexes = {
         @Index(columnList = "userType")
 })
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -34,7 +35,7 @@ public class User {
     @Column(length = 400, nullable = false, unique = true)
     private String email;
 
-    @Column(length = 30)
+    @Column
     private String password;
 
     @Column(length = 20, nullable = false)
@@ -87,10 +88,13 @@ public class User {
     @Column(nullable = false)
     private String address_detail;
 
+    public Users(String name, String password, List<GrantedAuthority> authorities) {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (!(o instanceof Users user)) return false;
         return id != null && id.equals(user.id);
     }
 
