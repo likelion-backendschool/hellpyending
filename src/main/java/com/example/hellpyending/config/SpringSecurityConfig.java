@@ -56,7 +56,7 @@ public class SpringSecurityConfig {
         // logout
         http.logout()
                 // logout 요청 경로
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                 // logout 성공 시 루트 페이지로 이동
                 .logoutSuccessUrl("/");
         return http.build();
