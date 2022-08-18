@@ -1,9 +1,7 @@
-package com.example.hellpyending.src.user.entity;
+package com.example.hellpyending.user.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,13 +12,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 @Getter
 @Setter
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(indexes = {
         @Index(columnList = "userType")
 })
-@Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,8 +50,7 @@ public class User {
     private LocalDate birthday;
 
     @Column(name = "delete_yn")
-    @ColumnDefault("0")
-    private Boolean deleteYn;
+    private char deleteYn;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -77,10 +76,6 @@ public class User {
 
     @Column(nullable = false)
     private String address_detail;
-
-
-    public User() {
-    }
 
     @Override
     public boolean equals(Object o) {

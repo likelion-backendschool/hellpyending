@@ -1,6 +1,6 @@
 package com.example.hellpyending.article.domain;
 
-import com.example.hellpyending.src.user.entity.User;
+import com.example.hellpyending.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;

@@ -1,6 +1,6 @@
-package com.example.hellpyending.src.user;
+package com.example.hellpyending.user;
 
-import com.example.hellpyending.src.user.entity.UserCreateForm;
+import com.example.hellpyending.user.entity.UserCreateForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;

@@ -1,6 +1,6 @@
-package com.example.hellpyending.src.user;
+package com.example.hellpyending.user;
 
-import com.example.hellpyending.src.user.entity.User;
+import com.example.hellpyending.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User,Long> {

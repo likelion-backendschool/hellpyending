@@ -1,13 +1,11 @@
-package com.example.hellpyending.src.user;
+package com.example.hellpyending.user;
 
-import com.example.hellpyending.src.user.entity.Sex;
-import com.example.hellpyending.src.user.entity.User;
-import com.example.hellpyending.src.user.entity.UserType;
+import com.example.hellpyending.user.entity.Sex;
+import com.example.hellpyending.user.entity.User;
+import com.example.hellpyending.user.entity.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -32,7 +30,6 @@ public class UserService {
         user.setAddress_2st(address_2st);
         user.setAddress_3st(address_3st);
         user.setAddress_4st(address_4st);
-        user.setDeleteYn(false);
         user.setAddress_detail(address_detail);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());

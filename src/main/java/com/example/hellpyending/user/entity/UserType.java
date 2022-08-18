@@ -1,4 +1,4 @@
-package com.example.hellpyending.src.user.entity;
+package com.example.hellpyending.user.entity;
 
 
 
