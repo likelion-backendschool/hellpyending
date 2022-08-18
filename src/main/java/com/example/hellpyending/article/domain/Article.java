@@ -29,10 +29,10 @@ public class Article {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "coment", nullable = false)
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "hit_count", nullable = false)
+    @Column(name = "hit_count", nullable = false) // d
     private Integer hitCount;
 
     @Column(name = "image_url")
@@ -48,8 +48,8 @@ public class Article {
     @JoinColumn(name="user_id")
     private User user;
 
-    // @OneToMany(mappedBy = "article")
-    @Transient
+//    @Transient
+    @OneToMany(mappedBy = "article")
     @JsonIgnoreProperties({"article", "commentBundle"})
     private List<ArticleComment> articleCommentList = new ArrayList<>();
 }

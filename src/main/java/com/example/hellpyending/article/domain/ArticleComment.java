@@ -1,5 +1,6 @@
 package com.example.hellpyending.article.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -26,6 +27,7 @@ public class ArticleComment {
     private LocalDateTime update;
 
     @Column(name = "delete_yn")
+    @JsonIgnore
     private char deleteYn;
 
     @Column(name = "comment_depth")
@@ -33,7 +35,8 @@ public class ArticleComment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_bundle", referencedColumnName ="board_comment_id")
-    @JsonIgnoreProperties({"commentBundle", "article", "child"})
+//    @JsonIgnoreProperties({"commentBundle", "article", "child"})
+    @JsonIgnore
     private ArticleComment commentBundle;
 
     @ManyToOne
