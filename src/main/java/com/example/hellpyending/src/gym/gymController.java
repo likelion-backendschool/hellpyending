@@ -27,7 +27,8 @@ public class gymController {
     String GEOCODE_URL = "http://dapi.kakao.com/v2/local/search/address.json?query=";
     String GEOCODE_USER_INFO = "KakaoAK 2419daa123eb8bb5f1117be4431f18bc";
 
-    private final com.example.hellpyending.src.gym.gymRepository gymRepository;
+    private final gymRepository gymRepository;
+    private final gymService gymService;
 
     @ResponseBody
     @GetMapping("/saveLoad")
