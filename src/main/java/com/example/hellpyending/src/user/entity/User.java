@@ -48,8 +48,7 @@ public class User {
 
     private LocalDate birthday;
 
-    private String address;  //default varchar(255)
-
+    @Column(name = "delete_yn")
     @ColumnDefault("0")
     private Boolean deleteYn;
 
@@ -62,6 +61,22 @@ public class User {
     @Column(nullable = false, updatable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private String address_1st;
+
+    @Column(nullable = false)
+    private String address_2st;
+
+    @Column(nullable = false)
+    private String address_3st;
+
+    @Column(nullable = false)
+    private String address_4st;
+
+    @Column(nullable = false)
+    private String address_detail;
+
 
     public User() {
     }

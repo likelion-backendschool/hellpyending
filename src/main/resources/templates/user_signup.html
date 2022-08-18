@@ -1,7 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kakao API</title>
+</head>
+
+<body>
+<a th:href="@{/}">홈</a>
+<a th:href="@{/user/signup}">회원가입</a>
 <form method="post" th:object="${userCreateForm}" th:action="@{/user/signup}">
-    <div>
-        <a th:href="@{/}">홈</a>
-    </div>
     <div role="alert" th:if="${#fields.hasAnyErrors()}">
         <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
     </div>
@@ -35,9 +45,51 @@
     <div>
         <input type="date" name="birthday"/>
     </div>
-    <span>주소</span>
     <div>
-        <input type="text" name="address"/>
+        <button type="button" id="search_addr">주소찾기</button>
     </div>
+    <table>
+        <tr>
+            <th>광역시</th>
+            <td><input type="text" id="광역시" name="address_1st" readonly/></td>
+        </tr>
+        <tr>
+            <th>시군구</th>
+            <td><input type="text" id="시군구" name="address_2st" readonly/></td>
+        </tr>
+        <tr>
+            <th>동읍면리</th>
+            <td><input type="text" id="동읍면리" name="address_3st" readonly/></td>
+        </tr>
+        <tr>
+            <th>도로명</th>
+            <td><input type="text" id="동네" name="address_4st" readonly/></td>
+        </tr>
+        <tr>
+            <th>상세 주소</th>
+            <td><input type="text" id="상세 주소" name="address_detail" /></td>
+        </tr>
+    </table>
     <button type="submit">회원가입</button>
 </form>
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    window.onload = function() {
+        document.getElementById("search_addr").addEventListener("click", function() { //주소입력칸을 클릭하면
+            //카카오 지도 발생
+            new daum.Postcode({
+                oncomplete: function(data) { //선택시 입력값 세팅
+                    document.getElementById("동네").value = data.address; // 주소 넣기
+                    document.getElementById("광역시").value = data.sido;
+                    document.getElementById("시군구").value = data.sigungu;
+                    document.getElementById("동읍면리").value = data.bname;
+                    document.getElementById("상세 주소").focus(); //상세입력 포커싱
+                }
+            }).open();
+
+        });
+    }
+</script>
+
+</html>
