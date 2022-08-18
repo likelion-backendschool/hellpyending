@@ -1,6 +1,7 @@
-package com.example.hellpyending.repository;
+package com.example.hellpyending.article.repository;
 
-import com.example.hellpyending.domain.Article;
+import com.example.hellpyending.article.domain.Article;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {

@@ -34,11 +34,26 @@ public class UserCreateForm {
     @NotEmpty(message = "성별은 필수항목입니다.")
     private Sex sex;
 
-    @NotEmpty(message = "이메일은 필수항목입니다.")
-    @Size(max = 255)
-    private String address;
-
     @NotEmpty(message = "생년월일은 필수항목입니다.")
     private String birthday;
 
+    @NotEmpty(message = "광역시는 필수항목입니다.")
+    @Size(max = 255)
+    private String address_1st;
+
+    @NotEmpty(message = "시군구는 필수항목입니다.")
+    @Size(max = 255)
+    private String address_2st;
+
+    @NotEmpty(message = "동읍면리는 필수항목입니다.")
+    @Size(max = 255)
+    private String address_3st;
+
+    @NotEmpty(message = "동네는 필수항목입니다.")
+    @Size(max = 255)
+    private String address_4st;
+
+    @NotEmpty(message = "상세 주소는 필수항목입니다.")
+    @Size(max = 255)
+    private String address_detail;
 }

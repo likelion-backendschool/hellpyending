@@ -38,13 +38,19 @@ public class UserController {
             return "user_signup";
         }
         try {
-            userService.create(userCreateForm.getUsername(),
+            userService.create(
+                    userCreateForm.getUsername(),
                     userCreateForm.getPassword1(),
                     userCreateForm.getSex(),
                     userCreateForm.getEmail(),
                     userCreateForm.getPhoneNumber(),
                     localDate,
-                    userCreateForm.getAddress());
+                    userCreateForm.getAddress_1st(),
+                    userCreateForm.getAddress_2st(),
+                    userCreateForm.getAddress_3st(),
+                    userCreateForm.getAddress_4st(),
+                    userCreateForm.getAddress_detail()
+                    );
         }
         catch (DataIntegrityViolationException e){
             e.printStackTrace();
