@@ -16,7 +16,7 @@
         <div role="alert" th:if="${#fields.hasAnyErrors()}">
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
         </div>
-        <span>이름</span>
+        <span>아이디</span>
         <div>
             <input type="text" name="username"/>
         </div>
