@@ -15,10 +15,10 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @GetMapping
-    public String defa() {
-        return "타임리프주소";
-    }
+//    @GetMapping
+//    public String defa() {
+//        return "타임리프주소";
+//    }
 
 
 
