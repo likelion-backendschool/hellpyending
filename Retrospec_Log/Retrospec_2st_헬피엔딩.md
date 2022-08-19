@@ -45,7 +45,7 @@
 ```
 ### SecurityConfig class ( 스프링 시큐리티의 설정 하는 곳 )
 
-![Untitled](./img/캡처15.png)
+![Untitled](./img/config.png)
 
 - `@EnableWebSecurity` : Securiy 설정이다 라는 것을 알려주는 것이다.
 - `@EnableGlobalMethodSecurity` : prePostEnabled 를 true로 할 시 @PreAuthorize를 사용하여 권한을 체크할 수 있다.
@@ -161,7 +161,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 - 그래서 필터를 거치게 할지 안할지도 결정할 수 있고, 필터에 대한 설정을 할 수 있다.
 
 
-![ex_screenshot](./img/캡처14.PNG)
+![ex_screenshot](./img/filter.PNG)
 - 각각의 필터는 단일 필터 단일 책임(?) 원칙 처럼, 각기 서로 다른 관심사를 해결합니다.
 - SecurityConfig에서 `@EnableWebSecurity(debug = true)`를 주었을 때 어떤 필터를 거쳤는 지 확인해 볼 수 있다.
 - 어떤 request에서 필터 체인을 거칠 것인지의 설정은 `http.antMatcher("특정 URL 주소"`)라고 하면 된다.
