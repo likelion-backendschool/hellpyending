@@ -50,6 +50,7 @@ public class Users {
 
     private LocalDate birthday;
 
+    // enum 표현하는 개선이 필요해보임.
     @Column(name = "delete_yn")
     private char deleteYn;
 
