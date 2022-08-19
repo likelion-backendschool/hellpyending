@@ -1,6 +1,6 @@
 package com.example.hellpyending.article.domain;
 
-import com.example.hellpyending.src.user.entity.User;
+import com.example.hellpyending.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -47,7 +47,7 @@ public class Article {
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    private User user;
+    private Users users;
 
 //    @Transient
     @OneToMany(mappedBy = "article")

@@ -1,7 +1,9 @@
-package com.example.hellpyending.src.user.entity;
+package com.example.hellpyending.user.entity;
 
 
+import lombok.Getter;
 
+@Getter
 public enum UserType {
     ADMIN("ROLE_ADMIN"),
     USER("ROLE_USER");

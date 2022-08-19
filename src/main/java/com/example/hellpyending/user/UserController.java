@@ -1,6 +1,6 @@
-package com.example.hellpyending.src.user;
+package com.example.hellpyending.user;
 
-import com.example.hellpyending.src.user.entity.UserCreateForm;
+import com.example.hellpyending.user.entity.UserCreateForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -17,6 +17,10 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    @GetMapping("/login")
+    String login(UserCreateForm userCreateForm){
+        return "user_login";
+    }
     @GetMapping("/signup")
     String signUp(UserCreateForm userCreateForm){
         return "user_signup";
