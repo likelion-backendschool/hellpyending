@@ -4,7 +4,7 @@
 
 ---
 
-[팀장] 오현직, 지남은, 홍준표, 홍승표
+[팀장] 오현직, 지남은, 홍준표, 홍승표, 정종민
 
 ## 회고 내용 요약 (최소 500자 이상)
 
@@ -45,8 +45,7 @@
 ```
 ### SecurityConfig class ( 스프링 시큐리티의 설정 하는 곳 )
 
-![Untitled](./img/config.png)
-
+![ex_screenshot](./img/config.PNG)
 - `@EnableWebSecurity` : Securiy 설정이다 라는 것을 알려주는 것이다.
 - `@EnableGlobalMethodSecurity` : prePostEnabled 를 true로 할 시 @PreAuthorize를 사용하여 권한을 체크할 수 있다.
 - `WebSecurityConfigurerAdapter` : 일단 Web에 대한 Security를 위한 설정이라고 생각
@@ -185,7 +184,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ---
 
 ### 인증샷 입니다!
-![ex_screenshot](./img/discord.PNG)
+![ex_screenshot](./img/discord.png)
 
 ### 자랑멘트
 - 팀 내에서 각자 기능을 구현할 것을 분담화 하여서 그 기능 구현에 대해 어려움이 생기지 않게 스스로 공부해오고, 바로 저희 프로젝트에 구현 해보는 식으로 하고 있습니다!
