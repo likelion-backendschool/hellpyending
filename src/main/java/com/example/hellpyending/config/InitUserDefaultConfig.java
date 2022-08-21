@@ -20,7 +20,7 @@ public class InitUserDefaultConfig {
     @Bean
     public void initializeDefaultAdmin() {
         Users user1 = Users.builder()
-                .name("admin")
+                .username("admin")
                 .password(passwordEncoder.encode("admin"))
                 .sex(Sex.MALE)
                 .email("admin@admin.com")
@@ -38,7 +38,7 @@ public class InitUserDefaultConfig {
         userService.create(user1);
 
         Users user2 = Users.builder()
-                .name("user")
+                .username("user")
                 .password(passwordEncoder.encode("user"))
                 .sex(Sex.MALE)
                 .email("user@user.com")

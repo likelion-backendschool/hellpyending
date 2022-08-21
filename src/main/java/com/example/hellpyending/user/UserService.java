@@ -23,7 +23,7 @@ public class UserService {
     public void create(String username, String password, Sex sex, String email, String phoneNumber, LocalDate birthday,
                        String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
         Users user = Users.builder()
-                .name(username)
+                .username(username)
                 .password(passwordEncoder.encode(password))
                 .sex(sex)
                 .email(email)
@@ -41,8 +41,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<Users> findByName(String username) {
-        return userRepository.findByName(username);
+    public Optional<Users> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
 }

@@ -38,8 +38,8 @@ public class Users {
     @Column
     private String password;
 
-    @Column(length = 20, nullable = false)
-    private String name;
+    @Column(length = 20, nullable = false, unique = true)
+    private String username;
 
     @Column(length = 30, nullable = false, unique = true)
     private String phoneNumber;
@@ -89,7 +89,7 @@ public class Users {
     @Column(nullable = false)
     private String address_detail;
 
-    public Users(String name, String password, List<GrantedAuthority> authorities) {
+    public Users(String username, String password, List<GrantedAuthority> authorities) {
     }
 
     @Override
