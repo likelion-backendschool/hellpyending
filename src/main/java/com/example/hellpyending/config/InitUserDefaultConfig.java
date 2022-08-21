@@ -19,7 +19,7 @@ public class InitUserDefaultConfig {
     private final PasswordEncoder passwordEncoder;
     @Bean
     public void initializeDefaultAdmin() {
-        Users user = Users.builder()
+        Users user1 = Users.builder()
                 .name("admin")
                 .password(passwordEncoder.encode("admin"))
                 .sex(Sex.MALE)
@@ -35,7 +35,24 @@ public class InitUserDefaultConfig {
                 .updatedAt(LocalDateTime.now())
                 .userType(UserType.ADMIN)
                 .build();
+        userService.create(user1);
 
-        userService.create(user);
+        Users user2 = Users.builder()
+                .name("user")
+                .password(passwordEncoder.encode("user"))
+                .sex(Sex.MALE)
+                .email("user@user.com")
+                .phoneNumber("01011111111")
+                .birthday(LocalDate.now())
+                .address_1st("유저")
+                .address_2st("유저")
+                .address_3st("유저")
+                .address_4st("유저")
+                .address_detail("유저")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .userType(UserType.USER)
+                .build();
+        userService.create(user2);
     }
 }
