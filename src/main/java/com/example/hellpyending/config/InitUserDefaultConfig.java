@@ -25,14 +25,13 @@ public class InitUserDefaultConfig {
                 .sex(Sex.MALE)
                 .email("admin@admin.com")
                 .phoneNumber("01012341234")
+                .deleteYn('N')
                 .birthday(LocalDate.now())
                 .address_1st("어드민")
                 .address_2st("어드민")
                 .address_3st("어드민")
                 .address_4st("어드민")
                 .address_detail("어드민")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .userType(UserType.ADMIN)
                 .build();
         userService.create(user1);
@@ -43,14 +42,13 @@ public class InitUserDefaultConfig {
                 .sex(Sex.MALE)
                 .email("user@user.com")
                 .phoneNumber("01011111111")
+                .deleteYn('N')
                 .birthday(LocalDate.now())
                 .address_1st("유저")
                 .address_2st("유저")
                 .address_3st("유저")
                 .address_4st("유저")
                 .address_detail("유저")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .userType(UserType.USER)
                 .build();
         userService.create(user2);

@@ -1,6 +1,7 @@
 package com.example.hellpyending.user.entity;
 
 
+import com.example.hellpyending.config.BaseTimeEntity;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -22,7 +23,7 @@ import java.util.Objects;
 @Table(indexes = {
         @Index(columnList = "userType")
 })
-public class Users {
+public class Users extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -54,16 +55,6 @@ public class Users {
     @Column(name = "delete_yn")
     private char deleteYn;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(nullable = false, updatable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime updatedAt;
-
     // 광역시
     // ex) 인천, 서울, 부산 ...
     @Column(nullable = false)
@@ -92,6 +83,10 @@ public class Users {
     public Users(String username, String password, List<GrantedAuthority> authorities) {
     }
 
+    @PrePersist
+    public void prePersist(){
+        this.deleteYn = 'N';
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

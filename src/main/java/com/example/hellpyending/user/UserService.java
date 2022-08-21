@@ -34,8 +34,6 @@ public class UserService {
                 .address_3st(address_3st)
                 .address_4st(address_4st)
                 .address_detail(address_detail)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .userType(UserType.USER)
                 .build();
         userRepository.save(user);
