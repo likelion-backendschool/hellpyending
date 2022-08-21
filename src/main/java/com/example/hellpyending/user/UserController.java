@@ -70,9 +70,16 @@ public class UserController {
     }
 
 //    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
-    @RequestMapping("/auth")
+    @RequestMapping("/user")
     @ResponseBody
     public Authentication user(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    //    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @RequestMapping("/admin")
+    @ResponseBody
+    public Authentication admin(){
         return SecurityContextHolder.getContext().getAuthentication();
     }
 }

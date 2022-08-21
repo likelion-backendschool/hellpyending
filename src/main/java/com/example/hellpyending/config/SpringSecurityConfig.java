@@ -44,8 +44,10 @@ public class SpringSecurityConfig {
         http.authorizeRequests()
                 // GET 요청으로 "/test" URL을 접속 했을 때 인증 받은 사람(로그인 되어 있는 사람)만 접근이 가능하다.
                 .antMatchers(HttpMethod.GET,"/test").authenticated()
-                // GET 요청으로 "/user/auth" URL을 접속 했을 때 권한이 ADMIN 사람만 접근이 가능하다.
-                .antMatchers(HttpMethod.GET,"/user/auth").hasRole("ADMIN")
+                // GET 요청으로 "/user/auth" URL을 접속 했을 때 권한이 ADMIN인 사람만 접근이 가능하다.
+                .antMatchers(HttpMethod.GET,"/user/admin").hasRole("ADMIN")
+                // GET 요청으로 "/user/auth" URL을 접속 했을 때 권한이 USER인 사람만 접근이 가능하다.
+                .antMatchers(HttpMethod.GET,"/user/user").hasRole("USER")
                 // 그 외 요청은 인증 받은 사람만 가능하게 만듦.
                 .anyRequest().permitAll();
 
