@@ -35,6 +35,8 @@ dependencies {
     implementation group: 'org.webjars.bower', name: 'jquery', version: '3.3.1'
     implementation group: 'org.json', name: 'json', version: '20220320'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
 }
 
 tasks.named('test') {
