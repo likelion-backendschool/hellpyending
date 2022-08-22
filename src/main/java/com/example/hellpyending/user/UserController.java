@@ -3,11 +3,15 @@ package com.example.hellpyending.user;
 import com.example.hellpyending.user.entity.UserCreateForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -63,5 +67,19 @@ public class UserController {
             return "user_signup";
         }
         return "redirect:/";
+    }
+
+//    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @RequestMapping("/user")
+    @ResponseBody
+    public Authentication user(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    //    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @RequestMapping("/admin")
+    @ResponseBody
+    public Authentication admin(){
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 }
