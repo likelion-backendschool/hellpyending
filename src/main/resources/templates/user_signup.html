@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kakao API</title>
 </head>
-
 <body>
     <a th:href="@{/}">홈</a>
     <a sec:authorize="!isAuthenticated()" th:href="@{/user/signup}">회원가입</a>
@@ -20,16 +19,16 @@
         </div>
         <span>아이디</span>
         <div>
-            <input type="text" name="username" placeholder="아이디를 입력해주세요"/>
+            <input type="text" name="username" placeholder="아이디를 입력해주세요" required/>
         </div>
         <span>비밀번호</span>
         <div>
-            <input type="password" name="password1" placeholder="비밀번호를 입력해주세요"/>
+            <input type="password" name="password1" placeholder="비밀번호를 입력해주세요" required/>
         </div>
 
         <span>비밀번호 확인</span>
         <div>
-            <input type="password" name="password2" placeholder="비밀번호를 입력해주세요"/>
+            <input type="password" name="password2" placeholder="비밀번호를 입력해주세요" required/>
         </div>
         <span>성별</span>
         <div>
@@ -38,16 +37,15 @@
         </div>
         <span>이메일 주소</span>
         <div>
-            <input type="email" name="email" placeholder="이메일 주소를 입력해주세요"/>
+            <input type="email" name="email" placeholder="이메일 주소를 입력해주세요" required/>
         </div>
         <span>휴대폰 번호</span>
         <div>
-            <input type="tel" name="phoneNumber" placeholder="휴대폰 번호를 입력해주세요">
+            <input type="tel" name="phoneNumber" placeholder="휴대폰 번호를 입력해주세요" required>
         </div>
-        <span>생년월일</span>
-        <div>
-            <input type="date" name="birthday"/>
-        </div>
+        <select name="year" id="year"></select>년
+        <select name="month" id="month"></select>월
+        <select name="day" id="day"></select>일
         <div>
             <button type="button" id="search_addr">주소찾기</button>
         </div>
@@ -70,7 +68,7 @@
             </tr>
             <tr>
                 <th>상세 주소</th>
-                <td><input type="text" id="상세 주소" name="address_detail" /></td>
+                <td><input type="text" id="상세 주소" name="address_detail" required/></td>
             </tr>
         </table>
         <button type="submit">회원가입</button>
@@ -93,6 +91,35 @@
 
         });
     }
+</script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var now = new Date();
+        var year = now.getFullYear();
+        var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1);
+        var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());
+        //년도 selectbox만들기
+        for(var i = 1900 ; i <= year ; i++) {
+            $('#year').append('<option value="' + i + '">' + i + '년</option>');
+        }
+
+        // 월별 selectbox 만들기
+        for(var i=1; i <= 12; i++) {
+            var mm = i > 9 ? i : "0"+i ;
+            $('#month').append('<option value="' + mm + '">' + mm + '월</option>');
+        }
+
+        // 일별 selectbox 만들기
+        for(var i=1; i <= 31; i++) {
+            var dd = i > 9 ? i : "0"+i ;
+            $('#day').append('<option value="' + dd + '">' + dd+ '일</option>');
+        }
+        $("#year  > option[value="+year+"]").attr("selected", "true");
+        $("#month  > option[value="+mon+"]").attr("selected", "true");
+        $("#day  > option[value="+day+"]").attr("selected", "true");
+
+    })
 </script>
 </html>
 
