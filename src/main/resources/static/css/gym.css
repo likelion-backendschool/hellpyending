@@ -1,0 +1,24 @@
+.container {
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+
+}
+
+.container > .content {
+    display:flex;
+    flex-direction:row;
+    flex-grow:1;
+}
+
+
+.container > .content > .map {
+    flex-grow:1;
+    flex-shrink:1; /* 이 부분을 지워보세요.(기본값 1) */
+}
+
+
+.container > .content > aside {
+    flex-basis:200px;
+    flex-shrink:0; /* 이 부분을 지워보세요.(기본값 1) */
+}
