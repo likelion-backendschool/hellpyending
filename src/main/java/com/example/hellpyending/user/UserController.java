@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @RequestMapping("/user")
 @Controller
@@ -31,11 +32,18 @@ public class UserController {
     }
     @PostMapping("/signup")
     String signUp(@Valid UserCreateForm userCreateForm, BindingResult bindingResult){
-        LocalDate localDate = LocalDate.parse(userCreateForm.getBirthday());
+
+        String birth = "%s-%s-%s".formatted(userCreateForm.getYear(),userCreateForm.getMonth(),userCreateForm.getDay());
+        LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
+
         if (bindingResult.hasErrors()) {
             return "user_signup";
         }
-
+        if (!addressCheck(userCreateForm.getAddress_1st(), userCreateForm.getAddress_2st(),userCreateForm.getAddress_3st(),userCreateForm.getAddress_4st())) {
+            bindingResult.rejectValue("address_1st", "addressNotInput",
+                    "주소 입력은 필수 항목입니다.");
+            return "user_signup";
+        }
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
@@ -48,7 +56,7 @@ public class UserController {
                     userCreateForm.getSex(),
                     userCreateForm.getEmail(),
                     userCreateForm.getPhoneNumber(),
-                    localDate,
+                    birthday,
                     userCreateForm.getAddress_1st(),
                     userCreateForm.getAddress_2st(),
                     userCreateForm.getAddress_3st(),
@@ -69,7 +77,15 @@ public class UserController {
         return "redirect:/";
     }
 
-//    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    private boolean addressCheck(String address_1st, String address_2st, String address_3st, String address_4st) {
+        if (address_1st.trim().length() == 0 || address_2st.trim().length() == 0 || address_3st.trim().length() == 0 || address_4st.trim().length() == 0 )
+        {
+            return false;
+        }
+        return true;
+    }
+
+    //    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @RequestMapping("/user")
     @ResponseBody
     public Authentication user(){

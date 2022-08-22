@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +43,7 @@ public class Users extends BaseTimeEntity {
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
+
     @Column
     private Sex sex;
 

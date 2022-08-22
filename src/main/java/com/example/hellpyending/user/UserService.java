@@ -45,7 +45,7 @@ public class UserService {
     }
 
     public Users getUser(String name) {
-        return this.userRepository.findByName(name).orElseThrow(() -> new DataNotFoundException("siteuser not found"));
+        return this.userRepository.findByUsername(name).orElseThrow(() -> new DataNotFoundException("siteuser not found"));
     }
 
 }
