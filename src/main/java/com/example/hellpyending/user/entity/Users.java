@@ -1,15 +1,12 @@
 package com.example.hellpyending.user.entity;
 
 
+import com.example.hellpyending.config.BaseTimeEntity;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,7 +19,7 @@ import java.util.Objects;
 @Table(indexes = {
         @Index(columnList = "userType")
 })
-public class Users {
+public class Users extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -38,8 +35,8 @@ public class Users {
     @Column
     private String password;
 
-    @Column(length = 20, nullable = false)
-    private String name;
+    @Column(length = 20, nullable = false, unique = true)
+    private String username;
 
     @Column(length = 30, nullable = false, unique = true)
     private String phoneNumber;
@@ -50,18 +47,9 @@ public class Users {
 
     private LocalDate birthday;
 
+    // enum 표현하는 개선이 필요해보임.
     @Column(name = "delete_yn")
     private char deleteYn;
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(nullable = false, updatable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime updatedAt;
 
     // 광역시
     // ex) 인천, 서울, 부산 ...
@@ -88,9 +76,14 @@ public class Users {
     @Column(nullable = false)
     private String address_detail;
 
-    public Users(String name, String password, List<GrantedAuthority> authorities) {
+
+    public Users(String username, String password, List<GrantedAuthority> authorities) {
     }
 
+    @PrePersist
+    public void prePersist(){
+        this.deleteYn = 'N';
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

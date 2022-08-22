@@ -1,31 +1,20 @@
 package com.example.hellpyending.config;
 
-import com.example.hellpyending.user.UserService;
-import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity(debug = true) // WebSecurity에서 어떤 필터를 거쳤는지 알 수 있음.
@@ -41,6 +30,10 @@ public class SpringSecurityConfig {
         http.authorizeRequests()
                 // GET 요청으로 "/test" URL을 접속 했을 때 인증 받은 사람(로그인 되어 있는 사람)만 접근이 가능하다.
                 .antMatchers(HttpMethod.GET,"/test").authenticated()
+                // GET 요청으로 "/user/auth" URL을 접속 했을 때 권한이 ADMIN인 사람만 접근이 가능하다.
+                .antMatchers(HttpMethod.GET,"/user/admin").hasRole("ADMIN")
+                // GET 요청으로 "/user/auth" URL을 접속 했을 때 권한이 USER인 사람만 접근이 가능하다.
+                .antMatchers(HttpMethod.GET,"/user/user").hasRole("USER")
                 // 그 외 요청은 인증 받은 사람만 가능하게 만듦.
                 .anyRequest().permitAll();
 
@@ -58,9 +51,13 @@ public class SpringSecurityConfig {
                 // logout 요청 경로
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                 // logout 성공 시 루트 페이지로 이동
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                // 로그아웃 시 session 종료
+                .invalidateHttpSession(true)
+        ;
         return http.build();
     }
+
     // web.ignoring().antMatchers("/images/**", "/css/**"); // 아래 코드와 같은 코드입니다.
     // 정적 리소스 spring security 대상에서 제외
     @Bean
@@ -71,5 +68,14 @@ public class SpringSecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    RoleHierarchy roleHierarchy(){
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        // ADMIN 권한은 USER 권한을 가진다. ( ADMIN 권한은 USER 권한보다 더 세다(?) )
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return roleHierarchy;
+    }
+
 
 }

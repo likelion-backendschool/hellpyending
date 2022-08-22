@@ -8,62 +8,11 @@
 </head>
 <body>
     <a th:href="@{/}">홈</a>
-    <a th:href="@{/user/signup}">회원가입</a>
+    <a sec:authorize="!isAuthenticated()" th:href="@{/user/signup}">회원가입</a>
     <a sec:authorize="!isAuthenticated()"th:href="@{/user/login}">로그인</a>
     <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
-    <div id="map" style="width:100%;height:100vh;"></div>    <!--지도 크기를 전체 화면으로 설정-->
-    <div id="roadview" style="width:750px;height:350px;"></div>
+    <a th:href="@{/gym/search}">헬스장 찾기</a>
 
-    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5d2a5e8680f2b64948b53b13f0626aa8"></script>
-    <script>
-        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-            mapOption = {
-                center: new kakao.maps.LatLng(37.55321, 126.972613), // 지도의 중심좌표- 서울역으로 설정정            level: 4, // 지도의 확대 레벨
-                mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
-            };
 
-        // 지도를 생성함
-
-        var map = new kakao.maps.Map(mapContainer, mapOption);
-
-        // 지도에 마커를 생성하고 표시한다
-        var marker = new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(37.52872, 126.96472), // 마커의 좌표
-            draggable : true, // 마커를 드래그 가능하도록 설정한다
-            map: map // 마커를 표시할 지도 객체
-        });
-
-        var iwContent = '<div style ="padding: 5px">위치 표시</div>';
-        //인포윈도우 표시 위치입니다
-
-        // 인포윈도우를 생성합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            position : iwPosition,
-            content : iwContent
-        });
-
-        // 마커 위에 인포윈도우를 표시
-        infowindow.open(map, marker);
-        //로드뷰를 표시할 div
-        var roadviewContainer = document.getElementById('roadview');
-
-        // 로드뷰 위치
-        var rvPosition = new kakao.maps.LatLng(37.56613, 126.97853);
-
-        //로드뷰 객체를 생성한다
-        var roadview = new kakao.maps.Roadview(roadviewContainer, {
-            panoId : 1050215190, // 로드뷰 시작 지역의 고유 아이디 값
-            panoX : 126.97853, // panoId가 유효하지 않을 경우 지도좌표를 기반으로 데이터를 요청할 수평 좌표값
-            panoY : 37.56613, // panoId가 유효하지 않을 경우 지도좌표를 기반으로 데이터를 요청할 수직 좌표값
-            pan: 93.78217217715192, // 로드뷰 처음 실행시에 바라봐야 할 수평 각
-            tilt: 8.993146749117823, // 로드뷰 처음 실행시에 바라봐야 할 수직 각
-            zoom: -1 // 로드뷰 줌 초기값
-        });
-
-        // 로드뷰 초기화가 완료되었을 때 로드뷰에 마커나 커스텀오버레이를 표시한다
-        kakao.maps.event.addListener(roadview, 'init', function() {
-        });
-
-    </script>
 </body>
 </html>
