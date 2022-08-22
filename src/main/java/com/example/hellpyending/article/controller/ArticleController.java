@@ -4,8 +4,12 @@ import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.article.form.ArticleCommentForm;
 import com.example.hellpyending.article.form.ArticleForm;
 import com.example.hellpyending.article.service.ArticleService;
+import com.example.hellpyending.user.UserSecurityService;
+import com.example.hellpyending.user.UserService;
+import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +25,8 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final UserService userService;
+    private final UserSecurityService userSecurityService;
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam(defaultValue = "0") int page) {
@@ -52,17 +58,19 @@ public class ArticleController {
 //            return articleService.getList();
 //    }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String articleCreate(ArticleForm articleForm) {
         return "article_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String articleCreate(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult) {
+    public String articleCreate(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
-
+        Users users = this.userService.getUser(principal.getName());
         articleService.create(articleForm.getTitle(), articleForm.getContent(), articleForm.getAreaName());
         return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
     }

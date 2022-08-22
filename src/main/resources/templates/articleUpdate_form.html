@@ -1,0 +1,28 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        layout:decorate="~{layout}">
+
+<div layout:fragment="content" class="container">
+    <h5 class="my-3 border-bottom pb-2">게시글등록</h5>
+
+    <form th:action="@{/article/modify}" th:object="${articleForm}" method="post">
+
+        <input type="hidden" th:field="*{id}" class="form-control">
+
+        <div th:replace="form_errors :: formErrorsFragment"></div>
+
+        <div class="mb-3">
+            <label class="form-label">제목</label>
+            <input type="text" th:field="*{title}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">내용</label>
+            <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
+        </div>
+        <input type="submit" value="저장하기" class="btn btn-primary my-2">
+    </form>
+</div>
+
+</html>
