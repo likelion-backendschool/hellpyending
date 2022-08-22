@@ -3,14 +3,10 @@ package com.example.hellpyending.user.entity;
 
 import com.example.hellpyending.config.BaseTimeEntity;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -79,6 +75,7 @@ public class Users extends BaseTimeEntity {
     // ex) 905동 403호, 101동 1301호 ...
     @Column(nullable = false)
     private String address_detail;
+
 
     public Users(String username, String password, List<GrantedAuthority> authorities) {
     }
