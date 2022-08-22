@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,8 +50,10 @@ public class gymController {
 
     @ResponseBody
     @GetMapping("/getGymList/{address_type}")
-    public GetAddressRes showList_new(@PathVariable("address_type") int address_type, Principal principal) {
-
+    public GetAddressRes showList_new(@PathVariable("address_type") int address_type, BindingResult bindingResult, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("error");
+        }
         List<GetAddressResInterface> reslut = this.gymService.findyGymList(address_type);
         GetAddressRes getAddressRes = new GetAddressRes();
         getAddressRes.setPositions(reslut);
@@ -59,7 +62,10 @@ public class gymController {
     }
 
     @RequestMapping("/search")
-    public String kakao2() {
+    public String searchGymList() {
+
+
+
         return "gymList_from_kakaoMap";
     }
 
