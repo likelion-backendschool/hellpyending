@@ -1,5 +1,6 @@
 package com.example.hellpyending.user;
 
+import com.example.hellpyending.article.exception.DataNotFoundException;
 import com.example.hellpyending.user.entity.Sex;
 import com.example.hellpyending.user.entity.Users;
 import com.example.hellpyending.user.entity.UserType;
@@ -41,6 +42,10 @@ public class UserService {
 
     public Optional<Users> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public Users getUser(String name) {
+        return this.userRepository.findByName(name).orElseThrow(() -> new DataNotFoundException("siteuser not found"));
     }
 
 }
