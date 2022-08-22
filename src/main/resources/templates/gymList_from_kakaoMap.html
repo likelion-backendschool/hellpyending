@@ -59,10 +59,31 @@
         minLevel: 10 // 클러스터 할 최소 지도 레벨
     });
 
-    var search_condition = "/gym/getGymList";
 
-    function test (){
+
+    document.getElementById("submit").onclick = function () {
+        var radios = document.getElementsByName("contact");
+        for (var radio of radios) {
+            if (radio.checked) {
+
+
+                if (radio.value == "1st_address") {
+                    test("/gym/getGymList/1");
+
+                }
+                if (radio.value == "2st_address") {
+                    test("/gym/getGymList/2");
+                }
+                if (radio.value == "3st_address") {
+                    test("/gym/getGymList/3");
+                }
+                alert(radio.value);
+            }
+        }
+    };
+    function test (search_condition){
         $.get(search_condition, function(data) {
+            clusterer.clear();
             var prevInfo = null;
             var markers = $(data.positions).map(function(i, positions) {
                 var marker = new kakao.maps.Marker({
@@ -71,10 +92,10 @@
 
                 var iwContent = '<div style="padding:5px;"> <a href="/" style="text-align:center;">'+positions.gym_name.toString()+'</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
                     iwRemoveable = true;
-                var infowindow = new kakao.maps.InfoWindow({
-                    position : new kakao.maps.LatLng(positions.lat, positions.lng),
-                    content : iwContent
-                });
+                // var infowindow = new kakao.maps.InfoWindow({
+                //     position : new kakao.maps.LatLng(positions.lat, positions.lng),
+                //     content : iwContent
+                // });
 
 
                 kakao.maps.event.addListener(marker, 'click', function() {
@@ -93,32 +114,18 @@
                 return marker;
             });
             clusterer.addMarkers(markers);
+
         });
+
+
+
+
 
     }
 
 
     // 클러스터러에 마커들을 추가합니다
-    test()
 
-    document.getElementById("submit").onclick = function () {
-        var radios = document.getElementsByName("contact");
-        for (var radio of radios) {
-            if (radio.checked) {
-                alert(radio.value);
-
-                if (radio.value == "1st_address") {
-                    console.log("111");
-                }
-                if (radio.value == "2st_address") {
-                    console.log("222");
-                }
-                if (radio.value == "3st_address") {
-                    console.log("333");
-                }
-            }
-        }
-    };
 
 
 </script>

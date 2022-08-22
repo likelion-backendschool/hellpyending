@@ -13,4 +13,16 @@ public interface gymRepository extends JpaRepository<Gym, Integer> {
 
     @Query(nativeQuery = true,value = "select g.gym_name, g.lat,g.lng from gym as g")
     List<GetAddressResInterface> findyGymList();
+
+
+    @Query(nativeQuery = true,value = "select g.gym_name, g.lat,g.lng from gym as g where address_1st='서울'")
+    List<GetAddressResInterface> findByGymList_1st();
+
+
+    @Query(nativeQuery = true,value = "select g.gym_name, g.lat,g.lng from gym as g where address_1st='서울' and address_2st='용산구'")
+    List<GetAddressResInterface> findByGymList_2st();
+
+
+    @Query(nativeQuery = true,value = "select g.gym_name, g.lat,g.lng from gym as g where address_1st='서울' and address_2st='용산구' and address_3st='남영동'")
+    List<GetAddressResInterface> findByGymList_3st();
 }
