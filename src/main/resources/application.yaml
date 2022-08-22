@@ -10,12 +10,12 @@ logging:
 spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/hellpyending?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
-    username: "root"
-    password: "0000"
+    username: test
+    password: test1234!@#$
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     defer-datasource-initialization: true
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
     open-in-view: false
     show-sql: true
     properties:
