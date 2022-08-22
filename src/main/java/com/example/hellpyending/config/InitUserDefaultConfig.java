@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Configuration
 @RequiredArgsConstructor
@@ -19,21 +18,38 @@ public class InitUserDefaultConfig {
     private final PasswordEncoder passwordEncoder;
     @Bean
     public void initializeDefaultAdmin() {
-        Users user = new Users();
-        user.setName("admin");
-        user.setPassword(passwordEncoder.encode("admin"));
-        user.setSex(Sex.MALE);
-        user.setEmail("admin@admin.com");
-        user.setPhoneNumber("01012341234");
-        user.setBirthday(LocalDate.now());
-        user.setAddress_1st("어드민");
-        user.setAddress_2st("어드민");
-        user.setAddress_3st("어드민");
-        user.setAddress_4st("어드민");
-        user.setAddress_detail("어드민");
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        user.setUserType(UserType.ADMIN);
-        userService.create(user);
+        Users user1 = Users.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("admin"))
+                .sex(Sex.MALE)
+                .email("admin@admin.com")
+                .phoneNumber("01012341234")
+                .deleteYn('N')
+                .birthday(LocalDate.now())
+                .address_1st("어드민")
+                .address_2st("어드민")
+                .address_3st("어드민")
+                .address_4st("어드민")
+                .address_detail("어드민")
+                .userType(UserType.ADMIN)
+                .build();
+        userService.create(user1);
+
+        Users user2 = Users.builder()
+                .username("user")
+                .password(passwordEncoder.encode("user"))
+                .sex(Sex.MALE)
+                .email("user@user.com")
+                .phoneNumber("01011111111")
+                .deleteYn('N')
+                .birthday(LocalDate.now())
+                .address_1st("유저")
+                .address_2st("유저")
+                .address_3st("유저")
+                .address_4st("유저")
+                .address_detail("유저")
+                .userType(UserType.USER)
+                .build();
+        userService.create(user2);
     }
 }
