@@ -28,13 +28,13 @@ public class Gym {
     private String gymPhoneNumber;
 
     @Column
-    private int per_1_month;
+    private int per1Month;
     @Column
-    private int per_3_months;
+    private int per3Months;
     @Column
-    private int per_6_months;
+    private int per6Months;
     @Column
-    private int per_12_months;
+    private int per12Months;
     @Column
     private int pt_price;
 
