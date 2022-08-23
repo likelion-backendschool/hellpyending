@@ -16,6 +16,7 @@ import java.util.Optional;
 public class ArticleCommentService {
     private final ArticleCommentRepository articleCommentRepository;
 
+    @Transactional
     public void create(Article article, String content) {
         ArticleComment articleComment = new ArticleComment();
         articleComment.setComment(content);
@@ -25,6 +26,7 @@ public class ArticleCommentService {
         articleCommentRepository.save(articleComment);
     }
 
+    @Transactional
     public ArticleComment getArticleComment(Long id) {
         Optional<ArticleComment> answer = this.articleCommentRepository.findById(id);
         if (answer.isPresent()) {
@@ -34,7 +36,7 @@ public class ArticleCommentService {
         }
     }
 
-
+    @Transactional
     public void delete(ArticleComment articleComment) {
         this.articleCommentRepository.delete(articleComment);
     }
