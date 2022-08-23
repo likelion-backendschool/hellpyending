@@ -70,7 +70,7 @@ public class ArticleController {
             return "article_form";
         }
         Users users = this.userService.getUser(principal.getName());
-        articleService.create(articleForm.getTitle(), articleForm.getContent(), articleForm.getAreaName());
+        articleService.create(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st());
         return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
     }
 
