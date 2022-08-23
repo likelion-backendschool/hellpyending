@@ -1,5 +1,6 @@
 package com.example.hellpyending.article.domain;
 
+import com.example.hellpyending.DeleteType;
 import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
@@ -25,8 +26,9 @@ public class ArticleHashtag {
     @Column(name = "update_at")
     private LocalDateTime update;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "delete_yn")
-    private char deleteYn;
+    private DeleteType deleteYn;
 
     @Column(name = "hashtag_name")
     private String hashtagName;

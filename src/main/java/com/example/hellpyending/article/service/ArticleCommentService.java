@@ -1,5 +1,6 @@
 package com.example.hellpyending.article.service;
 
+import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.article.domain.ArticleComment;
 import com.example.hellpyending.article.exception.DataNotFoundException;
@@ -20,7 +21,7 @@ public class ArticleCommentService {
     public void create(Article article, String content) {
         ArticleComment articleComment = new ArticleComment();
         articleComment.setComment(content);
-        articleComment.setDeleteYn('N');
+        articleComment.setDeleteYn(DeleteType.NORMAL);
         articleComment.setCreate(LocalDateTime.now());
         article.addArticleComment(articleComment);
         articleCommentRepository.save(articleComment);
