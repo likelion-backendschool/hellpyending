@@ -55,7 +55,7 @@ public class Article {
     private Users users;
 
     //    @Transient
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"article", "commentBundle"})
     private List<ArticleComment> articleCommentList;
 
