@@ -8,12 +8,12 @@ import javax.validation.constraints.*;
 @Getter
 @Setter
 public class UserCreateForm {
-    @Size(min = 3, max = 25)
+    @Size(min = 3, max = 25, message = "사용자 ID 길이는 3자 이상 25자 이하 이여야 합니다.")
     @NotEmpty(message = "사용자 ID는 필수항목입니다.")
     private String username;
 
     @NotEmpty(message = "이메일은 필수항목입니다.")
-    @Size(max = 400)
+    @Size(max = 400, message = "이메일 길이는 400자 이하 이여야 합니다.")
     @Email
     private String email;
 
@@ -40,22 +40,17 @@ public class UserCreateForm {
     private String day;
 
     @NotEmpty(message = "광역시는 필수항목입니다.")
-    @Size(min = 2,max = 255, message = "광역시는 필수항목입니다.")
     private String address_1st;
 
     @NotEmpty(message = "시군구는 필수항목입니다.")
-    @Size(min = 2,max = 255, message = "시군구는 필수항목입니다.")
     private String address_2st;
 
     @NotEmpty(message = "동읍면리는 필수항목입니다.")
-    @Size(min = 2,max = 255, message = "동읍면리는 필수항목입니다.")
     private String address_3st;
 
-    @NotEmpty(message = "동네는 필수항목입니다.")
-    @Size(min = 2,max = 255, message = "동네는 필수항목입니다.")
+    @NotEmpty(message = "도로명은 필수항목입니다.")
     private String address_4st;
 
     @NotEmpty(message = "상세 주소는 필수항목입니다.")
-    @Size(min = 2,max = 255, message = "상세 주소는 필수항목입니다.")
     private String address_detail;
 }
