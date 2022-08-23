@@ -64,9 +64,18 @@ public class gymController {
     @RequestMapping("/search")
     public String searchGymList() {
 
-
-        return "gymList_from_kakaoMap";
+        return "GymList";
     }
+
+    @RequestMapping("/beforeGymList")
+    public String beforeGymList() {
+
+        return "beforeGymList";
+    }
+
+
+
+
 
 }
 

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>마커 클러스터러 사용하기</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/kakao2.css}">
+</head>
+<body>
+<p style="margin-top:-12px">
+<div id="container">
+
+    <button id="submit">Submit</button>
+</div>
+</p>
+
+<div class="map_wrap">
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+
+    <div id="menu_wrap" class="bg_white">
+        <div class="option">
+            <div>
+<!--                <form onsubmit="searchPlaces(); return false;">-->
+<!--                    키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15">-->
+<!--                    <button type="submit">검색하기</button>-->
+<!--                </form>-->
+                <div>
+                    <input type="radio" id="1st_address" name="contact" value="1st_address">
+                    <label for="1st_address">시</label>
+
+                    <input type="radio" id="2st_address" name="contact" value="2st_address">
+                    <label for="2st_address">구</label>
+
+                    <input type="radio" id="3st_address" name="contact" value="3st_address">
+                    <label for="3st_address">동</label>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <ul id="placesList"></ul>
+
+    </div>
+</div>
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fdeb65c4bd0f03e93d1de82c7e1dded0&libraries=clusterer"></script>
+<script>
+
+
+
+    $.get("/gymSync/loadUserAddress", function(user_address) {
+
+
+        document.getElementById("submit").onclick = function () {
+            var radios = document.getElementsByName("contact");
+            for (var radio of radios) {
+                if (radio.checked) {
+
+
+                    if (radio.value == "1st_address") {
+                        search_condition = "/gym/getGymList/1"
+                        searchPlaces(search_condition);
+                    }
+                    if (radio.value == "2st_address") {
+                        search_condition = "/gym/getGymList/2"
+                        searchPlaces(search_condition);
+                    }
+                    if (radio.value == "3st_address") {
+                        search_condition = "/gym/getGymList/3"
+                        searchPlaces(search_condition);
+                    }
+                    alert(radio.value);
+                }
+            }
+        };
+
+
+        var markers = [];
+
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(user_address[1], user_address[0]), // 지도의 중심좌표
+                level: 3 // 지도의 확대 레벨
+            };
+
+        // 지도를 생성합니다
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+
+
+        function searchPlaces(search_condition) {
+            console.log(search_condition)
+            $.get(search_condition, function(data) {
+                var pagination = Math.ceil(data.positions.length/15)
+                placesSearchCB(data.positions,pagination)
+                console.log(data.positions.length/15)
+
+            });
+
+
+        }
+
+        function placesSearchCB(data) {
+                // 정상적으로 검색이 완료됐으면
+                // 검색 목록과 마커를 표출합니다
+
+            console.log("placesSearchCB in")
+                displayPlaces(data);
+
+
+
+        }
+
+
+        function displayPlaces(places) {
+            console.log("displayPlaces in")
+            var listEl = document.getElementById('placesList'),
+                menuEl = document.getElementById('menu_wrap'),
+                fragment = document.createDocumentFragment(),
+                bounds = new kakao.maps.LatLngBounds(),
+                listStr = '';
+
+            // 검색 결과 목록에 추가된 항목들을 제거합니다
+            removeAllChildNods(listEl);
+
+            // 지도에 표시되고 있는 마커를 제거합니다
+            removeMarker();
+            console.log(places.length)
+            for ( var i=0; i<places.length; i++ ) {
+                console.log(i);
+                // 마커를 생성하고 지도에 표시합니다
+                var placePosition = new kakao.maps.LatLng(places[i].lat, places[i].lng),
+                    marker = addMarker(placePosition, i),
+                    itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+                // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+                // LatLngBounds 객체에 좌표를 추가합니다
+                bounds.extend(placePosition);
+
+                // 마커와 검색결과 항목에 mouseover 했을때
+                // 해당 장소에 인포윈도우에 장소명을 표시합니다
+                // mouseout 했을 때는 인포윈도우를 닫습니다
+                (function(marker, title) {
+                    kakao.maps.event.addListener(marker, 'mouseover', function() {
+                        displayInfowindow(marker, title);
+                    });
+
+                    kakao.maps.event.addListener(marker, 'mouseout', function() {
+                        infowindow.close();
+                    });
+
+                    itemEl.onmouseover =  function () {
+                        displayInfowindow(marker, title);
+                    };
+
+                    itemEl.onmouseout =  function () {
+                        infowindow.close();
+                    };
+                })(marker, places[i].gym_name);
+
+                fragment.appendChild(itemEl);
+            }
+
+            // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+            listEl.appendChild(fragment);
+            menuEl.scrollTop = 0;
+
+            // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+            map.setBounds(bounds);
+            console.log("end")
+
+        }
+
+        function getListItem(index, places) {
+            var el = document.createElement('li'),
+                itemStr = '<span class="markerbg' + (index+1) + '"></span>' +
+                    '<div class="info">' +
+                    '   <h5>' + places.gym_name + '</h5>';
+
+            if (places.gym_address) {
+                itemStr += '    <span>' + places.gym_address + '</span>' +
+                    '   <span class="jibun gray">' +  places.gym_address  + '</span>';
+            } else {
+                itemStr += '    <span>' +  places.gym_address  + '</span>';
+            }
+
+            itemStr += '  <span class="tel">' + places.gym_phone_number  + '</span>' +
+                '</div>';
+
+            el.innerHTML = itemStr;
+            el.className = 'item';
+
+            return el;
+        }
+
+        function addMarker(position, idx, title) {
+
+            console.log("addMarker")
+            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+                imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+                imgOptions =  {
+                    spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                    spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                    offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+                },
+                markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                marker = new kakao.maps.Marker({
+                    position: position, // 마커의 위치
+                });
+
+            marker.setMap(map); // 지도 위에 마커를 표출합니다
+            markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+            return marker;
+        }
+
+
+
+        // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+        function removeMarker() {
+            for ( var i = 0; i < markers.length; i++ ) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+        // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+        // function displayPagination(pagination) {
+        //     var paginationEl = document.getElementById('pagination'),
+        //         fragment = document.createDocumentFragment(),
+        //         i;
+        //     var currentpage = 1;
+        //     // 기존에 추가된 페이지번호를 삭제합니다
+        //     while (paginationEl.hasChildNodes()) {
+        //         paginationEl.removeChild (paginationEl.lastChild);
+        //     }
+        //
+        //     for (i=1; i<=pagination; i++) {
+        //
+        //         var el = document.createElement('a');
+        //         el.href = "#";
+        //         el.innerHTML = i;
+        //         console.log(currentpage);
+        //         if (i===currentpage) {
+        //             el.className = 'on';
+        //         } else {
+        //             el.onclick = (function(i) {
+        //                 return function() {
+        //                     currentpage = i;
+        //                     pagination.gotoPage(i);
+        //
+        //                 }
+        //             })(i);
+        //         }
+        //         fragment.appendChild(el);
+        //     }
+        //     paginationEl.appendChild(fragment);
+        // }
+
+        function displayInfowindow(marker, title) {
+            var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+            infowindow.setContent(content);
+            infowindow.open(map, marker);
+        }
+
+        // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+        function removeAllChildNods(el) {
+            while (el.hasChildNodes()) {
+                el.removeChild (el.lastChild);
+            }
+        }
+
+
+
+
+    });
+
+
+
+
+</script>
+</body>
+</html>
