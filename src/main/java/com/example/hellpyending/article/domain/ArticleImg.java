@@ -1,5 +1,6 @@
 package com.example.hellpyending.article.domain;
 
+import com.example.hellpyending.DeleteType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,8 +24,9 @@ public class ArticleImg {
     @Column(name = "update_id")
     private LocalDateTime update;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "delete_yn")
-    private char deleteYn;
+    private DeleteType deleteYn;
 
     @Column(name = "img_url")
     private String imageUrl;

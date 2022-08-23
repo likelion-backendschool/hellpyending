@@ -1,5 +1,6 @@
 package com.example.hellpyending.article.domain;
 
+import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,9 +44,10 @@ public class Article {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "delete_yn")
     @JsonIgnore
-    private char deleteYn;
+    private DeleteType deleteYn;
 
     @Column(name = "area_name")
     private String areaName;

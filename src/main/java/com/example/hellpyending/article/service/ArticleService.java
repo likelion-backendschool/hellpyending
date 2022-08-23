@@ -1,9 +1,8 @@
 package com.example.hellpyending.article.service;
 
+import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.article.domain.Article;
-import com.example.hellpyending.article.domain.ArticleComment;
 import com.example.hellpyending.article.exception.DataNotFoundException;
-import com.example.hellpyending.article.repository.ArticleCommentRepository;
 import com.example.hellpyending.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,7 @@ public class ArticleService {
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
 
-        return articleRepository.findByDeleteYn('N', pageable);
+        return articleRepository.findByDeleteYn(DeleteType.NORMAL, pageable);
 
         // 스트림
 //        List<Article> articleList = articleRepository.findAll();
@@ -64,7 +63,7 @@ public class ArticleService {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
-        article.setDeleteYn('N');
+        article.setDeleteYn(DeleteType.NORMAL);
         article.setCreate(LocalDateTime.now());
         article.setUpdate(LocalDateTime.now());
         article.setAreaName(areaName); // 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
@@ -74,7 +73,7 @@ public class ArticleService {
     @Transactional
     public boolean modify(Long articleId, String title, String content, String areaName) {
 
-        Optional<Article> articleOptional = articleRepository.findByIdAndDeleteYn(articleId, 'N');
+        Optional<Article> articleOptional = articleRepository.findByIdAndDeleteYn(articleId, DeleteType.NORMAL);
 
         if (articleOptional.isEmpty()) { //조회가 안되면 잘못 요청한 것임
             return false;
@@ -92,14 +91,13 @@ public class ArticleService {
     @Transactional
     public boolean delete(Long id) {
 
-        Optional<Article> articleOptional = articleRepository.findByIdAndDeleteYn(id, 'N');
+        Optional<Article> articleOptional = articleRepository.findByIdAndDeleteYn(id, DeleteType.NORMAL);
 
         if (articleOptional.isEmpty()) { //조회가 안되면 잘못 요청한 것임
             return false;
         } else {
             Article article = articleOptional.get();
-            article.setDeleteYn('Y');
-
+            article.setDeleteYn(DeleteType.DELETE);
             return true;
         }
     }

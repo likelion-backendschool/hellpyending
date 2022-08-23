@@ -1,5 +1,6 @@
 package com.example.hellpyending.article.domain;
 
+import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,9 +28,10 @@ public class ArticleComment {
     @Column(name = "update_at")
     private LocalDateTime update;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "delete_yn")
     @JsonIgnore
-    private char deleteYn;
+    private DeleteType deleteYn;
 
     // 새로 추가
     @Column(name = "comment", columnDefinition = "TEXT")

@@ -1,12 +1,12 @@
 package com.example.hellpyending.user.entity;
 
 
+import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.config.BaseTimeEntity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -43,15 +43,15 @@ public class Users extends BaseTimeEntity {
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-
     @Column
     private Sex sex;
 
     private LocalDate birthday;
 
     // enum 표현하는 개선이 필요해보임.
+    @Enumerated(EnumType.STRING)
     @Column(name = "delete_yn")
-    private char deleteYn;
+    private DeleteType deleteYn;
 
     // 광역시
     // ex) 인천, 서울, 부산 ...
@@ -83,8 +83,8 @@ public class Users extends BaseTimeEntity {
     }
 
     @PrePersist
-    public void prePersist(){
-        this.deleteYn = 'N';
+    private void prePersist(){
+        this.deleteYn = DeleteType.NORMAL;
     }
     @Override
     public boolean equals(Object o) {

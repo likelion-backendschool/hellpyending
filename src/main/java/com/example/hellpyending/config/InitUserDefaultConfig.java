@@ -1,5 +1,6 @@
 //package com.example.hellpyending.config;
 //
+//import com.example.hellpyending.DeleteType;
 //import com.example.hellpyending.user.UserService;
 //import com.example.hellpyending.user.entity.Sex;
 //import com.example.hellpyending.user.entity.UserType;
@@ -24,7 +25,7 @@
 //                .sex(Sex.MALE)
 //                .email("admin@admin.com")
 //                .phoneNumber("01012341234")
-//                .deleteYn('N')
+//                .deleteYn(DeleteType.NORMAL)
 //                .birthday(LocalDate.now())
 //                .address_1st("어드민")
 //                .address_2st("어드민")
@@ -41,7 +42,7 @@
 //                .sex(Sex.MALE)
 //                .email("user@user.com")
 //                .phoneNumber("01011111111")
-//                .deleteYn('N')
+//                .deleteYn(DeleteType.NORMAL)
 //                .birthday(LocalDate.now())
 //                .address_1st("유저")
 //                .address_2st("유저")
