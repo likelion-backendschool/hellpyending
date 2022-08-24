@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>마커 클러스터러 사용하기</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/gym.css}">
+</head>
+<body>
+<p style="margin-top:-12px">
+    <div id="container">
+        <div>
+            <input type="radio" id="1st_address" name="contact" value="1st_address">
+            <label for="1st_address">시</label>
+
+            <input type="radio" id="2st_address" name="contact" value="2st_address">
+            <label for="2st_address">구</label>
+
+            <input type="radio" id="3st_address" name="contact" value="3st_address">
+            <label for="3st_address">동</label>
+        </div>
+        <button id="submit">Submit</button>
+    </div>
+</p>
+
+<div class="container">
+    <section class="content">
+        <div class="map" id="map" style="width:50%;height:350px;">
+
+        </div>
+
+        <aside class="gym_list" style="overflow:scroll; width:50%; height:200px;">
+            이름, 주소 , 전화번호, 1개월, 3개월, 6개월, 1년
+        </aside>
+
+    </section>
+
+</div>
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fdeb65c4bd0f03e93d1de82c7e1dded0&libraries=clusterer"></script>
+<script>
+    $.get("/gymSync/loadUserAddress", function(user_address) {
+
+
+
+        var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
+            center : new kakao.maps.LatLng(user_address[1], user_address[0]), // 지도의 중심좌표
+            level : 5 // 지도의 확대 레벨
+        });
+
+
+        var clusterer = new kakao.maps.MarkerClusterer({
+            map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+            averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+            minLevel: 10 // 클러스터 할 최소 지도 레벨
+        });
+
+
+        document.getElementById("submit").onclick = function () {
+            var radios = document.getElementsByName("contact");
+            for (var radio of radios) {
+                if (radio.checked) {
+
+
+                    if (radio.value == "1st_address") {
+                        search_condition = "/gym/getGymList/1"
+                        test(search_condition);
+                        test1(search_condition);
+                    }
+                    if (radio.value == "2st_address") {
+                        search_condition = "/gym/getGymList/2"
+                        test(search_condition);
+                        test1(search_condition);
+                    }
+                    if (radio.value == "3st_address") {
+                        search_condition = "/gym/getGymList/3"
+                        test(search_condition);
+                        test1(search_condition);
+                    }
+                    alert(radio.value);
+                }
+            }
+        };
+
+
+
+        function test (search_condition){
+            $.get(search_condition, function(data) {
+                clusterer.clear();
+                var prevInfo = null;
+                var markers = $(data.positions).map(function(i, positions) {
+                    var marker = new kakao.maps.Marker({
+                        position : new kakao.maps.LatLng(positions.lat, positions.lng)
+                    });
+
+                    var iwContent = '<div style="padding:5px;"> <a href="/" style="text-align:center;">'+positions.gym_name.toString()+'</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+                        iwRemoveable = true;
+
+
+                    kakao.maps.event.addListener(marker, 'click', function() {
+                        if (prevInfo) prevInfo.setMap(null);
+                        var pos = marker.getPosition();
+                        var info = new kakao.maps.InfoWindow({
+                            position: pos,
+                            disableAutoPan:true,
+                            removable : iwRemoveable,
+                            content: iwContent
+                        });
+                        info.setMap(map);
+                        prevInfo = info;
+                    });
+
+                    return marker;
+                });
+                clusterer.addMarkers(markers);
+
+            });
+
+        }
+
+        function test1 (search_condition){
+            $.get(search_condition, function(data) {
+                const gymList = data.positions;
+                for(const index in gymList){
+                    const gym = gymList[index]
+                    console.log(gym.gym_name);
+                    const html = `
+                        <li>
+                            <a>`+ gym.gym_name+`</a>
+
+                        </li>`;
+                    $('.gym_list').append(html);
+                }
+            });
+        }
+
+
+    });
+
+
+
+
+</script>
+</body>
+</html>
