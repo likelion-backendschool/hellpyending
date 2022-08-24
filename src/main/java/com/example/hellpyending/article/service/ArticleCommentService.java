@@ -5,6 +5,7 @@ import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.article.domain.ArticleComment;
 import com.example.hellpyending.article.exception.DataNotFoundException;
 import com.example.hellpyending.article.repository.ArticleCommentRepository;
+import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +19,13 @@ public class ArticleCommentService {
     private final ArticleCommentRepository articleCommentRepository;
 
     @Transactional
-    public void create(Article article, String content) {
+    public void create(Article article, String content, Users users) {
         ArticleComment articleComment = new ArticleComment();
         articleComment.setComment(content);
         articleComment.setDeleteYn(DeleteType.NORMAL);
         articleComment.setCreate(LocalDateTime.now());
         article.addArticleComment(articleComment);
+        articleComment.setUsers(users);
         articleCommentRepository.save(articleComment);
     }
 
@@ -40,5 +42,12 @@ public class ArticleCommentService {
     @Transactional
     public void delete(ArticleComment articleComment) {
         this.articleCommentRepository.delete(articleComment);
+    }
+
+    @Transactional
+    public void modify(ArticleComment articleComment, String content) {
+        articleComment.setComment(content);
+        articleComment.setUpdate(LocalDateTime.now());
+        articleCommentRepository.save(articleComment);
     }
 }
