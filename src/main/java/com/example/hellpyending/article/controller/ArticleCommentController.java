@@ -31,6 +31,7 @@ public class ArticleCommentController {
 
     private final UserService userService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     public String detail(Principal principal, Model model, @PathVariable long id, @Valid ArticleCommentForm articleCommentForm, BindingResult bindingResult) {
         Article article = this.articleService.getArticle(id);
@@ -47,9 +48,15 @@ public class ArticleCommentController {
         return "redirect:/article/detail/%d".formatted(id);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String articleCommentDelete(@PathVariable("id") long id) {
+    public String articleCommentDelete(Principal principal, @PathVariable("id") long id) {
         ArticleComment articleComment = this.articleCommentService.getArticleComment(id);
+
+        if (!articleComment.getUsers().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+
         this.articleCommentService.delete(articleComment);
         return String.format("redirect:/article/detail/%s", articleComment.getArticle().getId());
     }
