@@ -6,7 +6,7 @@
 <div layout:fragment="content" class="container">
     <h5 class="my-3 border-bottom pb-2">게시글등록</h5>
 
-    <form th:action th:object="${articleForm}" method="post">
+    <form th:action="@{''}" th:object="${articleForm}" method="post">
 
         <div th:replace="form_errors :: formErrorsFragment"></div>
 

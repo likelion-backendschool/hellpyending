@@ -4,6 +4,7 @@ import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.article.exception.DataNotFoundException;
 import com.example.hellpyending.article.repository.ArticleRepository;
+import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -59,13 +60,14 @@ public class ArticleService {
     }
 
     @Transactional
-    public void create(String title, String content, String areaName) {
+    public void create(String title, String content, String areaName, Users users) {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
         article.setDeleteYn(DeleteType.NORMAL);
         article.setCreate(LocalDateTime.now());
         article.setUpdate(LocalDateTime.now());
+        article.setUsers(users);
         article.setAreaName(areaName); // 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
         articleRepository.save(article);
     }
@@ -101,4 +103,5 @@ public class ArticleService {
             return true;
         }
     }
+
 }
