@@ -103,5 +103,11 @@ public class ArticleService {
             return true;
         }
     }
-
+    @Transactional
+    public void setHitCount(Article article) {
+        Integer PrevHitCount = article.getHitCount();
+        PrevHitCount++;
+        article.setHitCount(PrevHitCount);
+        articleRepository.save(article);
+    }
 }
