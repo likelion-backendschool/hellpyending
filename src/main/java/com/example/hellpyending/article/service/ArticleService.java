@@ -26,33 +26,17 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public Page<Article> getList(int page) {
+    public Page<Article> getList(String kw, int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("create"));
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
 
-        return articleRepository.findByDeleteYn(DeleteType.NORMAL, pageable);
+        if (kw == null || kw.trim().length() == 0) {
+            return articleRepository.findByDeleteYn(DeleteType.NORMAL, pageable);
+        }
+        return articleRepository.findByTitleContainsAndDeleteYn(kw, DeleteType.NORMAL, pageable);
 
-        // 스트림
-//        List<Article> articleList = articleRepository.findAll();
-//
-//        articleList.forEach(article ->
-//                article.getArticleCommentList()
-//                        .addAll(articleCommentRepository.findByArticleAndCommentBundle(article, null))
-//        );
-
-        // 여러번 쿼리
-//        List<Article> articleList = articleRepository.findAll();
-//        List<ArticleComment> articleCommentList = articleCommentRepository.findAll();
-//
-//
-//
-//        articleList.forEach(article ->
-//                article.getArticleCommentList().addAll(articleCommentList.stream().filter(articleComment ->
-//                        articleComment.getArticle().getId().equals(article.getId()) && articleComment.getCommentBundle() == null
-//                ).toList())
-//        ); // 첫번째 성능이 제곱으로 느려짐 댓글마다 필터링을 해야함
     }
 
     public Article getArticle(long id) {
@@ -105,12 +89,9 @@ public class ArticleService {
             return true;
         }
     }
-<<<<<<< HEAD
 
 
 
-
-=======
     @Transactional
     public void setHitCount(Article article) {
         Integer PrevHitCount = article.getHitCount();
@@ -118,5 +99,5 @@ public class ArticleService {
         article.setHitCount(PrevHitCount);
         articleRepository.save(article);
     }
->>>>>>> 1148d1e400004f753e150ebdfb5fa91ddb7d659a
+
 }

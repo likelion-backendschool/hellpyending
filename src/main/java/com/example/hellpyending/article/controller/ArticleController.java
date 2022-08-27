@@ -31,8 +31,8 @@ public class ArticleController {
     private final UserSecurityService userSecurityService;
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<Article> paging = articleService.getList(page);
+    public String list(String kw, Model model, @RequestParam(defaultValue = "0") int page) {
+        Page<Article> paging = articleService.getList(kw, page);
 
         model.addAttribute("paging", paging);
         return "article_list";
