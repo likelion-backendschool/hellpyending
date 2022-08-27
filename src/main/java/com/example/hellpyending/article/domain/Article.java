@@ -68,6 +68,8 @@ public class Article {
 
 
 
+
+
 //    @OneToMany(mappedBy = "article")
 //    @JsonIgnoreProperties({"article"})
 //    private List<ArticleImg> articleImgList;

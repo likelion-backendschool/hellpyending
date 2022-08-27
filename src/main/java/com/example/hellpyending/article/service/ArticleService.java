@@ -3,6 +3,7 @@ package com.example.hellpyending.article.service;
 import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.article.exception.DataNotFoundException;
+import com.example.hellpyending.article.form.ArticleForm;
 import com.example.hellpyending.article.repository.ArticleRepository;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,7 @@ public class ArticleService {
     public Article getArticle(long id) {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
+
     }
 
     @Transactional
@@ -103,6 +105,8 @@ public class ArticleService {
             return true;
         }
     }
+
+
 
 
 }
