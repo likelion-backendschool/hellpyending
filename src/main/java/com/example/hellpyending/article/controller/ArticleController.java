@@ -42,6 +42,8 @@ public class ArticleController {
     public String detail(Model model, @PathVariable long id, ArticleCommentForm articleCommentForm) {
         Article article = articleService.getArticle(id);
 
+        articleService.setHitCount(article);
+
         model.addAttribute("article", article);
 
         return "article_detail";
