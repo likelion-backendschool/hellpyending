@@ -4,6 +4,7 @@ import com.example.hellpyending.user.entity.UserCreateForm;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -105,72 +107,18 @@ public class UserController {
 
     @GetMapping("/information")
     @PreAuthorize("isAuthenticated()")
-    public String information(Model model, Principal principal){
+    public String information(Model model, Principal principal,UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
-        return "user_information";
+        return "user_information_update";
     }
 
-    @GetMapping("/nickname/modify")
+    @PostMapping("/information")
     @PreAuthorize("isAuthenticated()")
-    public String nickname_modify(Model model, Principal principal){
+    public String information(Model model, Principal principal, @Valid UserUpdateForm userUpdateForm, BindingResult bindingResult){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
-        return "user_nickname_update";
-    }
-    @PostMapping("/nickname/modify")
-    @PreAuthorize("isAuthenticated()")
-    public String nickname_modify(Model model, Principal principal, @Valid UserNickNameUpdateForm userNickNameUpdateForm, BindingResult bindingResult){
-        Users users = userService.getUser(principal.getName());
-        model.addAttribute("users",users);
-        return "redirect:/user/information";
+        return "user_information_update";
     }
 
-    @GetMapping("/address/modify")
-    @PreAuthorize("isAuthenticated()")
-    public String address_modify(Model model, Principal principal){
-        Users users = userService.getUser(principal.getName());
-        model.addAttribute("users",users);
-        return "user_address_update";
-    }
-
-    @PostMapping("/address/modify")
-    @PreAuthorize("isAuthenticated()")
-    public String address_modify(Model model, Principal principal, @Valid UserAddressUpdateForm userAddressUpdateForm, BindingResult bindingResult){
-        Users users = userService.getUser(principal.getName());
-        model.addAttribute("users",users);
-        return "redirect:/user/information";
-    }
-
-    @GetMapping("/email/modify")
-    @PreAuthorize("isAuthenticated()")
-    public String email_modify(Model model, Principal principal){
-        Users users = userService.getUser(principal.getName());
-        model.addAttribute("users",users);
-        return "user_email_update";
-    }
-
-    @PostMapping("/email/modify")
-    @PreAuthorize("isAuthenticated()")
-    public String email_modify(Model model, Principal principal, @Valid UserEmailUpdateForm userEmailUpdateForm, BindingResult bindingResult){
-        Users users = userService.getUser(principal.getName());
-        model.addAttribute("users",users);
-        return "redirect:/user/information";
-    }
-
-    @GetMapping("/phoneNumber/modify")
-    @PreAuthorize("isAuthenticated()")
-    public String phoneNumber_modify(Model model, Principal principal){
-        Users users = userService.getUser(principal.getName());
-        model.addAttribute("users",users);
-        return "user_phoneNumber_update";
-    }
-
-    @PostMapping("/phoneNumber/modify")
-    @PreAuthorize("isAuthenticated()")
-    public String phoneNumber_modify(Model model, Principal principal, @Valid UserPhoneUpdateForm userPhoneUpdateForm, BindingResult bindingResult){
-        Users users = userService.getUser(principal.getName());
-        model.addAttribute("users",users);
-        return "redirect:/user/information";
-    }
 }
