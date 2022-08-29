@@ -82,15 +82,6 @@ public class UserController {
         }
         return "redirect:/";
     }
-
-    private boolean addressCheck(String address_1st, String address_2st, String address_3st, String address_4st) {
-        if (address_1st.trim().length() == 0 || address_2st.trim().length() == 0 || address_3st.trim().length() == 0 || address_4st.trim().length() == 0 )
-        {
-            return false;
-        }
-        return true;
-    }
-
     //    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @RequestMapping("/user")
     @ResponseBody
@@ -107,18 +98,53 @@ public class UserController {
 
     @GetMapping("/information")
     @PreAuthorize("isAuthenticated()")
-    public String information(Model model, Principal principal,UserUpdateForm userUpdateForm){
+    String information(Model model, Principal principal,UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
         return "user_information_update";
     }
 
-    @PostMapping("/information")
     @PreAuthorize("isAuthenticated()")
-    public String information(Model model, Principal principal, @Valid UserUpdateForm userUpdateForm, BindingResult bindingResult){
-        Users users = userService.getUser(principal.getName());
-        model.addAttribute("users",users);
-        return "user_information_update";
-    }
+    @PostMapping("/information")
+    String information(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult){
 
+        Users users = userService.getUser(principal.getName());
+        if (bindingResult.hasErrors()) {
+
+            return "user_information_update";
+        }
+
+        try {
+            userService.update(
+                    users,
+                    UserUpdateForm.getPassword1(),
+                    UserUpdateForm.getNickname(),
+                    UserUpdateForm.getPhoneNumber(),
+                    UserUpdateForm.getAddress_1st(),
+                    UserUpdateForm.getAddress_2st(),
+                    UserUpdateForm.getAddress_3st(),
+                    UserUpdateForm.getAddress_4st(),
+                    UserUpdateForm.getAddress_detail()
+            );
+        }
+        catch (DataIntegrityViolationException e){
+            e.printStackTrace();
+            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+            return "user_signup";
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            bindingResult.reject("signupFailed", e.getMessage());
+            return "user_signup";
+        }
+        model.addAttribute("users",users);
+        return "redirect:/";
+    }
+    private boolean addressCheck(String address_1st, String address_2st, String address_3st, String address_4st) {
+        if (address_1st.trim().length() == 0 || address_2st.trim().length() == 0 || address_3st.trim().length() == 0 || address_4st.trim().length() == 0 )
+        {
+            return false;
+        }
+        return true;
+    }
 }
