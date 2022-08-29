@@ -110,7 +110,7 @@ public class UserController {
 
         Users users = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
-
+            model.addAttribute("users",users);
             return "user_information_update";
         }
 

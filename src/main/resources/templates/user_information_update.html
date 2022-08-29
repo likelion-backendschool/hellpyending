@@ -5,7 +5,7 @@
 >
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
-    <form method="post" th:object="${userUpdateForm}" th:action="@{/user/information}">
+    <form method="post" th:object="${userUpdateForm}" th:action="@{/user/information}" onsubmit="info_submit(this)">
         <div role="alert" th:if="${#fields.hasAnyErrors()}">
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
         </div>
@@ -121,6 +121,7 @@
                 target4.disabled = true;
                 target5.disabled = true;
                 target6.disabled = true;
+                console.log(target1.value);
             }
             else {
                 target1.disabled = false;
@@ -130,6 +131,15 @@
                 target5.disabled = false;
                 target6.disabled = false;
             }
+        }
+        function info_submit(form){
+            const address_1st = document.getElementById('address_1st');
+            if (address_1st.value.trim().length == 0 && address_1st.disabled == false){
+                alert('주소를 입력해주세요.');
+                return false;
+            }
+            form.submit();
+            return;
         }
     </script>
 </div>
