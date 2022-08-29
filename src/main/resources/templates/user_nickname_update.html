@@ -1,0 +1,18 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{layout}"
+>
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content" class="container my-3">
+    <form method="post" th:action="@{/user/nickname/modify}">
+        <span>닉네임</span>
+        <div>
+            <input type="nickname" name="nickname" placeholder="닉네임을 입력해주세요" required/>
+            <button type="submit">수정</button>
+        </div>
+    </form>
+</div>
+
+</html>
