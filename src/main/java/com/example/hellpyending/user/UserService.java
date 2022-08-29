@@ -21,11 +21,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void create(String username, String password, Sex sex, String email, String phoneNumber, LocalDate birthday,
+    public void create(String username, String password, String nickname, Sex sex, String email, String phoneNumber, LocalDate birthday,
                        String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
         Users user = Users.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
+                .nickname(nickname)
                 .sex(sex)
                 .email(email)
                 .phoneNumber(phoneNumber)

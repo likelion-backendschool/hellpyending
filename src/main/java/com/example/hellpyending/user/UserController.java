@@ -1,12 +1,14 @@
 package com.example.hellpyending.user;
 
 import com.example.hellpyending.user.entity.UserCreateForm;
+import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -53,6 +56,7 @@ public class UserController {
             userService.create(
                     userCreateForm.getUsername(),
                     userCreateForm.getPassword1(),
+                    userCreateForm.getNickname(),
                     userCreateForm.getSex(),
                     userCreateForm.getEmail(),
                     userCreateForm.getPhoneNumber(),
@@ -97,5 +101,45 @@ public class UserController {
     @ResponseBody
     public Authentication admin(){
         return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    @GetMapping("/information")
+    @PreAuthorize("isAuthenticated()")
+    public String information(Model model, Principal principal){
+        Users users = userService.getUser(principal.getName());
+        model.addAttribute("users",users);
+        return "user_information";
+    }
+
+    @GetMapping("/nickname/modify")
+    @PreAuthorize("isAuthenticated()")
+    public String nickname_modify(Model model, Principal principal){
+        Users users = userService.getUser(principal.getName());
+        model.addAttribute("users",users);
+        return "user_information";
+    }
+
+    @GetMapping("/address/modify")
+    @PreAuthorize("isAuthenticated()")
+    public String address_modify(Model model, Principal principal){
+        Users users = userService.getUser(principal.getName());
+        model.addAttribute("users",users);
+        return "user_information";
+    }
+
+    @GetMapping("/email/modify")
+    @PreAuthorize("isAuthenticated()")
+    public String email_modify(Model model, Principal principal){
+        Users users = userService.getUser(principal.getName());
+        model.addAttribute("users",users);
+        return "user_information";
+    }
+
+    @GetMapping("/phoneNumber/modify")
+    @PreAuthorize("isAuthenticated()")
+    public String phoneNumber_modify(Model model, Principal principal){
+        Users users = userService.getUser(principal.getName());
+        model.addAttribute("users",users);
+        return "user_information";
     }
 }
