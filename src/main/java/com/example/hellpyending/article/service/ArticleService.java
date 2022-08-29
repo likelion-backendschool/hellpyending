@@ -2,6 +2,8 @@ package com.example.hellpyending.article.service;
 
 import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.article.domain.Article;
+import com.example.hellpyending.article.domain.ArticleComment;
+import com.example.hellpyending.article.domain.ArticleImg;
 import com.example.hellpyending.article.exception.DataNotFoundException;
 import com.example.hellpyending.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +27,7 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleImgService articleImgService;
 
     public Page<Article> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
@@ -68,6 +73,7 @@ public class ArticleService {
         article.setUpdate(LocalDateTime.now());
         article.setAreaName(areaName); // 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
         articleRepository.save(article);
+
     }
 
     @Transactional
@@ -101,4 +107,35 @@ public class ArticleService {
             return true;
         }
     }
+
+    public void create_img(String title, String content, String address_1st, List<MultipartFile> files) throws IOException {
+        Article article = new Article();
+        article.setTitle(title);
+        article.setContent(content);
+        article.setDeleteYn(DeleteType.NORMAL);
+        article.setCreate(LocalDateTime.now());
+        article.setUpdate(LocalDateTime.now());
+        article.setAreaName(address_1st); // 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
+        articleRepository.save(article);
+        long article_id = articleRepository.last_insert_id();
+        insertImgFile(article_id, files);
+    }
+
+    private long insertImgFile(long article_id, List<MultipartFile> files) throws IOException {
+        try {
+            Article article = getArticle(article_id);
+            if (files != null) {
+                for (MultipartFile multipartFile : files) {
+                    articleImgService.post_img(article,multipartFile);
+                }
+            }
+
+        }
+        catch (Exception e){
+
+        }
+        return article_id;
+    }
+
+
 }

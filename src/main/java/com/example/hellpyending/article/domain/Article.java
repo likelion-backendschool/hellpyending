@@ -66,6 +66,14 @@ public class Article {
         getArticleCommentList().add(articleComment);
     }
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties({"article"})
+    private List<ArticleImg> articleImgList;
+
+
+
+
+
 
 //    @OneToMany(mappedBy = "article")
 //    @JsonIgnoreProperties({"article"})
