@@ -148,6 +148,14 @@ public class UserController {
         model.addAttribute("users",users);
         return "redirect:/";
     }
+
+    @GetMapping("/exercise")
+    @PreAuthorize("isAuthenticated()")
+    String exercise(Model model, Principal principal,UserUpdateForm userUpdateForm){
+        Users users = userService.getUser(principal.getName());
+        model.addAttribute("users",users);
+        return "user_exercise";
+    }
     private boolean addressCheck(String address_1st, String address_2st, String address_3st, String address_4st) {
         if (address_1st.trim().length() == 0 || address_2st.trim().length() == 0 || address_3st.trim().length() == 0 || address_4st.trim().length() == 0 )
         {
