@@ -2,13 +2,17 @@ package com.example.hellpyending.user.exercise;
 
 import com.example.hellpyending.config.BaseTimeEntity;
 import com.example.hellpyending.user.entity.Users;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
-public class exercise extends BaseTimeEntity {
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Exercise extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
