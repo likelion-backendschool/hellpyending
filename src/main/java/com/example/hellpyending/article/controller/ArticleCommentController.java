@@ -91,4 +91,30 @@ public class ArticleCommentController {
 
         return "redirect:/article/detail/%d".formatted(articleComment.getArticle().getId(), articleComment.getId());
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/createReply/{id}")
+    public String articleCommentReply(Model model, @Valid ArticleCommentForm articleCommentForm, BindingResult bindingResult, @PathVariable("id") Long id, Principal principal) {
+//        ArticleComment articleComment = articleCommentService.getArticleComment(id);
+
+//        if ( bindingResult.hasErrors() ) {
+//            model.addAttribute("articleComment", articleComment);
+//            return "article_detail";
+//        }
+
+//        Users users = userService.getUser(principal.getName());
+
+        if(principal == null){
+            // null 처리
+        }
+
+            ArticleComment articleComment = articleCommentService.createReply(id, articleCommentForm.getContent(), principal.getName());
+
+            // null 처리
+
+            return "redirect:/article/detail/%d".formatted(articleComment.getArticle().getId());
+
+    }
+
+
 }
