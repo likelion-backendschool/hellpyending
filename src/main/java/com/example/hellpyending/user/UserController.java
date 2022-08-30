@@ -101,12 +101,20 @@ public class UserController {
     String information(Model model, Principal principal,UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
+        return "user_information";
+    }
+
+    @GetMapping("/information/update")
+    @PreAuthorize("isAuthenticated()")
+    String information_update(Model model, Principal principal,UserUpdateForm userUpdateForm){
+        Users users = userService.getUser(principal.getName());
+        model.addAttribute("users",users);
         return "user_information_update";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/information")
-    String information(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult){
+    @PostMapping("/information/update")
+    String information_update(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult){
 
         Users users = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
