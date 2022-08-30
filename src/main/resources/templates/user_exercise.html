@@ -25,12 +25,20 @@
             </thead>
             <tbody>
             <tr th:each="exercise, loop : ${paging}">
-                <td th:text="${#temporals.format(exercise.createdDate, 'yy-MM-dd HH:mm')}"></td>
+                <td th:text="${#temporals.format(exercise.createdDate, 'MM-dd')}"></td>
                 <td th:text="${#temporals.dayOfWeekName(exercise.createdDate)}"></td>
                 <td th:text="${exercise.Type}"></td>
                 <td th:text="${exercise.intensity}"></td>
                 <td th:text="@{|${exercise.hour}분|}"></td>
                 <td th:text="@{|${exercise.calorie}kcal|}"></td>
+            </tr>
+            <tr>
+                <td><input name="content" class="form-control" placeholder="일자를 입력해주세요" maxlength="4"/></td>
+                <td><input name="content" class="form-control" placeholder="요일을 입력해주세요"/></td>
+                <td><input name="content" class="form-control" placeholder="운동종류를 입력해주세요"/></td>
+                <td><input name="content" class="form-control" placeholder="강/중/하로 입력해주세요"/></td>
+                <td><input name="content" class="form-control" placeholder="분 단위로 입력해주세요" pattern="[0-9]+"/></td>
+                <td><input name="content" class="form-control" placeholder="칼로리를 입력해주세요" pattern="[0-9]+"/></td>
             </tr>
             </tbody>
         </table>
