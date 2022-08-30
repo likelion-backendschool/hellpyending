@@ -5,6 +5,7 @@
 >
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
+
     <form method="post" th:object="${userUpdateForm}" th:action="@{/user/information/update}" onsubmit="info_submit(this); return false;">
         <div role="alert" th:if="${#fields.hasAnyErrors()}">
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
