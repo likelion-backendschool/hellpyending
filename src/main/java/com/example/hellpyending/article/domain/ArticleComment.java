@@ -37,7 +37,7 @@ public class ArticleComment {
     @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
 
-    @Column(name = "comment_depth")
+    @Column(name = "comment_depth", columnDefinition = "int default 0") // 일반 댓글은 0 대댓글은 1
     private int commentDepth;
 
     @ManyToOne(fetch = FetchType.LAZY)
