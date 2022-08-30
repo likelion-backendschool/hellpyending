@@ -5,13 +5,13 @@
 >
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
-    <form method="post" th:object="${userUpdateForm}" th:action="@{/user/information}" onsubmit="info_submit(this)">
+    <form method="post" th:object="${userUpdateForm}" th:action="@{/user/information}" onsubmit="info_submit(this); return false;">
         <div role="alert" th:if="${#fields.hasAnyErrors()}">
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
         </div>
         <span>닉네임</span>
         <div>
-            <input type="text" name="nickname" th:value="${users.nickname}" placeholder="닉네임을 입력해주세요" required/>
+            <input type="text" id="nickname" name="nickname" th:value="${users.nickname}" placeholder="닉네임을 입력해주세요" required/>
         </div>
         <span>현재 비밀번호</span>
         <div>
@@ -74,11 +74,11 @@
                 //카카오 지도 발생
                 new daum.Postcode({
                     oncomplete: function(data) { //선택시 입력값 세팅
-                        document.getElementById("동네").value = data.address; // 주소 넣기
-                        document.getElementById("광역시").value = data.sido;
-                        document.getElementById("시군구").value = data.sigungu;
-                        document.getElementById("동읍면리").value = data.bname;
-                        document.getElementById("상세 주소").focus(); //상세입력 포커싱
+                        document.getElementById("address_1st").value = data.address; // 주소 넣기
+                        document.getElementById("address_2st").value = data.sido;
+                        document.getElementById("address_3st").value = data.sigungu;
+                        document.getElementById("address_4st").value = data.bname;
+                        document.getElementById("address_detail").focus(); //상세입력 포커싱
                     }
                 }).open();
 
@@ -133,11 +133,24 @@
             }
         }
         function info_submit(form){
+            const nickname = document.getElementById('nickname');
             const address_1st = document.getElementById('address_1st');
-            if (address_1st.value.trim().length == 0 && address_1st.disabled == false){
+            const address_2st = document.getElementById('address_2st');
+            const address_3st = document.getElementById('address_3st');
+            const address_4st = document.getElementById('address_4st');
+            if (address_1st.value.trim().length == 0 && address_1st.disabled == false &&
+                address_2st.value.trim().length == 0 && address_2st.disabled == false &&
+                address_3st.value.trim().length == 0 && address_3st.disabled == false &&
+                address_4st.value.trim().length == 0 && address_4st.disabled == false){
                 alert('주소를 입력해주세요.');
-                return false;
+                return;
             }
+            if (nickname.value.trim().length < 3) {
+                console.log(nickname.value);
+                alert('사용자 닉네임 길이는 3자 이상 25자 이하 이여야 합니다.');
+                return;
+            }
+            alert('정보가 저장 되었습니다.');
             form.submit();
             return;
         }
