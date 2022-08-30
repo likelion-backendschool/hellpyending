@@ -1,0 +1,70 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{layout}"
+>
+<html layout:decorate="~{layout}">
+    <div layout:fragment="content" class="container my-3">
+        <div class="row my-3">
+            <div class="col-6">
+                <a th:href="@{/exercise/create}" class="btn btn-primary">운동일지 작성하기</a>
+            </div>
+        </div>
+
+        <table class="table text-center">
+
+            <thead class="table-dark">
+            <tr>
+                <th>일자</th>
+                <th>요일</th>
+                <th>운동 종류</th>
+                <th>운동 강도</th>
+                <th>시간</th>
+                <th>소비 열량</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="exercise, loop : ${paging}">
+                <td th:text="${#temporals.format(exercise.createdDate, 'MM-dd')}"></td>
+                <td th:text="${#temporals.dayOfWeekName(exercise.createdDate)}"></td>
+                <td th:text="${exercise.Type}"></td>
+                <td th:text="${exercise.intensity}"></td>
+                <td th:text="@{|${exercise.hour}분|}"></td>
+                <td th:text="@{|${exercise.calorie}kcal|}"></td>
+            </tr>
+            <tr>
+                <td><input name="content" class="form-control" placeholder="일자를 입력해주세요" maxlength="4"/></td>
+                <td><input name="content" class="form-control" placeholder="요일을 입력해주세요"/></td>
+                <td><input name="content" class="form-control" placeholder="운동종류를 입력해주세요"/></td>
+                <td><input name="content" class="form-control" placeholder="강/중/하로 입력해주세요"/></td>
+                <td><input name="content" class="form-control" placeholder="분 단위로 입력해주세요" pattern="[0-9]+"/></td>
+                <td><input name="content" class="form-control" placeholder="칼로리를 입력해주세요" pattern="[0-9]+"/></td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- 페이징처리 시작 -->
+        <div th:if="${!paging.isEmpty()}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{|?page=${paging.number-1}|}">
+                        <span>이전</span>
+                    </a>
+                </li>
+
+                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                    th:classappend="${page == paging.number} ? 'active'"
+                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                    class="page-item">
+                    <a th:text="${page + 1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                </li>
+
+                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                        <span>다음</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</html>
