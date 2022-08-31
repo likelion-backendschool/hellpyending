@@ -118,6 +118,7 @@ public class ArticleService {
         article.setUpdate(LocalDateTime.now());
         article.setAreaName(address_1st); // 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
         articleRepository.save(article);
+
         long article_id = articleRepository.last_insert_id();
 
         if(files.get(0).getOriginalFilename().equals("")){
@@ -128,20 +129,20 @@ public class ArticleService {
 
         //게시글에 해시태그를 포함 할 경우
         if(tags.size()!=0){
-            insertHashTag(article_id,tags);
+            insertHashTag(article,tags);
         }
 
 
 
     }
 
-    private void insertHashTag(long article_id, List<String> tags) {
-        Article article = getArticle(article_id);
-        for(String tag : tags){
-            article.addArticleHashtag(tag);
-            articleRepository.save(article);
-        }
+    private void insertHashTag(Article article_id, List<String> tags) {
 
+        for(String tag : tags){
+            article_id.addArticleHashtag(tag);
+
+        }
+        articleRepository.save(article_id);
     }
 
     private long insertImgFile(long article_id, List<MultipartFile> files) throws IOException {
