@@ -4,14 +4,22 @@ import com.example.hellpyending.user.UserService;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.BindException;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.security.Principal;
 @RequestMapping("/exercise")
 @Controller
@@ -24,11 +32,15 @@ public class ExerciseController {
     String list(Model model, Principal principal, @PathVariable Long id, @RequestParam(defaultValue = "") String sortCode , @RequestParam(defaultValue = "0") int page){
         Users users = userService.getUser(principal.getName());
 
+        if (!users.getId().equals(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "읽을권한이 없습니다.");
+        }
         Page<Exercise> paging = exerciseService.getList(id,page, sortCode);
 
         model.addAttribute("paging", paging);
         return "user_exercise";
     }
+
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
     String create_(Model model, Principal principal, @Valid ExerciseCreateForm exerciseCreateForm, BindingResult bindingResult){

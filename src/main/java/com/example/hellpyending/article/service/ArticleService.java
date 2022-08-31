@@ -40,7 +40,9 @@ public class ArticleService {
     }
 
     public Article getArticle(long id) {
-        return articleRepository.findById(id)
+//        return articleRepository.findById(id)
+//                .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
+        return articleRepository.findByIdAndDeleteYn(id, DeleteType.NORMAL)
                 .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
 
     }

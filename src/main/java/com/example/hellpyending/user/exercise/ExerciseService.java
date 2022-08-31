@@ -1,5 +1,6 @@
 package com.example.hellpyending.user.exercise;
 
+
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
     public Page<Exercise> getList(Long id, int page, String sortCode) {
+
         List<Sort.Order> sorts = new ArrayList<>();
 
         switch (sortCode) {
@@ -38,5 +40,6 @@ public class ExerciseService {
                 calorie(calorie).
                 build();
         exerciseRepository.save(exercise);
+
     }
 }
