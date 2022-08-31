@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     Page<Exercise> findDistinctByAuthorContains(String kw, Pageable pageable);
-    Long countByAuthor_Id(Long kw);
+    Page<Exercise> findByAuthor_Id(Long Author_Id ,Pageable pageable);
 
 
 }

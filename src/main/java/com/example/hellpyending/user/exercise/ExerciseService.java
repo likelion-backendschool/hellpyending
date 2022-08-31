@@ -1,5 +1,6 @@
 package com.example.hellpyending.user.exercise;
 
+import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
-    public Page<Exercise> getList(Long kw, int page, String sortCode) {
+    public Page<Exercise> getList(Long id, int page, String sortCode) {
         List<Sort.Order> sorts = new ArrayList<>();
 
         switch (sortCode) {
@@ -22,14 +23,13 @@ public class ExerciseService {
             default -> sorts.add(Sort.Order.desc("id")); // 최신순
         }
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
-        System.out.println("exerciseRepository = " + exerciseRepository.countByAuthor_Id(kw));
-        return exerciseRepository.findAll(pageable);
-//        return exerciseRepository.findDistinctByAuthorContains(kw,pageable);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능-
+        return exerciseRepository.findByAuthor_Id(id, pageable);
     }
 
-    public void create(String dayOfWeek, String dates, String type, String intensity, Integer hour, Integer calorie) {
+    public void create(Users users, String dayOfWeek, String dates, String type, String intensity, Integer hour, Integer calorie) {
         Exercise exercise = Exercise.builder().
+                author(users).
                 DayOfWeek(dayOfWeek).
                 dates(dates).
                 Type(type).
