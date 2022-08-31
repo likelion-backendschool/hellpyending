@@ -27,4 +27,16 @@ public class ExerciseService {
         return exerciseRepository.findAll(pageable);
 //        return exerciseRepository.findDistinctByAuthorContains(kw,pageable);
     }
+
+    public void create(String dayOfWeek, String dates, String type, String intensity, Integer hour, Integer calorie) {
+        Exercise exercise = Exercise.builder().
+                DayOfWeek(dayOfWeek).
+                dates(dates).
+                Type(type).
+                Intensity(intensity).
+                hour(hour).
+                calorie(calorie).
+                build();
+        exerciseRepository.save(exercise);
+    }
 }

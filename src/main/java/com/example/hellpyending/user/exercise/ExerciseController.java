@@ -32,13 +32,19 @@ public class ExerciseController {
         model.addAttribute("paging", paging);
         return "user_exercise";
     }
-
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
-    String create(Model model, Principal principal, @Valid ExerciseCreateForm exerciseCreateForm, BindingResult bindingResult){
+    String create_(Model model, Principal principal, @Valid ExerciseCreateForm exerciseCreateForm, BindingResult bindingResult){
         Users users = userService.getUser(principal.getName());
 
-
+        exerciseService.create(
+                exerciseCreateForm.getDayOfWeek(),
+                exerciseCreateForm.getDates(),
+                exerciseCreateForm.getType(),
+                exerciseCreateForm.getIntensity(),
+                exerciseCreateForm.getHour(),
+                exerciseCreateForm.getCalorie()
+        );
         return "redirect:/exercise/list";
     }
 }

@@ -19,17 +19,16 @@ public class Exercise extends BaseTimeEntity {
     private Long id;
 
     @Column
-    private LocalDateTime DayOfWeek;
+    private String dates;
 
     @Column
-    private DayType day;
+    private String DayOfWeek;
 
     @Column(length = 200) // varchar(200)
     private String Type;
 
-    @Enumerated(EnumType.STRING)
     @Column
-    private ExerciseIntensity Intensity;
+    private String Intensity;
 
     @Column
     private Integer hour;
