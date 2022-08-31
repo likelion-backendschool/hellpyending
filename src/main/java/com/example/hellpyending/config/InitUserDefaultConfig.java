@@ -36,21 +36,5 @@
 //                .build();
 //        userService.create(user1);
 //
-//        Users user2 = Users.builder()
-//                .username("user")
-//                .password(passwordEncoder.encode("user"))
-//                .sex(Sex.MALE)
-//                .email("user@user.com")
-//                .phoneNumber("01011111111")
-//                .deleteYn(DeleteType.NORMAL)
-//                .birthday(LocalDate.now())
-//                .address_1st("유저")
-//                .address_2st("유저")
-//                .address_3st("유저")
-//                .address_4st("유저")
-//                .address_detail("유저")
-//                .userType(UserType.USER)
-//                .build();
-//        userService.create(user2);
 //    }
 //}

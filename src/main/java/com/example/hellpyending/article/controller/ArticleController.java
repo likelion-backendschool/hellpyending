@@ -68,27 +68,29 @@ public class ArticleController {
         return "article_form_img";
     }
 
+//    @PreAuthorize("isAuthenticated()")
+//    @PostMapping("/create")
+//    public String articleCreate(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
+//        if (bindingResult.hasErrors()) {
+//            return "article_form";
+//        }
+//        Users users = this.userService.getUser(principal.getName());
+//        articleService.create(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st());
+//        return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
+//    }
+
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String articleCreate(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
-        if (bindingResult.hasErrors()) {
-            return "article_form";
-        }
-        Users users = this.userService.getUser(principal.getName());
-        articleService.create(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st());
-        return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
-    }
-
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/create_img")
     public String articleCreate_img(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal
-    ,@RequestParam(value = "files", required = false) List<MultipartFile> files) throws IOException {
+    ,@RequestParam(value = "files", required = false) List<MultipartFile> files
+    ,@RequestParam(value = "tag", required = false) List<String> tags) throws IOException {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
+
         Users users = this.userService.getUser(principal.getName());
-        articleService.create_img(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st(),files);
+        articleService.create_img(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st(),files,tags);
         return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
     }
 

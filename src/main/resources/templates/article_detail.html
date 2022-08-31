@@ -22,6 +22,10 @@
                 </div>
             </div>
         </div>
+        <div  th:each="articleImage : ${article.articleImgList}" >
+            <img id="imgId" th:src="@{${articleImage.imageUrl}} " alt="첨부이미지" th:if="articleImage != null" />
+        </div>
+
         <div id="resultDiv">
             <p th:if="${msg}!=null" th:text="${msg}"></p>
         </div>

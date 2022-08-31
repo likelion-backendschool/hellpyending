@@ -11,7 +11,9 @@ import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -19,7 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@DynamicInsert
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +54,7 @@ public class Article {
     private String areaName;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private Users users;
 
     //    @Transient
@@ -71,8 +72,13 @@ public class Article {
     private List<ArticleImg> articleImgList;
 
 
+    @Builder.Default
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<ArticleHashtag> articleHashtags = new HashSet<>();
 
-
+    public void addArticleHashtag(String keywordContent) {
+        articleHashtags.add(new ArticleHashtag(keywordContent));
+    }
 
 
 //    @OneToMany(mappedBy = "article")

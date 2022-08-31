@@ -9,16 +9,30 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:mariadb://rc4-pedro-server-db.cuupyzlcppur.ap-northeast-2.rds.amazonaws.com/hellpyending?useSSL=false&autoReconnect=true&validationQuery=select 1
+    url: jdbc:mariadb://rc4-pedro-server-db.cuupyzlcppur.ap-northeast-2.rds.amazonaws.com/hellpyending_v2?useSSL=false&autoReconnect=true&validationQuery=select 1
     username: tigershrimp
     password: TigerShrimp1!
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     defer-datasource-initialization: true
-    hibernate.hbm2ddl.auto: update
-    open-in-view: false
+    hibernate.ddl-auto: update
+    open-in-view: true
     show-sql: true
     properties:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
   sql.init.mode: always
+
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA6LTTW3X7YFHZJ4QE       # AWS IAM AccessKey 적기
+      secretKey: rqJw9EKz4hCvjS8Cad3xrqA0tNF0cpoLUWKPddjm  # AWS IAM SecretKey 적기
+    s3:
+      bucket: tigershrimp-bucket    # ex) marryting-gyunny
+      dir: ImageUrl/ # ex) /gyunny
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

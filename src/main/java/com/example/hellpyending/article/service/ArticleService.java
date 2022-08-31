@@ -2,9 +2,9 @@ package com.example.hellpyending.article.service;
 
 import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.article.domain.Article;
-import com.example.hellpyending.article.domain.ArticleComment;
-import com.example.hellpyending.article.domain.ArticleImg;
+import com.example.hellpyending.article.domain.ArticleHashtag;
 import com.example.hellpyending.article.exception.DataNotFoundException;
+import com.example.hellpyending.article.repository.ArticleHashtagRepository;
 import com.example.hellpyending.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,7 +109,7 @@ public class ArticleService {
         }
     }
 
-    public void create_img(String title, String content, String address_1st, List<MultipartFile> files) throws IOException {
+    public void create_img(String title, String content, String address_1st, List<MultipartFile> files, List<String> tags) throws IOException {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
@@ -118,7 +119,29 @@ public class ArticleService {
         article.setAreaName(address_1st); // 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
         articleRepository.save(article);
         long article_id = articleRepository.last_insert_id();
-        insertImgFile(article_id, files);
+
+        if(files.get(0).getOriginalFilename().equals("")){
+        }
+        else{
+            insertImgFile(article_id, files);
+        }
+
+        //게시글에 해시태그를 포함 할 경우
+        if(tags.size()!=0){
+            insertHashTag(article_id,tags);
+        }
+
+
+
+    }
+
+    private void insertHashTag(long article_id, List<String> tags) {
+        Article article = getArticle(article_id);
+        for(String tag : tags){
+            article.addArticleHashtag(tag);
+            articleRepository.save(article);
+        }
+
     }
 
     private long insertImgFile(long article_id, List<MultipartFile> files) throws IOException {

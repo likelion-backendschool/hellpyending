@@ -21,29 +21,26 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ArticleImgService {
     private final ArticleImgRepository articleImgRepository;
-    @Value("C:\\Users\\dvum0\\Desktop\\사이드프로젝트\\멋사\\1차프로젝트헬피엔딩\\project_version\\fromgit\\src\\main\\resources\\img\\")
+    private final S3Upload s3Upload;
     private String localAddress;
 
 
 
-    public File post_img(Article article, MultipartFile multipartFile) throws IOException {
-        String fileName = getUUID();
-        String[] file_extension = multipartFile.getOriginalFilename().split("\\.");
-
-        File file = new File(localAddress +fileName + "."+file_extension[1]);
+    public void post_img(Article article, MultipartFile multipartFile) throws IOException {
+//        String fileName = getUUID();
+//        String[] file_extension = multipartFile.getOriginalFilename().split("\\.");
+//
+//        File file = new File(localAddress +fileName + "."+file_extension[1]);
         ArticleImg articleImg = new ArticleImg();
         articleImg.setCreate(LocalDateTime.now());
         articleImg.setUpdate(LocalDateTime.now());
         articleImg.setDeleteYn(DeleteType.NORMAL);
         articleImg.setImageOriginName(multipartFile.getOriginalFilename());
-        articleImg.setImageUrl(file.getPath());
+        articleImg.setImageUrl(s3Upload.upload(multipartFile.getInputStream(),multipartFile.getOriginalFilename(),multipartFile.getSize()));
         articleImg.setArticle(article);
         articleImgRepository.save(articleImg);
-        multipartFile.transferTo(file);
-        return file;
-    }
-    public static String getUUID(){
-        return UUID.randomUUID().toString();
+//        multipartFile.transferTo(file);
+//        return file;
     }
 }
 
