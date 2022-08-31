@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
@@ -29,6 +30,8 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
     String login(UserCreateForm userCreateForm){
@@ -117,18 +120,24 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/information/update")
-    String information_update(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult){
-
+    String information_update(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult, HttpSession httpSession){
         Users users = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
             model.addAttribute("users",users);
             return "user_information_update";
         }
+        if (UserUpdateForm.getPassword1() != null && !passwordEncoder.matches(UserUpdateForm.getPassword1(),users.getPassword())){
+            bindingResult.reject("password1", "현재 비밀번호가 일치하지 않습니다.");
+            String msg = "현재 비밀번호가 일치하지 않습니다.";
+            model.addAttribute("users",users);
+            return "user_information_update";
+        }
+
 
         try {
             userService.update(
                     users,
-                    UserUpdateForm.getPassword1(),
+                    UserUpdateForm.getPassword2(),
                     UserUpdateForm.getNickname(),
                     UserUpdateForm.getPhoneNumber(),
                     UserUpdateForm.getAddress_1st(),
@@ -137,6 +146,7 @@ public class UserController {
                     UserUpdateForm.getAddress_4st(),
                     UserUpdateForm.getAddress_detail()
             );
+            httpSession.invalidate();
         }
         catch (DataIntegrityViolationException e){
             e.printStackTrace();
