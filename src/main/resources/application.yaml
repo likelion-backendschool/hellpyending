@@ -15,7 +15,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     defer-datasource-initialization: true
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
     open-in-view: false
     show-sql: true
     properties:
