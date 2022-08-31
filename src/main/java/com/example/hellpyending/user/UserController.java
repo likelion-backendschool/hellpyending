@@ -121,14 +121,14 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/information/update")
     String information_update(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult, HttpSession httpSession){
-
         Users users = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
             model.addAttribute("users",users);
             return "user_information_update";
         }
-        if (!passwordEncoder.matches(UserUpdateForm.getPassword1(),users.getPassword())){
+        if (UserUpdateForm.getPassword1() != null && !passwordEncoder.matches(UserUpdateForm.getPassword1(),users.getPassword())){
             bindingResult.reject("password1", "현재 비밀번호가 일치하지 않습니다.");
+            String msg = "현재 비밀번호가 일치하지 않습니다.";
             model.addAttribute("users",users);
             return "user_information_update";
         }
