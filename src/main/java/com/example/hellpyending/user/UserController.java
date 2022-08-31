@@ -1,21 +1,23 @@
 package com.example.hellpyending.user;
 
+import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.user.entity.UserCreateForm;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -27,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
     @GetMapping("/login")
     String login(UserCreateForm userCreateForm){
         return "user_login";
@@ -101,12 +104,20 @@ public class UserController {
     String information(Model model, Principal principal,UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
+        return "user_information";
+    }
+
+    @GetMapping("/information/update")
+    @PreAuthorize("isAuthenticated()")
+    String information_update(Model model, Principal principal,UserUpdateForm userUpdateForm){
+        Users users = userService.getUser(principal.getName());
+        model.addAttribute("users",users);
         return "user_information_update";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/information")
-    String information(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult){
+    @PostMapping("/information/update")
+    String information_update(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult){
 
         Users users = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
@@ -140,6 +151,8 @@ public class UserController {
         model.addAttribute("users",users);
         return "redirect:/";
     }
+
+
     private boolean addressCheck(String address_1st, String address_2st, String address_3st, String address_4st) {
         if (address_1st.trim().length() == 0 || address_2st.trim().length() == 0 || address_3st.trim().length() == 0 || address_4st.trim().length() == 0 )
         {
