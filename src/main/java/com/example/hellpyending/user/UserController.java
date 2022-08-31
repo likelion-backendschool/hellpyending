@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
@@ -119,7 +120,7 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/information/update")
-    String information_update(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult){
+    String information_update(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult, HttpSession httpSession){
 
         Users users = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
@@ -131,7 +132,7 @@ public class UserController {
             model.addAttribute("users",users);
             return "user_information_update";
         }
-        String pwd = UserUpdateForm.getPassword1();
+
 
         try {
             userService.update(
@@ -145,6 +146,7 @@ public class UserController {
                     UserUpdateForm.getAddress_4st(),
                     UserUpdateForm.getAddress_detail()
             );
+            httpSession.invalidate();
         }
         catch (DataIntegrityViolationException e){
             e.printStackTrace();
