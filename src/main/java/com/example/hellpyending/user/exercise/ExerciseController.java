@@ -7,11 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
+import java.net.BindException;
 import java.security.Principal;
 @RequestMapping("/exercise")
 @Controller
@@ -32,12 +35,10 @@ public class ExerciseController {
 
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
-    String create(Model model, Principal principal, @RequestParam(defaultValue = "") String sortCode ,@RequestParam(defaultValue = "0") int page){
+    String create(Model model, Principal principal, @Valid ExerciseCreateForm exerciseCreateForm, BindingResult bindingResult){
         Users users = userService.getUser(principal.getName());
 
-        Page<Exercise> paging = exerciseService.getList(users.getId(),page, sortCode);
 
-        model.addAttribute("paging", paging);
-        return "user_exercise";
+        return "redirect:/exercise/list";
     }
 }
