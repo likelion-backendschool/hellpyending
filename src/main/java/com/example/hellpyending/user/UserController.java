@@ -1,6 +1,5 @@
 package com.example.hellpyending.user;
 
-import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.user.entity.UserCreateForm;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +23,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @RequestMapping("/user")
 @Controller
@@ -160,6 +160,14 @@ public class UserController {
         }
         model.addAttribute("users",users);
         return "redirect:/";
+    }
+
+    @GetMapping("/information/check")
+    @ResponseBody
+    public Users check(Principal principal){
+        Optional<Users> users_ = userService.findByUsername(principal.getName());
+        Users user = users_.get();
+        return user;
     }
 
 
