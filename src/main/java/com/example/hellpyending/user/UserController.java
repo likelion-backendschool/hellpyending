@@ -162,13 +162,7 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/information/check")
-    @ResponseBody
-    public Users check(Principal principal){
-        Optional<Users> users_ = userService.findByUsername(principal.getName());
-        Users user = users_.get();
-        return user;
-    }
+
 
 
     private boolean addressCheck(String address_1st, String address_2st, String address_3st, String address_4st) {
