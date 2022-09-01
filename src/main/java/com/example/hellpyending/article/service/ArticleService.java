@@ -62,9 +62,6 @@ public class ArticleService {
     public void modify(Article article, String title, String content) {
 
 
-
-
-
             article.setTitle(title);
             article.setContent(content);
             article.setUpdate(LocalDateTime.now());

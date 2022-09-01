@@ -116,16 +116,16 @@ public class ArticleController {
         articleForm.setContent(article.getContent());
         articleForm.setUpdate(article.getUpdate());
         // 게시글 수정시 게시글 주소 수정은 안되게 했습니다.
-        return "article_form";
+        return "articleUpdate_form";
     }
 
-    @PatchMapping("/modify/{id}")
-    public String articleModify(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id) {
+    @PostMapping("/modify")
+    public String articleModify(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
 
-        Article article = this.articleService.getArticle(id);
+        Article article = this.articleService.getArticle(articleForm.getId());
 
         if (article == null) {
             throw new DataNotFoundException("%d번 질문은 존재하지 않습니다.");
@@ -137,10 +137,7 @@ public class ArticleController {
 
         articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
 
-
         return String.format("redirect:/article/detail/%s", articleForm.getId());
-
-
 
     }
 
