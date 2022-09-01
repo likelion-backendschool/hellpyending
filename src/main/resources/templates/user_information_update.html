@@ -26,7 +26,8 @@
         </div>
         <span>신규 비밀번호 확인</span>
         <div>
-            <input type="password" id="password3" name="password3" placeholder="신규 비밀번호 확인를 입력해주세요" onchange="" disabled="disabled" required/>
+            <input type="password" id="password3" name="password3" placeholder="신규 비밀번호 확인를 입력해주세요" onchange="pwd_check()" disabled="disabled" required/>
+            <span id="pwdcheck"></span>
         </div>
         <div>
             <input type='button' value='수정' onclick='btnPwdActive()'/>
@@ -166,7 +167,7 @@
         }
     </script>
     <script>
-        function id_check(form) {
+        function id_check() {
             let nickname = $("#nickname").val();
             console.log(nickname);
             $.ajax({
@@ -194,6 +195,26 @@
                 .always(function (xhr, status) {
                     $("#text").html("요청이 완료되었습니다!");
                 });
+        }
+    </script>
+
+    <script>
+        function pwd_check() {
+            let pwd2 = $("#password2").val();
+            let pwd3 = $("#password3").val();
+            if (pwd2 == pwd3){
+                if ($("#pwdcheck").length === 0) {
+                    $("#pwdcheck").prepend("<span id='pwd_check'>비밀번호가 일치합니다.</span>");
+                } else {
+                    $("#pwdcheck").text("비밀번호가 일치합니다.");
+                }
+            } else {
+                if ($("#pwdcheck").length === 0) {
+                    $("#pwdcheck").prepend("<span id='pwd_check'>비밀번호가 일치하지 않습니다.</span>");
+                }else {
+                    $("#pwdcheck").text("비밀번호가 일치하지 않습니다.");
+                }
+            }
         }
     </script>
 </div>
