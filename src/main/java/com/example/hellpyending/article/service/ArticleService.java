@@ -64,18 +64,7 @@ public class ArticleService {
                 .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
     }
 
-    @Transactional
-    public void create(String title, String content, String areaName) {
-        Article article = new Article();
-        article.setTitle(title);
-        article.setContent(content);
-        article.setDeleteYn(DeleteType.NORMAL);
-        article.setCreate(LocalDateTime.now());
-        article.setUpdate(LocalDateTime.now());
-        article.setAreaName(areaName); // 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
-        articleRepository.save(article);
 
-    }
 
     @Transactional
     public boolean modify(Long articleId, String title, String content, String areaName) {
@@ -109,7 +98,8 @@ public class ArticleService {
         }
     }
 
-    public void create_img(String title, String content, String address_1st, List<MultipartFile> files, List<String> tags) throws IOException {
+    @Transactional
+    public void create(String title, String content, String address_1st, List<MultipartFile> files, List<String> tags) throws IOException {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
@@ -121,6 +111,8 @@ public class ArticleService {
 
         long article_id = articleRepository.last_insert_id();
 
+
+        // 업로드한 이미지가 없을경우
         if(files.get(0).getOriginalFilename().equals("")){
         }
         else{

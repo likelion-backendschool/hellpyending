@@ -65,19 +65,9 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String articleCreate(ArticleForm articleForm) {
-        return "article_form_img";
+        return "article_form";
     }
 
-//    @PreAuthorize("isAuthenticated()")
-//    @PostMapping("/create")
-//    public String articleCreate(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
-//        if (bindingResult.hasErrors()) {
-//            return "article_form";
-//        }
-//        Users users = this.userService.getUser(principal.getName());
-//        articleService.create(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st());
-//        return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
-//    }
 
 
     @PreAuthorize("isAuthenticated()")
@@ -90,7 +80,7 @@ public class ArticleController {
         }
 
         Users users = this.userService.getUser(principal.getName());
-        articleService.create_img(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st(),files,tags);
+        articleService.create(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st(),files,tags);
         return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
     }
 

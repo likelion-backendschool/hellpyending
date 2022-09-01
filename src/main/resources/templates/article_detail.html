@@ -26,6 +26,13 @@
             <img id="imgId" th:src="@{${articleImage.imageUrl}} " alt="첨부이미지" th:if="articleImage != null" />
         </div>
 
+        <ul id="tag-list" >
+            <div th:each="tag :${article.articleHashtags}">
+                <li class='tag-item' th:text="${tag.hashtagName}"><span idx='"+counter+"'></span></li>
+            </div>
+
+        </ul>
+
         <div id="resultDiv">
             <p th:if="${msg}!=null" th:text="${msg}"></p>
         </div>
