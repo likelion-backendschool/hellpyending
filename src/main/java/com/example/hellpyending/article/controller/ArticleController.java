@@ -94,7 +94,7 @@ public class ArticleController {
 
 
         Users users = this.userService.getUser(principal.getName());
-        articleService.create(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st(),files,tags);
+        articleService.create(articleForm.getTitle(), articleForm.getContent(), users,files,tags);
 
         return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
     }
@@ -115,12 +115,11 @@ public class ArticleController {
         articleForm.setTitle(article.getTitle());
         articleForm.setContent(article.getContent());
         articleForm.setUpdate(article.getUpdate());
-        articleForm.setAreaName(article.getAreaName());
-
+        // 게시글 수정시 게시글 주소 수정은 안되게 했습니다.
         return "article_form";
     }
 
-    @PostMapping("/modify/{id}")
+    @PatchMapping("/modify/{id}")
     public String articleModify(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors()) {
             return "article_form";
@@ -136,14 +135,11 @@ public class ArticleController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
-        boolean result = articleService.modify(articleForm.getId(), articleForm.getTitle(), articleForm.getContent(), articleForm.getAreaName());
+        articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
 
-        if (result){
-            return String.format("redirect:/article/detail/%s", articleForm.getId());
-        } else {
-            // 수정실패관련 페이지나 메시지 리턴
-            return null; // 여기에 해당코드작성
-        }
+
+        return String.format("redirect:/article/detail/%s", articleForm.getId());
+
 
 
     }

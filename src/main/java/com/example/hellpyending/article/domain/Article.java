@@ -21,6 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@DynamicInsert
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,8 +51,18 @@ public class Article {
     @JsonIgnore
     private DeleteType deleteYn;
 
-    @Column(name = "area_name")
-    private String areaName;
+    @Column(nullable = false)
+    private String address_1st;
+
+    // 시군구
+    // ex) 강화군, 서구, 중구, 미추홀구 ...
+    @Column(nullable = false)
+    private String address_2st;
+
+    // 동읍면리
+    // ex) 간석동, 신현동, 관청리, 화정동 ...
+    @Column(nullable = false)
+    private String address_3st;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

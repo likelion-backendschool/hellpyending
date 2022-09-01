@@ -59,21 +59,17 @@ public class ArticleService {
 
 
     @Transactional
-    public boolean modify(Long articleId, String title, String content, String areaName) {
+    public void modify(Article article, String title, String content) {
 
-        Optional<Article> articleOptional = articleRepository.findByIdAndDeleteYn(articleId, DeleteType.NORMAL);
 
-        if (articleOptional.isEmpty()) { //조회가 안되면 잘못 요청한 것임
-            return false;
-        } else {
-            Article article = articleOptional.get();
+
+
+
             article.setTitle(title);
             article.setContent(content);
             article.setUpdate(LocalDateTime.now());
-            article.setAreaName(areaName);
+            articleRepository.save(article);
 
-            return true;
-        }
     }
 
     @Transactional
@@ -92,14 +88,19 @@ public class ArticleService {
 
 
     @Transactional
-    public void create(String title, String content, String address_1st, List<MultipartFile> files, List<String> tags) throws IOException {
+    public void create(String title, String content, Users users, List<MultipartFile> files, List<String> tags) throws IOException {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
         article.setDeleteYn(DeleteType.NORMAL);
         article.setCreate(LocalDateTime.now());
         article.setUpdate(LocalDateTime.now());
-        article.setAreaName(address_1st); // 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
+
+        //// 게시글 등록시 시 군 구 동 까지 등록 가능하게 수정했습니다. 게시글 엔티티도 수정 했습니다.
+        article.setAddress_1st(users.getAddress_1st());
+        article.setAddress_2st(users.getAddress_2st());
+        article.setAddress_3st(users.getAddress_3st());// 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
+        article.setUsers(users);
         articleRepository.save(article);
 
         long article_id = articleRepository.last_insert_id();
@@ -146,8 +147,6 @@ public class ArticleService {
         return article_id;
     }
 
-
-}
 
 
 
