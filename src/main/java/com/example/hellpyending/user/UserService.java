@@ -43,6 +43,9 @@ public class UserService {
     public Optional<Users> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+    public Optional<Users> findByNickname(String nickname) {
+        return userRepository.findByNickname(nickname);
+    }
 
     public Users getUser(String name) {
         return this.userRepository.findByUsername(name).orElseThrow(() -> new DataNotFoundException("siteuser not found"));
