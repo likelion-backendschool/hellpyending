@@ -12,6 +12,10 @@ public class UserCreateForm {
     @NotEmpty(message = "사용자 ID는 필수항목입니다.")
     private String username;
 
+    @Size(min = 3, max = 25, message = "사용자 닉네임 길이는 3자 이상 25자 이하 이여야 합니다.")
+    @NotEmpty(message = "사용자 닉네임은 필수항목입니다.")
+    private String nickname;
+
     @NotEmpty(message = "이메일은 필수항목입니다.")
     @Size(max = 400, message = "이메일 길이는 400자 이하 이여야 합니다.")
     @Email

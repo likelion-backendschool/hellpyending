@@ -4,8 +4,13 @@ import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.article.domain.ArticleHashtag;
 import com.example.hellpyending.article.exception.DataNotFoundException;
+
 import com.example.hellpyending.article.repository.ArticleHashtagRepository;
+
+import com.example.hellpyending.article.form.ArticleForm;
+
 import com.example.hellpyending.article.repository.ArticleRepository;
+import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,38 +35,25 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleImgService articleImgService;
 
-    public Page<Article> getList(int page) {
+    public Page<Article> getList(String kw, int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("create"));
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
 
-        return articleRepository.findByDeleteYn(DeleteType.NORMAL, pageable);
+        if (kw == null || kw.trim().length() == 0) {
+            return articleRepository.findByDeleteYn(DeleteType.NORMAL, pageable);
+        }
+        return articleRepository.findByTitleContainsAndDeleteYn(kw, DeleteType.NORMAL, pageable);
 
-        // 스트림
-//        List<Article> articleList = articleRepository.findAll();
-//
-//        articleList.forEach(article ->
-//                article.getArticleCommentList()
-//                        .addAll(articleCommentRepository.findByArticleAndCommentBundle(article, null))
-//        );
-
-        // 여러번 쿼리
-//        List<Article> articleList = articleRepository.findAll();
-//        List<ArticleComment> articleCommentList = articleCommentRepository.findAll();
-//
-//
-//
-//        articleList.forEach(article ->
-//                article.getArticleCommentList().addAll(articleCommentList.stream().filter(articleComment ->
-//                        articleComment.getArticle().getId().equals(article.getId()) && articleComment.getCommentBundle() == null
-//                ).toList())
-//        ); // 첫번째 성능이 제곱으로 느려짐 댓글마다 필터링을 해야함
     }
 
     public Article getArticle(long id) {
-        return articleRepository.findById(id)
+//        return articleRepository.findById(id)
+//                .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
+        return articleRepository.findByIdAndDeleteYn(id, DeleteType.NORMAL)
                 .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
+
     }
 
 
@@ -97,6 +89,7 @@ public class ArticleService {
             return true;
         }
     }
+
 
     @Transactional
     public void create(String title, String content, String address_1st, List<MultipartFile> files, List<String> tags) throws IOException {
@@ -155,3 +148,16 @@ public class ArticleService {
 
 
 }
+
+
+
+    @Transactional
+    public void setHitCount(Article article) {
+        Integer PrevHitCount = article.getHitCount();
+        PrevHitCount++;
+        article.setHitCount(PrevHitCount);
+        articleRepository.save(article);
+    }
+
+}
+
