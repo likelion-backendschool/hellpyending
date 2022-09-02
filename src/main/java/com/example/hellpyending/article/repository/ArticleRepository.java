@@ -23,4 +23,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     Optional<Article> findByIdAndDeleteYn(Long id, DeleteType deleteYn);
 
+    Page<Article> findByUsers_IdAndDeleteYn(Long id, DeleteType deleteYn, Pageable pageable);
 }
