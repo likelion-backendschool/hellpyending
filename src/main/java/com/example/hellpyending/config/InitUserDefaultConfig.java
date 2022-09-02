@@ -37,22 +37,5 @@
 //                .build();
 //        userService.create(user1);
 //
-//        Users user2 = Users.builder()
-//                .username("user")
-//                .password(passwordEncoder.encode("user"))
-//                .nickname("유저에요")
-//                .sex(Sex.MALE)
-//                .email("user@user.com")
-//                .phoneNumber("01011111111")
-//                .deleteYn(DeleteType.NORMAL)
-//                .birthday(LocalDate.now())
-//                .address_1st("유저_1지역")
-//                .address_2st("유저_2지역")
-//                .address_3st("유저_3지역")
-//                .address_4st("유저_4지역")
-//                .address_detail("유저_상세주소")
-//                .userType(UserType.USER)
-//                .build();
-//        userService.create(user2);
 //    }
 //}

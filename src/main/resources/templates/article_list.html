@@ -43,7 +43,7 @@
                 </span>
             </td>
             <td th:text="${#temporals.format(article.create, 'yy-MM-dd HH:mm')}"></td>
-            <td th:text="${article.areaName}"></td>
+            <td th:text="|${article.address_1st} ${article.address_2st} ${article.address_3st}|"></td>
             <td th:text="${article.hitCount}"></td>
         </tr>
         </tbody>
