@@ -2,6 +2,7 @@ package com.example.hellpyending.user;
 
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class UserRestController {
     private final UserService userService;
     @GetMapping("/information/check")
+    @PreAuthorize("isAuthenticated()")
     @ResponseBody
     public String check(Principal principal, String nickname){
         Optional<Users> users_ = userService.findByNickname(nickname);
