@@ -2,13 +2,8 @@ package com.example.hellpyending.article.service;
 
 import com.example.hellpyending.DeleteType;
 import com.example.hellpyending.article.domain.Article;
-import com.example.hellpyending.article.domain.ArticleHashtag;
 import com.example.hellpyending.article.exception.DataNotFoundException;
-
-import com.example.hellpyending.article.repository.ArticleHashtagRepository;
-
 import com.example.hellpyending.article.form.ArticleForm;
-
 import com.example.hellpyending.article.repository.ArticleRepository;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +25,6 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final ArticleImgService articleImgService;
 
     public Page<Article> getList(String kw, int page) {
         List<Sort.Order> sorts = new ArrayList<>();
@@ -48,6 +39,19 @@ public class ArticleService {
 
     }
 
+    public Page<Article> getList(Long id, int page, String sortCode) {
+        List<Sort.Order> sorts = new ArrayList<>();
+
+        switch (sortCode) {
+            case "OLD" -> sorts.add(Sort.Order.asc("id")); // 오래된순
+            default -> sorts.add(Sort.Order.desc("id")); // 최신순
+        }
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능-
+        return articleRepository.findByUsers_IdAndDeleteYn(id,DeleteType.NORMAL, pageable);
+
+    }
+
     public Article getArticle(long id) {
 //        return articleRepository.findById(id)
 //                .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
@@ -56,17 +60,35 @@ public class ArticleService {
 
     }
 
-
+    @Transactional
+    public void create(String title, String content, String areaName, Users users) {
+        Article article = new Article();
+        article.setTitle(title);
+        article.setContent(content);
+        article.setDeleteYn(DeleteType.NORMAL);
+        article.setCreate(LocalDateTime.now());
+        article.setUpdate(LocalDateTime.now());
+        article.setUsers(users);
+        article.setAreaName(areaName); // 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
+        articleRepository.save(article);
+    }
 
     @Transactional
-    public void modify(Article article, String title, String content) {
+    public boolean modify(Long articleId, String title, String content, String areaName) {
 
+        Optional<Article> articleOptional = articleRepository.findByIdAndDeleteYn(articleId, DeleteType.NORMAL);
 
+        if (articleOptional.isEmpty()) { //조회가 안되면 잘못 요청한 것임
+            return false;
+        } else {
+            Article article = articleOptional.get();
             article.setTitle(title);
             article.setContent(content);
             article.setUpdate(LocalDateTime.now());
-            articleRepository.save(article);
+            article.setAreaName(areaName);
 
+            return true;
+        }
     }
 
     @Transactional
@@ -84,68 +106,6 @@ public class ArticleService {
     }
 
 
-    @Transactional
-    public void create(String title, String content, Users users, List<MultipartFile> files, List<String> tags) throws IOException {
-        Article article = new Article();
-        article.setTitle(title);
-        article.setContent(content);
-        article.setDeleteYn(DeleteType.NORMAL);
-        article.setCreate(LocalDateTime.now());
-        article.setUpdate(LocalDateTime.now());
-
-        //// 게시글 등록시 시 군 구 동 까지 등록 가능하게 수정했습니다. 게시글 엔티티도 수정 했습니다.
-        article.setAddress_1st(users.getAddress_1st());
-        article.setAddress_2st(users.getAddress_2st());
-        article.setAddress_3st(users.getAddress_3st());// 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
-        article.setUsers(users);
-        articleRepository.save(article);
-
-        long article_id = articleRepository.last_insert_id();
-
-
-        // 업로드한 이미지가 없을경우
-        if(files.get(0).getOriginalFilename().equals("")){
-        }
-        else{
-            insertImgFile(article_id, files);
-        }
-
-        //게시글에 해시태그를 포함 할 경우
-        if(tags.size()!=0){
-            insertHashTag(article,tags);
-        }
-
-
-
-    }
-
-    private void insertHashTag(Article article_id, List<String> tags) {
-
-        for(String tag : tags){
-            article_id.addArticleHashtag(tag);
-
-        }
-        articleRepository.save(article_id);
-    }
-
-    private long insertImgFile(long article_id, List<MultipartFile> files) throws IOException {
-        try {
-            Article article = getArticle(article_id);
-            if (files != null) {
-                for (MultipartFile multipartFile : files) {
-                    articleImgService.post_img(article,multipartFile);
-                }
-            }
-
-        }
-        catch (Exception e){
-
-        }
-        return article_id;
-    }
-
-
-
 
     @Transactional
     public void setHitCount(Article article) {
@@ -156,4 +116,3 @@ public class ArticleService {
     }
 
 }
-
