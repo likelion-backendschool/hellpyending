@@ -32,7 +32,21 @@ public class ArticleController {
 
     @GetMapping("/list")
     public String list(String kw, Model model, @RequestParam(defaultValue = "0") int page) {
+
         Page<Article> paging = articleService.getList(kw, page);
+
+        model.addAttribute("paging", paging);
+        return "article_list";
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/list/{id}")
+    public String list(Principal principal, Model model, @RequestParam(defaultValue = "0") int page, @PathVariable long id, @RequestParam(defaultValue = "") String sortCode) {
+        Users users = userService.getUser(principal.getName());
+
+        if (!users.getId().equals(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "읽을권한이 없습니다.");
+        }
+        Page<Article> paging = articleService.getList(id , page, sortCode);
 
         model.addAttribute("paging", paging);
         return "article_list";
