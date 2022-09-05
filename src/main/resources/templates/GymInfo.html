@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>선택된 헬스장 정보 보기</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/gym.css}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+    let link = document.location.href.split("/");
+
+    let lat = link[5];
+    let lng = link[6];
+    console.log("현재 헬스장의 위도", lat);
+    console.log("현재 헬스장의 경도", lng);
+
+    let getAddress = "/gym/displayGymInfo/"+lat+"/"+lng;
+    console.log("백엔드로 부터 맵핑을 요청할 주소", getAddress);
+
+    $.get(getAddress, function(curGym) {
+      console.log("백엔드로 부터 넘겨받은 헬스장 정보", curGym);
+      let gymdiv = document.getElementById("gymdiv");
+      gymdiv.style = "text-align: center;width:40%;background-color: hsl(200, 100%, 90%);border: 5px solid black;border-radius: 5px;padding: 10px 10px";
+
+      let gym = document.getElementById("gyminfo");
+
+      let displayGymInfo = "";
+      displayGymInfo += curGym.gym_name + "<br>";
+      displayGymInfo += curGym.gym_address;
+      // <img src={curGym.gym_image_address}></img>
+      if (curGym.gym_phone_number) {
+        displayGymInfo += "<br>" + curGym.gym_phone_number;
+      }
+      console.log("출력할 헬스장 정보", displayGymInfo)
+      gym.innerHTML = displayGymInfo;
+    });
+  </script>
+</head>
+<body>
+<div>
+  <div style="display: flex; justify-content: center; align-items: center; padding-top: 20px">
+    <div id="gymdiv">
+      <p>
+        <span id="gyminfo" style="font-size: 18px;padding: 10px 10px"></span>
+      </p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

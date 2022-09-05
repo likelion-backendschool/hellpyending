@@ -179,3 +179,7 @@
     cursor: default;
     color: #777;
 }
+
+.item:hover {
+    background-color: lightgrey;
+}
