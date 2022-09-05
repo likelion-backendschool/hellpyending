@@ -25,7 +25,7 @@ ArticleRepository extends JpaRepository<Article, Long> {
     Page<Article> findByTitleContainsAndDeleteYn(String kw, DeleteType deleteYn, Pageable pageable);
 
     Optional<Article> findByIdAndDeleteYn(Long id, DeleteType deleteYn);
-
+    Page<Article> findByUsers_IdAndDeleteYn(Long id, DeleteType deleteYn, Pageable pageable);
     @Query(nativeQuery = true,value = "select last_insert_id();")
     int last_insert_id();
 

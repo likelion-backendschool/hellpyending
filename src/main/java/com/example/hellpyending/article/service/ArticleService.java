@@ -48,6 +48,19 @@ public class ArticleService {
 
     }
 
+    public Page<Article> getList(Long id, int page, String sortCode) {
+        List<Sort.Order> sorts = new ArrayList<>();
+
+        switch (sortCode) {
+            case "OLD" -> sorts.add(Sort.Order.asc("id")); // 오래된순
+            default -> sorts.add(Sort.Order.desc("id")); // 최신순
+        }
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능-
+        return articleRepository.findByUsers_IdAndDeleteYn(id,DeleteType.NORMAL, pageable);
+
+    }
+
     public Article getArticle(long id) {
 //        return articleRepository.findById(id)
 //                .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
