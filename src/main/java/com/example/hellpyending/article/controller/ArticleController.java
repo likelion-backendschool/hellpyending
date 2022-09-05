@@ -44,7 +44,8 @@ public class ArticleController {
         Users users = userService.getUser(principal.getName());
 
         if (!users.getId().equals(id)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "읽을권한이 없습니다.");
+            return "access_error";
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "읽을권한이 없습니다.");
         }
         Page<Article> paging = articleService.getList(id , page, sortCode);
 
