@@ -45,7 +45,7 @@ public class ArticleController {
 
         if (!users.getId().equals(id)) {
             return "access_error";
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "읽을권한이 없습니다.");
+
         }
         Page<Article> paging = articleService.getList(id , page, sortCode);
 
