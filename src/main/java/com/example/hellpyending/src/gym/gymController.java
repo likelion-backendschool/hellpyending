@@ -44,7 +44,7 @@ public class gymController {
     @GetMapping("/getGymList/{address_type}")
     public GetAddressRes showList_new(@PathVariable("address_type") int address_type,  Principal principal) {
 
-
+        System.out.println("GET HERE");
         Optional<Users> user = this.userService.findByUsername(principal.getName());
 
         if (user.isPresent()) {
@@ -76,7 +76,23 @@ public class gymController {
 
 
 
+    @RequestMapping("/getGymInfo/*/*")
+    public String getGymInfo() {
 
+        return "GymInfo";
+    }
+
+    @ResponseBody
+    @GetMapping("/displayGymInfo/{gym_lat}/{gym_lng}")
+    public GetAddressResInterface getGymInfo(@PathVariable("gym_lat") double gym_lat, @PathVariable("gym_lng") double gym_lng,  Principal principal) {
+
+        System.out.println("GET HERE");
+        Optional<Users> user = this.userService.findByUsername(principal.getName());
+
+        if (user.isPresent()) {
+            return this.gymService.findByLatAndLng(gym_lat, gym_lng);
+        } else {
+            throw new DataNotFoundException("question not found");
+        }
+    }
 }
-
-
