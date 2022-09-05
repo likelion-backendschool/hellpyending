@@ -76,10 +76,8 @@ public class ArticleCommentService {
         articleComment1.setUsers(users);
 
         articleComment.addChild(articleComment1);
-
 //        articleComment1.setCommentBundle(articleComment);
 //        articleComment.getChild().add(articleComment1);
-
         return articleComment;
     }
 

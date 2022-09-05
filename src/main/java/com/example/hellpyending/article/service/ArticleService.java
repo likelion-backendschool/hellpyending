@@ -20,8 +20,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +38,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleImgService articleImgService;
+    private final static String VIEWCOOKIENAME = "alreadyViewCookie";
 
     public Page<Article> getList(String kw, int page) {
         List<Sort.Order> sorts = new ArrayList<>();
@@ -160,12 +165,56 @@ public class ArticleService {
 
 
 
+//    @Transactional
+//    public void setHitCount(Article article) {
+//        Integer PrevHitCount = article.getHitCount();
+//        PrevHitCount++;
+//        article.setHitCount(PrevHitCount);
+//        articleRepository.save(article);
+//    }
+
     @Transactional
-    public void setHitCount(Article article) {
-        Integer PrevHitCount = article.getHitCount();
-        PrevHitCount++;
-        article.setHitCount(PrevHitCount);
-        articleRepository.save(article);
+    public int setHitCount(Long id, HttpServletRequest request, HttpServletResponse response) {
+
+        Cookie[] cookies = request.getCookies();
+        boolean checkCookie = false;
+        int result = 0;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                // 이미 조회를 한 경우 체크
+                if (cookie.getName().equals(VIEWCOOKIENAME+id)) checkCookie = true;
+            }
+            if(!checkCookie){
+                Cookie newCookie = createCookieForForNotOverlap(id);
+                response.addCookie(newCookie);
+                result = articleRepository.updateView(id);
+            }
+        } else {
+            Cookie newCookie = createCookieForForNotOverlap(id);
+            response.addCookie(newCookie);
+            result = articleRepository.updateView(id);
+        }
+        return result;
+    }
+
+    /*
+     * 조회수 중복 방지를 위한 쿠키 생성 메소드
+     * @param cookie
+     * @return
+     * */
+    private Cookie createCookieForForNotOverlap(Long id) {
+        Cookie cookie = new Cookie(VIEWCOOKIENAME+id, String.valueOf(id));
+        cookie.setComment("조회수 중복 증가 방지 쿠키");	// 쿠키 용도 설명 기재
+        cookie.setMaxAge(getRemainSecondForTommorow()); 	// 하루를 준다.
+        cookie.setHttpOnly(true);				// 서버에서만 조작 가능
+        return cookie;
+    }
+
+    // 다음 날 정각까지 남은 시간(초)
+    private int getRemainSecondForTommorow() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tommorow = LocalDateTime.now().plusDays(1L).truncatedTo(ChronoUnit.DAYS);
+        return (int) now.until(tommorow, ChronoUnit.SECONDS);
     }
 
 }
