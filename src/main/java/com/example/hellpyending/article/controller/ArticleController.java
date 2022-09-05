@@ -27,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
@@ -66,10 +68,10 @@ public class ArticleController {
 
 
     @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable long id, ArticleCommentForm articleCommentForm) {
+    public String detail(Model model, @PathVariable long id, ArticleCommentForm articleCommentForm, HttpServletRequest request, HttpServletResponse response) {
         Article article = articleService.getArticle(id);
 
-        articleService.setHitCount(article);
+        articleService.setHitCount(id, request, response); // 조회수 증가
 
 
         model.addAttribute("article", article);

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -28,5 +29,10 @@ ArticleRepository extends JpaRepository<Article, Long> {
     Page<Article> findByUsers_IdAndDeleteYn(Long id, DeleteType deleteYn, Pageable pageable);
     @Query(nativeQuery = true,value = "select last_insert_id();")
     int last_insert_id();
+
+    @Modifying
+    @Query("update Article a set a.hitCount = a.hitCount + 1 where a.id = :id")
+    int updateView(@Param("id") Long id);
+
 
 }
