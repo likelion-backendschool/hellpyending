@@ -11,9 +11,7 @@ import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -51,21 +49,11 @@ public class Article {
     @JsonIgnore
     private DeleteType deleteYn;
 
-    @Column(nullable = false)
-    private String address_1st;
-
-    // 시군구
-    // ex) 강화군, 서구, 중구, 미추홀구 ...
-    @Column(nullable = false)
-    private String address_2st;
-
-    // 동읍면리
-    // ex) 간석동, 신현동, 관청리, 화정동 ...
-    @Column(nullable = false)
-    private String address_3st;
+    @Column(name = "area_name")
+    private String areaName;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name="user_id")
     private Users users;
 
     //    @Transient
@@ -76,19 +64,6 @@ public class Article {
     public void addArticleComment(ArticleComment articleComment) {
         articleComment.setArticle(this);
         getArticleCommentList().add(articleComment);
-    }
-
-    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties({"article"})
-    private List<ArticleImg> articleImgList;
-
-
-    @Builder.Default
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<ArticleHashtag> articleHashtags = new HashSet<>();
-
-    public void addArticleHashtag(String keywordContent) {
-        articleHashtags.add(new ArticleHashtag(keywordContent));
     }
 
 
