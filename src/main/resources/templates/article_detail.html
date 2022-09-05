@@ -17,11 +17,24 @@
                     </div>
                 </div>
                 <div>
-                    <a href="#" th:href="@{/article/modify/{id} (id=${article.id})}" class="btn btn-primary" role="button">수정</a>
-                    <a href="#" th:href="@{/article/delete/{id} (id=${article.id})}" class="btn btn-primary" role="button">삭제</a>
+                    <a th:href="@{|/article/modify/${article.id}|}" class="btn btn-primary" role="button"
+                       sec:authorize="isAuthenticated()" th:if="${article.users != null and #authentication.getPrincipal().getUsername() == article.users.username}" th:text="수정"></a>
+                    <a href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}" class="delete btn btn-primary" role="button"
+                       sec:authorize="isAuthenticated()" th:if="${article.users != null and #authentication.getPrincipal().getUsername() == article.users.username}" th:text="삭제" ></a>
                 </div>
             </div>
         </div>
+        <div  th:each="articleImage : ${article.articleImgList}" >
+            <img id="imgId" th:src="@{${articleImage.imageUrl}} " alt="첨부이미지" th:if="articleImage != null" />
+        </div>
+
+        <ul id="tag-list" >
+            <div th:each="tag :${article.articleHashtags}">
+                <li class='tag-item' th:text="${tag.hashtagName}"><span idx='"+counter+"'></span></li>
+            </div>
+
+        </ul>
+
         <div id="resultDiv">
             <p th:if="${msg}!=null" th:text="${msg}"></p>
         </div>
@@ -40,16 +53,24 @@
                     <form th:action="@{|/articleComment/createReply/${articleComment.id}|}" th:object="${articleCommentForm}" method="post" class="my-3">
                         <div th:replace="form_errors :: formErrorsFragment"></div>
 
-                        <textarea name="content" rows="5" class="form-control"></textarea>
-                        <input type="submit" value="답글등록" class="btn btn-primary my-2">
+                        <textarea id = "commentReply" name="content" rows="1" class="form-control"></textarea>
+                        <input type="submit" disabled id="commentReplySubmit" value="답글등록" class="btn btn-primary my-2">
                         <div class="card my-3" th:each="articleCommentReply : ${articleComment.getChild()}">
                             <div class="card-text" style="white-space: pre-line;" th:text="${articleCommentReply.comment}"></div>
                         </div>
                     </form>
                 </div>
-                <div>
-                    <a th:href="@{/articleComment/modify/{id} (id=${articleComment.id})}" class="btn btn-primary" role="button">수정</a>
-                    <a th:href="@{/articleComment/delete/{id} (id=${articleComment.id})}" class="btn btn-primary" role="button">삭제</a>
+                <div class="my-3">
+
+                    <a th:href="@{|/articleComment/modify/${articleComment.id}|}" class="btn btn-sm btn-outline-secondary"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${articleComment.users != null and #authentication.getPrincipal().getUsername() == articleComment.users.username}"
+                       th:text="수정"></a>
+
+                    <a href="javascript:void(0);" th:data-uri="@{|/articleComment/delete/${articleComment.id}|}"
+                       class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                       th:if="${articleComment.users != null and #authentication.getPrincipal().getUsername() == articleComment.users.username}"
+                       th:text="삭제"></a>
                 </div>
             </div>
         </div>
@@ -59,11 +80,52 @@
         <form th:action="@{|/articleComment/create/${article.id}|}" th:object="${articleCommentForm}" method="post" class="my-3">
             <div th:replace="form_errors :: formErrorsFragment"></div>
 
-            <textarea name="content" rows="5" class="form-control"></textarea>
-            <input type="submit" value="댓글등록" class="btn btn-primary my-2">
+            <textarea id="commentReply_" name="content" rows="5" class="form-control"></textarea>
+            <input id="commentReplySubmit_" disabled type="submit" value="댓글등록" class="btn btn-primary my-2">
         </form>
 
     </div>
+
+    <script layout:fragment="script" type='text/javascript'>
+        const delete_elements = document.getElementsByClassName("delete");
+        Array.from(delete_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
+        });
+        const recommend_elements= document.getElementsByClassName("recommend");
+        Array.from(recommend_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(confirm("정말로 추천하시겠습니까??")) {
+                    location.href = this.dataset.uri };
+            });
+        });
+
+
+        $(document).ready(function () {
+            $('#commentReply').on('input change', function () {
+                if ($(this).val() != '') {
+                    $('#commentReplySubmit').prop('disabled', false);
+                }
+                else {
+                    $('#commentReplySubmit').prop('disabled', true);
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#commentReply_').on('input change', function () {
+                if ($(this).val() != '') {
+                    $('#commentReplySubmit_').prop('disabled', false);
+                }
+                else {
+                    $('#commentReplySubmit_').prop('disabled', true);
+                }
+            });
+        });
+    </script>
 
 <!--<script layout:fragment="script" type='text/javascript'>-->
 <!--<script th:inline="javascript" type='text/javascript'>-->
