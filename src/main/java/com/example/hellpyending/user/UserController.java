@@ -23,7 +23,6 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @RequestMapping("/user")
 @Controller
@@ -35,11 +34,11 @@ public class UserController {
 
     @GetMapping("/login")
     String login(UserCreateForm userCreateForm){
-        return "user_login";
+        return "/user/login";
     }
     @GetMapping("/signup")
     String signUp(UserCreateForm userCreateForm){
-        return "user_signup";
+        return "/user/signup";
     }
     @PostMapping("/signup")
     String signUp(@Valid UserCreateForm userCreateForm, BindingResult bindingResult){
@@ -48,17 +47,12 @@ public class UserController {
         LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
 
         if (bindingResult.hasErrors()) {
-            return "user_signup";
-        }
-        if (!addressCheck(userCreateForm.getAddress_1st(), userCreateForm.getAddress_2st(),userCreateForm.getAddress_3st(),userCreateForm.getAddress_4st())) {
-            bindingResult.rejectValue("address_1st", "addressNotInput",
-                    "주소 입력은 필수 항목입니다.");
-            return "user_signup";
+            return "/user/signup";
         }
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
-            return "user_signup";
+            return "/user/signup";
         }
         try {
             userService.create(
@@ -79,12 +73,12 @@ public class UserController {
         catch (DataIntegrityViolationException e){
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
-            return "user_signup";
+            return "/user/signup";
         }
         catch(Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
-            return "user_signup";
+            return "/user/signup";
         }
         return "redirect:/";
     }
@@ -107,7 +101,7 @@ public class UserController {
     String information(Model model, Principal principal,UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
-        return "user_information";
+        return "/user/information";
     }
 
     @GetMapping("/information/update")
@@ -115,7 +109,7 @@ public class UserController {
     String information_update(Model model, Principal principal,UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
-        return "user_information_update";
+        return "/user/information_update";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -124,13 +118,12 @@ public class UserController {
         Users users = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
             model.addAttribute("users",users);
-            return "user_information_update";
+            return "/user/information_update";
         }
         if (UserUpdateForm.getPassword1() != null && !passwordEncoder.matches(UserUpdateForm.getPassword1(),users.getPassword())){
             bindingResult.reject("password1", "현재 비밀번호가 일치하지 않습니다.");
-            String msg = "현재 비밀번호가 일치하지 않습니다.";
             model.addAttribute("users",users);
-            return "user_information_update";
+            return "/user/information_update";
         }
 
 
@@ -151,25 +144,14 @@ public class UserController {
         catch (DataIntegrityViolationException e){
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
-            return "user_signup";
+            return "/user/signup";
         }
         catch(Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
-            return "user_signup";
+            return "/user/signup";
         }
         model.addAttribute("users",users);
         return "redirect:/";
-    }
-
-
-
-
-    private boolean addressCheck(String address_1st, String address_2st, String address_3st, String address_4st) {
-        if (address_1st.trim().length() == 0 || address_2st.trim().length() == 0 || address_3st.trim().length() == 0 || address_4st.trim().length() == 0 )
-        {
-            return false;
-        }
-        return true;
     }
 }
