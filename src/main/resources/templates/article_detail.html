@@ -56,6 +56,8 @@
                         <textarea id = "commentReply" name="content" rows="1" class="form-control"></textarea>
                         <input type="submit" disabled id="commentReplySubmit" value="답글등록" class="btn btn-primary my-2">
                         <div class="card my-3" th:each="articleCommentReply : ${articleComment.getChild()}">
+                            <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}">수정</a>
+                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}">삭제</a>
                             <div class="card-text" style="white-space: pre-line;" th:text="${articleCommentReply.comment}"></div>
                         </div>
                     </form>
@@ -81,7 +83,7 @@
             <div th:replace="form_errors :: formErrorsFragment"></div>
 
             <textarea id="commentReply_" name="content" rows="5" class="form-control"></textarea>
-            <input id="commentReplySubmit_" disabled type="submit" value="댓글등록" class="btn btn-primary my-2">
+            <input id="commentReplySubmit_" type="submit" value="댓글등록" class="btn btn-primary my-2">
         </form>
 
     </div>
