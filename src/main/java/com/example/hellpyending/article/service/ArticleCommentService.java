@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -81,21 +82,23 @@ public class ArticleCommentService {
         return articleComment;
     }
 
-    //    @Transactional
-//    public void createReply(ArticleComment articleComment, String content, Users users) {
-//
-//
-//        ArticleComment articleComment1 = new ArticleComment();
-//        articleComment1.setComment(content);
-//        articleComment1.setDeleteYn(DeleteType.NORMAL);
-//        articleComment1.setCreate(LocalDateTime.now());
-//        articleComment1.setCommentDepth(1);
-//        articleComment1.setUsers(users);
-//
-//        articleComment.addChild(articleComment1);
-//
-//        articleComment1.setCommentBundle(articleComment);
-//
-//        articleComment.getChild().add(articleComment1);
-//    }
+    @Transactional
+    public Long modifyReply(ArticleComment articleComment, String content) {
+        Optional<ArticleComment> articleCommentReply = articleCommentRepository.findById(articleComment.getId());
+
+        articleComment.setComment(content);
+        articleComment.setUpdate(LocalDateTime.now());
+        articleCommentRepository.save(articleComment);
+
+        return articleCommentReply.get().getCommentBundle().getId();
+    }
+
+    @Transactional
+    public Long deleteReply(ArticleComment articleComment) {
+        Optional<ArticleComment> articleCommentReply = articleCommentRepository.findById(articleComment.getId());
+
+        this.articleCommentRepository.delete(articleComment);
+
+        return articleCommentReply.get().getCommentBundle().getId();
+    }
 }
