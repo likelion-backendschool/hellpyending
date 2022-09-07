@@ -34,6 +34,16 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.GET,"/user/admin").hasRole("ADMIN")
                 // GET 요청으로 "/user/auth" URL을 접속 했을 때 권한이 USER인 사람만 접근이 가능하다.
                 .antMatchers(HttpMethod.GET,"/user/user").hasRole("USER")
+                .antMatchers(HttpMethod.GET,"/article/create").authenticated()
+                .antMatchers(HttpMethod.GET,"/articleComment/*").authenticated()
+                .antMatchers(HttpMethod.POST,"/articleComment/*").authenticated()
+                .antMatchers(HttpMethod.GET,"/articleComment/*/*").authenticated()
+                .antMatchers(HttpMethod.POST,"/articleComment/*/*").authenticated()
+                .antMatchers(HttpMethod.GET,"/exercise/*").authenticated()
+                .antMatchers(HttpMethod.GET,"/user/login").permitAll()
+                .antMatchers(HttpMethod.GET,"/user/signup").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/signup").permitAll()
+                .antMatchers(HttpMethod.GET,"/user/*").authenticated()
                 // 그 외 요청은 인증 받은 사람만 가능하게 만듦.
                 .anyRequest().permitAll();
 
