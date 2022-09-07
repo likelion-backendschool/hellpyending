@@ -28,12 +28,13 @@
         <div class="bg-light border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">잠은 지옥에서 자라</div>
             <div class="list-group list-group-flush">
-                <a sec:authorize="!isAuthenticated()" th:href="@{/user/signup}" class="list-group-item list-group-item-action bg-light">회원가입</a>
-                <a sec:authorize="!isAuthenticated()"th:href="@{/user/login}" class="list-group-item list-group-item-action bg-light">로그인</a>
-                <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}" class="list-group-item list-group-item-action bg-light">로그아웃</a>
                 <a sec:authorize="isAuthenticated()" th:href="@{/article/list}" class="list-group-item list-group-item-action bg-light">동네 게시판</a>
                 <a sec:authorize="isAuthenticated()" th:href="@{/gym/search}" class="list-group-item list-group-item-action bg-light">헬스장 찾기</a>
                 <a sec:authorize="isAuthenticated()" th:href="@{/user/information}" class="list-group-item list-group-item-action bg-light">마이페이지</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/chat/rooms}" class="list-group-item list-group-item-action bg-light">나의 채팅방</a>
+                <a sec:authorize="!isAuthenticated()" th:href="@{/user/signup}" class="list-group-item list-group-item-action bg-light">회원가입</a>
+                <a sec:authorize="!isAuthenticated()"th:href="@{/user/login}" class="list-group-item list-group-item-action bg-light">로그인</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}" class="list-group-item list-group-item-action bg-light">로그아웃</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
