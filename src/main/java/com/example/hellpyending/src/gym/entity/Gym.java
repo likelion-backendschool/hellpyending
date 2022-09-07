@@ -52,6 +52,9 @@ public class Gym {
     private double lng;
 
 
+    @Column
+    private String gym_image_address;
+
     @ColumnDefault("0")
     private Boolean deleteYn;
 

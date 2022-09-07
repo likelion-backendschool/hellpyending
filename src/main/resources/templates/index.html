@@ -1,21 +1,14 @@
+<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
+    <th:block th:fragment="content">
+        <a th:href="@{/}">홈</a>
+        <a th:href="@{/user/signup}">회원가입</a>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/user/login}">로그인</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+        <a th:href="@{/gym/search}">헬스장 찾기</a>
+
+        <a th:href="@{/article/list}">게시판</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/user/information}">마이페이지</a>
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>다음 지도 API</title>
-</head>
-<body>
-    <a th:href="@{/}">홈</a>
-    <a th:href="@{/user/signup}">회원가입</a>
-    <a sec:authorize="!isAuthenticated()"th:href="@{/user/login}">로그인</a>
-    <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
-    <a th:href="@{/gym/search}">헬스장 찾기</a>
-
-    <a th:href="@{/article/list}">게시판</a>
-    <a sec:authorize="isAuthenticated()" th:href="@{/user/information}">마이페이지</a>
-
-
-</body>
-</html>
+    </th:block>
+</th:block>
