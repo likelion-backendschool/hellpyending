@@ -7,6 +7,13 @@ logging:
     org.springframework.web.servlet: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
+#spring:
+#  datasource:
+#    url: jdbc:mariadb://localhost:3306/hellpyending?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+#    username: "root"
+#    password: "0000"
+#    driver-class-name: org.mariadb.jdbc.Driver
+
 spring:
   datasource:
     url: jdbc:mariadb://rc4-pedro-server-db.cuupyzlcppur.ap-northeast-2.rds.amazonaws.com/hellpyending?useSSL=false&autoReconnect=true&validationQuery=select 1
@@ -14,13 +21,26 @@ spring:
     password: TigerShrimp1!
     driver-class-name: org.mariadb.jdbc.Driver
 
-
   jpa:
     defer-datasource-initialization: true
     hibernate.ddl-auto: update
-    open-in-view: false
+    open-in-view: true
     show-sql: true
     properties:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
   sql.init.mode: always
+
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA6LTTW3X7YFHZJ4QE       # AWS IAM AccessKey 적기
+      secretKey: rqJw9EKz4hCvjS8Cad3xrqA0tNF0cpoLUWKPddjm  # AWS IAM SecretKey 적기
+    s3:
+      bucket: tigershrimp-bucket    # ex) marryting-gyunny
+      dir: ImageUrl/ # ex) /gyunny
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

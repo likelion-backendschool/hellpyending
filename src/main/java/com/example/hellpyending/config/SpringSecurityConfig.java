@@ -15,10 +15,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableWebSecurity(debug = true) // WebSecurity에서 어떤 필터를 거쳤는지 알 수 있음.
-@RequiredArgsConstructor
 public class SpringSecurityConfig {
 
     @Bean
@@ -55,6 +55,7 @@ public class SpringSecurityConfig {
                 // 로그아웃 시 session 종료
                 .invalidateHttpSession(true)
         ;
+         // 사이트 내 컨텐츠들이 다른 사이트에 포함되지 않도록해 'clickjacking' 공격 방지
         return http.build();
     }
 

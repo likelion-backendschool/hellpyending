@@ -12,7 +12,10 @@
         </div>
         <ul>
             <li>
-                <a th:href="@{/exercise/list}">나의 운동 일지</a>
+                <a th:href="@{|/exercise/list/${users.id}|}">나의 운동 일지</a>
+            </li>
+            <li>
+                <a th:href="@{|/article/list/${users.id}|}">내가 쓴 글</a>
             </li>
             <li>
                 <a href="#">공지사항</a>

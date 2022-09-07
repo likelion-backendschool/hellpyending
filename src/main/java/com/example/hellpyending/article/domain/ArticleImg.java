@@ -31,6 +31,9 @@ public class ArticleImg {
     @Column(name = "img_url")
     private String imageUrl;
 
+    @Column(name = "img_origin_name")
+    private String imageOriginName;
+
     @ManyToOne
     @JoinColumn(name = "board_id")
     private Article article;

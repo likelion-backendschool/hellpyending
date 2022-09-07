@@ -1,9 +1,14 @@
 package com.example.hellpyending.article.controller;
 
 import com.example.hellpyending.article.domain.Article;
+
+import com.example.hellpyending.article.domain.ArticleImg;
+
 import com.example.hellpyending.article.exception.DataNotFoundException;
+
 import com.example.hellpyending.article.form.ArticleCommentForm;
 import com.example.hellpyending.article.form.ArticleForm;
+import com.example.hellpyending.article.service.ArticleImgService;
 import com.example.hellpyending.article.service.ArticleService;
 import com.example.hellpyending.user.UserSecurityService;
 import com.example.hellpyending.user.UserService;
@@ -16,16 +21,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import org.springframework.web.server.ResponseStatusException;
 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @RequestMapping("/article")
 @Controller
 @RequiredArgsConstructor
 public class ArticleController {
 
+    private final ArticleImgService articleImgService;
     private final ArticleService articleService;
     private final UserService userService;
     private final UserSecurityService userSecurityService;
@@ -37,12 +51,28 @@ public class ArticleController {
         model.addAttribute("paging", paging);
         return "article_list";
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/list/{id}")
+    public String list(Principal principal, Model model, @RequestParam(defaultValue = "0") int page, @PathVariable long id, @RequestParam(defaultValue = "") String sortCode) {
+        Users users = userService.getUser(principal.getName());
+
+        if (!users.getId().equals(id)) {
+            return "access_error";
+
+        }
+        Page<Article> paging = articleService.getList(id , page, sortCode);
+
+        model.addAttribute("paging", paging);
+        return "article_list";
+    }
+
 
     @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable long id, ArticleCommentForm articleCommentForm) {
+    public String detail(Model model, @PathVariable long id, ArticleCommentForm articleCommentForm, HttpServletRequest request, HttpServletResponse response) {
         Article article = articleService.getArticle(id);
 
-        articleService.setHitCount(article);
+        articleService.setHitCount(id, request, response); // 조회수 증가
+
 
         model.addAttribute("article", article);
 
@@ -68,16 +98,21 @@ public class ArticleController {
         return "article_form";
     }
 
+
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String articleCreate(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
+    public String articleCreate_img(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal
+    ,@RequestParam(value = "files", required = false) List<MultipartFile> files
+    ,@RequestParam(value = "tag", required = false) List<String> tags) throws IOException {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
 
 
         Users users = this.userService.getUser(principal.getName());
-        articleService.create(articleForm.getTitle(), articleForm.getContent(), users.getAddress_1st(), users);
+        articleService.create(articleForm.getTitle(), articleForm.getContent(), users,files,tags);
+
         return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
     }
     @PreAuthorize("isAuthenticated()")
@@ -97,18 +132,17 @@ public class ArticleController {
         articleForm.setTitle(article.getTitle());
         articleForm.setContent(article.getContent());
         articleForm.setUpdate(article.getUpdate());
-        articleForm.setAreaName(article.getAreaName());
-
-        return "article_form";
+        // 게시글 수정시 게시글 주소 수정은 안되게 했습니다.
+        return "articleUpdate_form";
     }
 
-    @PostMapping("/modify/{id}")
-    public String articleModify(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id) {
+    @PostMapping("/modify")
+    public String articleModify(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
 
-        Article article = this.articleService.getArticle(id);
+        Article article = this.articleService.getArticle(articleForm.getId());
 
         if (article == null) {
             throw new DataNotFoundException("%d번 질문은 존재하지 않습니다.");
@@ -118,15 +152,9 @@ public class ArticleController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
-        boolean result = articleService.modify(articleForm.getId(), articleForm.getTitle(), articleForm.getContent(), articleForm.getAreaName());
+        articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
 
-        if (result){
-            return String.format("redirect:/article/detail/%s", articleForm.getId());
-        } else {
-            // 수정실패관련 페이지나 메시지 리턴
-            return null; // 여기에 해당코드작성
-        }
-
+        return String.format("redirect:/article/detail/%s", articleForm.getId());
 
     }
 
