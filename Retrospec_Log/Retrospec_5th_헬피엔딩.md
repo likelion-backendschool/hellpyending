@@ -8,7 +8,7 @@
 팀원들과 함께 복습을 진행하면서 ‘기술적으로 새로 알게된 점, 어려웠던 점, 아쉬운 점' 등을 요약하여 작성해 주세요 🙂
 
 # 클라우드 컴퓨팅
-![ex_screenshot](./img/Untitled.PNG)
+![ex_screenshot](./img/Untitled.png)
 - 가상 컴퓨팅을 통해 다양한 서비스를 이용하는 것
 
 ### 장점
