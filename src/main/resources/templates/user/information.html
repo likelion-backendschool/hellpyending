@@ -1,10 +1,5 @@
-<html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        xmlns:th="http://www.thymeleaf.org"
-        layout:decorate="~{layout}"
->
-<html layout:decorate="~{layout}">
-    <div layout:fragment="content" class="container my-3">
+<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
+    <th:block th:fragment="content">
         <h3 th:text="${users.nickname}"></h3>
         <h4 th:text="${users.email}"></h4>
         <div>
@@ -33,5 +28,5 @@
                 <a href="#">약관 및 정책</a>
             </li>
         </ul>
-    </div>
-</html>
+    </th:block>
+</th:block>
