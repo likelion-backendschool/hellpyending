@@ -11,8 +11,4 @@ public class HelloController {
         return "index";
     }
 
-    @GetMapping("/")
-    public OAuth2AuthenticationToken home(final  OAuth2AuthenticationToken token){
-        return token;
-    }
 }

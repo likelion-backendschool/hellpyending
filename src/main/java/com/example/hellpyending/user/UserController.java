@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -153,5 +154,11 @@ public class UserController {
         }
         model.addAttribute("users",users);
         return "redirect:/";
+    }
+
+    // 토큰 발행 하는 곳.
+    @GetMapping("/token")
+    public OAuth2AuthenticationToken home(final  OAuth2AuthenticationToken token){
+        return token;
     }
 }
