@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -55,6 +56,8 @@ public class SpringSecurityConfig {
                 .defaultSuccessUrl("/",false)
                 // login은 모두 접근 가능
                 .permitAll();
+        // oauth2 login
+        http.oauth2Login(Customizer.withDefaults());
 
         // logout
         http.logout()
