@@ -57,7 +57,12 @@ public class SpringSecurityConfig {
                 // login은 모두 접근 가능
                 .permitAll();
         // oauth2 login
-        http.oauth2Login(Customizer.withDefaults());
+        http.oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/")
+                );
+                // login 성공시 루트 페이지로 이동 ( alwayUse를 false로 입력 시 접속 하려던 URL로 바로 이동 )
+
+                // login은 모두 접근 가능
 
         // logout
         http.logout()
