@@ -85,7 +85,7 @@ public class UserService {
             final String email,
             final String gender,
             final String birthday
-    ){
+            ){
         final boolean existsEmail = userFindService.existsByEmail(email);
         final boolean existsUsername = userFindService.existsByUsername(name);
 
@@ -130,7 +130,7 @@ public class UserService {
                     .sex(Sex.MALE)
 //                    .sex(gender == "male" ? Sex.MALE : Sex.FEMALE )
                     .email(email)
-                    .phoneNumber("01099999999")
+//                    .phoneNumber("01099999999")
 //                    .birthday(birth)
                     .address_1st("구글_1지역")
                     .address_2st("구글_2지역")

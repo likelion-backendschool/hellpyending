@@ -148,9 +148,10 @@ public class SpringSecurityConfig {
                         "public_profile",
                         "email", // 이메일 수집
                         "user_birthday", // 생년월일 수집
-                        "user_gender" // 성별 수집
+                        "user_gender", // 성별 수집
+                        "user_location" // 위치 수집
                 )
-                .userInfoUri("https://graph.facebook.com/me?fields=id,name,email,gender,birthday")
+                .userInfoUri("https://graph.facebook.com/me?fields=id,name,email,gender,birthday,location")
                 .build();
     }
     // 실제 토큰과 OAuth 와 통신

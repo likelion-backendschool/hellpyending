@@ -4,6 +4,7 @@ package com.example.hellpyending.config;
 import com.example.hellpyending.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -33,6 +34,7 @@ public class FacebookOauth2UserService implements OAuth2UserService<OAuth2UserRe
         final String email = oAuth2User.getAttributes().get("email").toString();
         String gender = oAuth2User.getAttributes().get("gender").toString();
         String birthday = oAuth2User.getAttributes().get("birthday").toString();
+        Page<String> location = oAuth2User.getAttribute("location");
 
         // name과 email을 가져와 회원가입을 시키게 만듦.
         userService.requestRegistration(name,email,gender,birthday);
