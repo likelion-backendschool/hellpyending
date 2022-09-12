@@ -92,8 +92,7 @@ public class UserService {
 
             LocalDate birth = LocalDate.parse(parseLocalDate(birthday), DateTimeFormatter.ISO_DATE);
             Users user = Users.builder()
-                    .username(name)
-                    .password(passwordEncoder.encode("1234"))
+                    .username(email)
                     .nickname(name)
                     .sex(gender == "male" ? Sex.MALE : Sex.FEMALE )
                     .email(email)
@@ -116,8 +115,7 @@ public class UserService {
 
 //            LocalDate birth = LocalDate.parse(parseLocalDate(birthday), DateTimeFormatter.ISO_DATE);
             Users user = Users.builder()
-                    .username(name)
-                    .password(passwordEncoder.encode("1234"))
+                    .username(email)
                     .nickname(name)
                     .sex(Sex.MALE)
                     .email(email)

@@ -172,8 +172,8 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     String oauth2_information_update(Model model,UserUpdateForm userUpdateForm, Authentication authentication,
                               @AuthenticationPrincipal UserDetails userDetails, UserOauth2CreateForm userOauth2CreateForm,HttpSession httpSession){
-        String name = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("name");
-        Users users = userService.getUser(name);
+        String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
+        Users users = userService.getUser(email);
         if (firstLoginCheck(users)){
             return "/user/oauth2_signup";
         }
