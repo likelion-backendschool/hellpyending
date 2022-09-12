@@ -9,7 +9,16 @@
                 <h1>[[${room.name}]]</h1>
             </div>
             <div>
-                <div id="msgArea" class="col"></div>
+                <div id="msgArea" class="col">
+                    <div class='col-6' th:each="message : ${messageList}" >
+                        <div  class='alert alert-secondary' th:if="${#authentication.principal.username}==${message.writer}">
+                            <b th:text="|${message.writer} : ${message.message}|"></b>
+                        </div>
+                        <div class='alert alert-warning' th:if="${#authentication.principal.username}!=${message.writer}">
+                            <b th:text="|${message.writer} : ${message.message}|"></b>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-6">
                     <div class="input-group mb-3">
                         <input type="text" id="msg" class="form-control">
@@ -31,7 +40,15 @@
 
 </html>
 <script th:inline="javascript">
+
+
+
+
+
+
     $(document).ready(function(){
+
+
 
         var roomName = [[${room.name}]];
         var roomId = [[${room.roomId}]];
@@ -60,7 +77,6 @@
                     str += "<b>" + writer + " : " + message + "</b>";
                     str += "</div></div>";
                     $("#msgArea").append(str);
-
                 }
                 else{
                     str = "<div class='col-6'>";
@@ -75,7 +91,7 @@
             });
 
             //3. send(path, header, message)로 메세지를 보낼 수 있음
-            stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}))
+            // stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}))
         });
 
         $("#button-send").on("click", function(e){

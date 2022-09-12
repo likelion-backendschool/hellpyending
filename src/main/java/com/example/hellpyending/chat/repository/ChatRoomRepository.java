@@ -1,39 +1,49 @@
 package com.example.hellpyending.chat.repository;
 
+import com.example.hellpyending.chat.entity.ChatRoom;
 import com.example.hellpyending.chat.entity.ChatRoomDTO;
+import com.example.hellpyending.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Stream;
-
+@RequiredArgsConstructor
 @Repository
 public class ChatRoomRepository {
+    private final ChatRoomRepositoryJPA chatRoomRepository;
+    private final ChatRoomUserRepository chatRoomUserRepository;
+    private final UserRepository userRepository;
 
-    private Map<String, ChatRoomDTO> chatRoomDTOMap;
+    private Map<String, ChatRoom> chatRoomDTOMap;
 
     @PostConstruct
     private void init(){
         chatRoomDTOMap = new LinkedHashMap<>();
+
     }
 
-    public List<ChatRoomDTO> findAllRooms(){
+    public List<ChatRoom> findAllRooms(){
         //채팅방 생성 순서 최근 순으로 반환
-        List<ChatRoomDTO> result = new ArrayList<>(chatRoomDTOMap.values());
+        List<ChatRoom> result = new ArrayList<>(chatRoomDTOMap.values());
         Collections.reverse(result);
 
         return result;
     }
 
-    public ChatRoomDTO findRoomById(String id){
+    public ChatRoom findRoomById(String id){
         return chatRoomDTOMap.get(id);
     }
 
-    public ChatRoomDTO createChatRoomDTO(String name){
-        ChatRoomDTO room = ChatRoomDTO.create(name);
+    public ChatRoom createChatRoomDTO(ChatRoom room){
         chatRoomDTOMap.put(room.getRoomId(), room);
 
         return room;
+    }
+
+    public void deleteChatRoomDTO(ChatRoom room){
+        chatRoomDTOMap.remove(room.getRoomId(), room);
     }
 }
