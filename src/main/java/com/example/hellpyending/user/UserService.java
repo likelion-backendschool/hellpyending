@@ -18,9 +18,7 @@ public class UserService {
     private final UserFindService userFindService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    public void create(Users user) {
-        userRepository.save(user);
-    }
+
 
     public void create(String username, String password, String nickname, Sex sex, String email, String phoneNumber, LocalDate birthday,
                        String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
@@ -99,13 +97,7 @@ public class UserService {
                     .nickname(name)
                     .sex(gender == "male" ? Sex.MALE : Sex.FEMALE )
                     .email(email)
-                    .phoneNumber("01099999999")
                     .birthday(birth)
-                    .address_1st("페이스북_1지역")
-                    .address_2st("페이스북_2지역")
-                    .address_3st("페이스북_3지역")
-                    .address_4st("페이스북_4지역")
-                    .address_detail("페이스북_상세지역")
                     .userType(UserType.USER)
                     .build();
             userRepository.save(user);
@@ -128,15 +120,7 @@ public class UserService {
                     .password(passwordEncoder.encode("1234"))
                     .nickname(name)
                     .sex(Sex.MALE)
-//                    .sex(gender == "male" ? Sex.MALE : Sex.FEMALE )
                     .email(email)
-//                    .phoneNumber("01099999999")
-//                    .birthday(birth)
-                    .address_1st("구글_1지역")
-                    .address_2st("구글_2지역")
-                    .address_3st("구글_3지역")
-                    .address_4st("구글_4지역")
-                    .address_detail("구글_상세지역")
                     .userType(UserType.USER)
                     .build();
             userRepository.save(user);
@@ -147,4 +131,16 @@ public class UserService {
         String[] bits = birthday.split("/");
         return "%s-%s-%s".formatted(bits[2],bits[0],bits[1]);
     }
+
+    public void create(String email, String phoneNumber, String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
+        Users users = userRepository.findByEmail(email);
+        users.setPhoneNumber(phoneNumber);
+        users.setAddress_1st(address_1st);
+        users.setAddress_2st(address_2st);
+        users.setAddress_3st(address_3st);
+        users.setAddress_4st(address_4st);
+        users.setAddress_detail(address_detail);
+        userRepository.save(users);
+    }
+
 }

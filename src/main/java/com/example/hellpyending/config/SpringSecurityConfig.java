@@ -77,7 +77,7 @@ public class SpringSecurityConfig {
                                 .oidcUserService(googleOauth2UserService) // google 인증, OpenID Connect 1.0를 이용하여 통신(인증)하기 때문에 메서드 이름이 다르다.
                                 .userService(facebookOauth2UserService) // facebook 인증, OAuth2 통신
                         )
-                        .defaultSuccessUrl("/",false)
+                        .defaultSuccessUrl("/user/oauth2/information/update",false)
                 );
                 // login 성공시 루트 페이지로 이동 ( alwayUse를 false로 입력 시 접속 하려던 URL로 바로 이동 )
 

@@ -1,13 +1,16 @@
 package com.example.hellpyending.user;
 
 import com.example.hellpyending.user.entity.UserCreateForm;
+import com.example.hellpyending.user.entity.UserOauth2CreateForm;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -107,8 +110,11 @@ public class UserController {
 
     @GetMapping("/information/update")
     @PreAuthorize("isAuthenticated()")
-    String information_update(Model model, Principal principal,UserUpdateForm userUpdateForm){
+    String information_update(Model model, Principal principal,UserUpdateForm userUpdateForm, Authentication authentication,
+                              @AuthenticationPrincipal UserDetails userDetails){
         Users users = userService.getUser(principal.getName());
+
+        System.out.println("authentication: " + authentication.getPrincipal());
         model.addAttribute("users",users);
         return "/user/information_update";
     }
@@ -161,4 +167,54 @@ public class UserController {
     public OAuth2AuthenticationToken home(final  OAuth2AuthenticationToken token){
         return token;
     }
+
+    @GetMapping("/oauth2/information/update")
+    @PreAuthorize("isAuthenticated()")
+    String oauth2_information_update(Model model,UserUpdateForm userUpdateForm, Authentication authentication,
+                              @AuthenticationPrincipal UserDetails userDetails, UserOauth2CreateForm userOauth2CreateForm,HttpSession httpSession){
+        String name = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("name");
+        Users users = userService.getUser(name);
+        if (firstLoginCheck(users)){
+            return "/user/oauth2_signup";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/oauth2/information/update")
+    @PreAuthorize("isAuthenticated()")
+    String oauth2_information_update(@Valid UserOauth2CreateForm userOauth2CreateForm, BindingResult bindingResult, Authentication authentication,
+                                     @AuthenticationPrincipal UserDetails userDetails){
+        String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
+
+        if (bindingResult.hasErrors()) {
+            return "/user/oauth2_signup";
+        }
+        try {
+            userService.create(
+                    email,
+                    userOauth2CreateForm.getPhoneNumber(),
+                    userOauth2CreateForm.getAddress_1st(),
+                    userOauth2CreateForm.getAddress_2st(),
+                    userOauth2CreateForm.getAddress_3st(),
+                    userOauth2CreateForm.getAddress_4st(),
+                    userOauth2CreateForm.getAddress_detail()
+            );
+        }
+        catch (DataIntegrityViolationException e){
+            e.printStackTrace();
+            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+            return "/user/oauth2_signup";
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            bindingResult.reject("signupFailed", e.getMessage());
+            return "/user/oauth2_signup";
+        }
+        return "redirect:/";
+    }
+
+    private boolean firstLoginCheck(Users users) {
+        return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null || users.getPhoneNumber() == null;
+    }
+
 }

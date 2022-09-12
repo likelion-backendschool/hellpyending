@@ -42,7 +42,7 @@ public class Users extends BaseTimeEntity {
     @Column(length = 20, nullable = false, unique = true)
     private String nickname;
 
-    @Column(length = 30, nullable = false, unique = true)
+    @Column(length = 30, unique = true)
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
@@ -58,27 +58,27 @@ public class Users extends BaseTimeEntity {
 
     // 광역시
     // ex) 인천, 서울, 부산 ...
-    @Column(nullable = false)
+    @Column
     private String address_1st;
 
     // 시군구
     // ex) 강화군, 서구, 중구, 미추홀구 ...
-    @Column(nullable = false)
+    @Column
     private String address_2st;
 
     // 동읍면리
     // ex) 간석동, 신현동, 관청리, 화정동 ...
-    @Column(nullable = false)
+    @Column
     private String address_3st;
 
     // 도로명
     // ex) 인천 서구 봉오재1로 36, 경기 고양시 덕양구 수원문산고속도로 51, 인천 부평구 평천로 559-3 ...
-    @Column(nullable = false)
+    @Column
     private String address_4st;
 
     // 상세 주소
     // ex) 905동 403호, 101동 1301호 ...
-    @Column(nullable = false)
+    @Column
     private String address_detail;
 
 
