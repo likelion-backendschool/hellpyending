@@ -2,14 +2,17 @@ package com.example.hellpyending.user.entity;
 
 
 import com.example.hellpyending.DeleteType;
+import com.example.hellpyending.article.domain.ArticleHashtag;
+import com.example.hellpyending.chat.entity.ChatMessageEntity;
+import com.example.hellpyending.chat.entity.ChatRoom;
+import com.example.hellpyending.chat.entity.ChatRoomUser;
 import com.example.hellpyending.config.BaseTimeEntity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Getter
@@ -81,6 +84,13 @@ public class Users extends BaseTimeEntity {
     @Column(nullable = false)
     private String address_detail;
 
+    @OneToMany(mappedBy = "users")
+    private List<ChatRoomUser> chatRoomUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users")
+    private List<ChatMessageEntity> chatMessageEntities = new ArrayList<>();
+
+
 
     public Users(String username, String password, List<GrantedAuthority> authorities) {
     }
@@ -100,4 +110,9 @@ public class Users extends BaseTimeEntity {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
+
+
+
 }
