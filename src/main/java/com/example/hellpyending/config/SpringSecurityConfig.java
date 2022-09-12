@@ -130,6 +130,13 @@ public class SpringSecurityConfig {
                 .getBuilder("google")
                 .clientId(clientId)
                 .clientSecret(clientSecret)
+                .scope(
+                        "email",
+                        "profile",
+                        "openid"
+//                        "https://www.googleapis.com/auth/user.addresses.read",
+//                        "https://www.googleapis.com/auth/user.birthday.read"
+                )
                 .build();
     }
 

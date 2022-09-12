@@ -230,5 +230,4 @@ gradle-app.setting
 
 *.yaml
 
-src/main/resources/application.yaml
 .idea/**/Init
