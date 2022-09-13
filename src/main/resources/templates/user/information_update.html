@@ -8,7 +8,7 @@
             </div>
             <span>닉네임</span>
             <div id="check">
-                <input type="text" id="nickname" name="nickname" th:value="${users.nickname}" placeholder="닉네임을 입력해주세요"
+                <input type="text" id="nickname" name="nickname" th:value="${users?.nickname}" placeholder="닉네임을 입력해주세요"
                        required/>
                 <button onclick="id_check(); return false">중복 체크</button>
             </div>
@@ -33,10 +33,10 @@
                 <input type='button' value='수정' onclick='btnPwdActive()'/>
             </div>
             <span>이메일 주소</span>
-            <div th:text="${users.email}"></div>
+            <div th:text="${users?.email}"></div>
             <span>휴대폰 번호</span>
             <div>
-                <input type="text" id="phoneNumber" name="phoneNumber" th:value="${users.phoneNumber}"
+                <input type="text" id="phoneNumber" name="phoneNumber" th:value="${users?.phoneNumber}"
                        placeholder="휴대폰 번호를 입력해주세요" maxlength='11' pattern="[0-9]+" disabled="disabled" required>
             </div>
             <div>
@@ -48,27 +48,27 @@
             <table>
                 <tr>
                     <th>광역시</th>
-                    <td><input type="text" id="address_1st" name="address_1st" th:value="${users.address_1st}"
+                    <td><input type="text" id="address_1st" name="address_1st" th:value="${users?.address_1st}"
                                disabled="disabled" readonly/></td>
                 </tr>
                 <tr>
                     <th>시군구</th>
-                    <td><input type="text" id="address_2st" name="address_2st" th:value="${users.address_2st}"
+                    <td><input type="text" id="address_2st" name="address_2st" th:value="${users?.address_2st}"
                                disabled="disabled" readonly/></td>
                 </tr>
                 <tr>
                     <th>동읍면리</th>
-                    <td><input type="text" id="address_3st" name="address_3st" th:value="${users.address_3st}"
+                    <td><input type="text" id="address_3st" name="address_3st" th:value="${users?.address_3st}"
                                disabled="disabled" readonly/></td>
                 </tr>
                 <tr>
                     <th>도로명</th>
-                    <td><input type="text" id="address_4st" name="address_4st" th:value="${users.address_4st}"
+                    <td><input type="text" id="address_4st" name="address_4st" th:value="${users?.address_4st}"
                                disabled="disabled" readonly/></td>
                 </tr>
                 <tr>
                     <th>상세 주소</th>
-                    <td><input type="text" id="address_detail" name="address_detail" th:value="${users.address_detail}"
+                    <td><input type="text" id="address_detail" name="address_detail" th:value="${users?.address_detail}"
                                disabled="disabled" required/></td>
                 </tr>
                 <tr>
