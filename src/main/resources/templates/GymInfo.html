@@ -19,10 +19,6 @@
 
     $.get(getAddress, function(curGym) {
       console.log("백엔드로 부터 넘겨받은 헬스장 정보", curGym);
-      let gymdiv = document.getElementById("gymdiv");
-      gymdiv.style = "text-align: center;width:40%;background-color: hsl(200, 100%, 90%);border: 5px solid black;border-radius: 5px;padding: 10px 10px";
-
-      let gym = document.getElementById("gyminfo");
 
       let displayGymInfo = "";
       displayGymInfo += curGym.gym_name + "<br>";
@@ -32,8 +28,12 @@
       if (curGym.gym_phone_number) {
         displayGymInfo += "<br>" + curGym.gym_phone_number;
       }
-      console.log("출력할 헬스장 정보", displayGymInfo)
-      gym.innerHTML = displayGymInfo;
+      console.log("출력할 헬스장 정보", displayGymInfo);
+
+      $('.diojosijoi32').text(curGym.gym_name);
+      $('.idifjwiie223').text(curGym.gym_address);
+      $('.sidjaj2324asd.callnumber').text(curGym.gym_phone_number);
+
     });
   </script>
 </head>
@@ -41,8 +41,15 @@
 
 
 
-<div class="fijdosw-sidifjs-wieisd e1brqtzw0"><article id="product-atf" class="pksdpfkssp e17iylht1"><div class="s0ks-0fpoks eu57hp00"></div><div class="pospdfppsd e17iylht0"><div class="css-0 ezpe9l15"><div class="uisdovoose ezpe9l14">헬스장</div><div class="osjdfoiosewdf ezpe9l13"><div class="spokpdooew ezpe9l12"><h2 class="diojosijoi32 ezpe9l11">헬스장</h2><button class=" diofsheh21 eaxuegm1"></button></div><p class="sndij393iifdf ezpe9l10">__헬스장에서 퀄리티높은 품질을 느껴보세요.</p></div></div><div class="dndinif93ikids e1q8tigr7"><span class="okdskoowod e1q8tigr5">헬스장주소</span><span class="sidifsoso151 e1q8tigr4"></span></div><div class="idifjwiie223 eicg42l0">서울특별시 강남구 논현동 리젠타워 헬스101</div><div class="siksfieienm23 ejdfx860"><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">영업시간</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">연중무휴</p><p class="sdjnai223s exslwju0">24시 365일 언제나 이용 가능합니다.
-  (서울, 부천, 인천, 경기 전국구지점을 만나보세요)</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">헬스장번호</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">1588-0000</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">원하시는 항목</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">컨텐츠 텍스트 등록</p><p class="sdjnai223s exslwju0">원하시는 컨텐츠 텍스트등록을 하실수 있습니다.</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">리뷰</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">원하시는 리뷰텍스트를 넣으실수 있습니다.</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">원하시는 항목</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">컨텐츠 텍스트 등록</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">Q&A</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">상세페이지 별도표기</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">원하시는 항목</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">원하시는 리뷰텍스트를 넣으실수 있습니다.</p></dd></dl></div><div class="djnfdi92kedd e1vyx3w91"><div class="sjndii28idsoos eyqntbg0"><dl class="dikmfomd993ollfd e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">헬스장 기간권</dt><div class="dokdf0slleow e1aw4qzr0"><div><div class="MuiFormControl-root dodksfm3fe"><div variant="outlined" class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl djnfikms-eijkw321 css-xald09">
+<div class="fijdosw-sidifjs-wieisd e1brqtzw0"><article id="product-atf" class="pksdpfkssp e17iylht1">
+  <div class="s0ks-0fpoks eu57hp00"></div>
+  <div class="pospdfppsd e17iylht0">
+    <div class="css-0 ezpe9l15">
+      <div class="uisdovoose ezpe9l14">헬스장</div>
+      <div class="osjdfoiosewdf ezpe9l13">
+        <div class="spokpdooew ezpe9l12"><h2 class="diojosijoi32 ezpe9l11">헬스장명을 불러오는중입니다.</h2><button class=" diofsheh21 eaxuegm1"></button></div>
+        <p class="sndij393iifdf ezpe9l10"> 저희 헬스장에서 퀄리티높은 품질을 느껴보세요.</p></div></div><div class="dndinif93ikids e1q8tigr7"><span class="okdskoowod e1q8tigr5">헬스장주소</span><span class="sidifsoso151 e1q8tigr4"></span></div><div class="idifjwiie223 eicg42l0">헬스장 주소를 불러오는중입니다.</div><div class="siksfieienm23 ejdfx860"><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">영업시간</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">연중무휴</p><p class="sdjnai223s exslwju0">24시 365일 언제나 이용 가능합니다.
+  (서울, 부천, 인천, 경기 전국구지점을 만나보세요)</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">헬스장번호</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1 callnumber">헬스장 번호를 불러오는중입니다.</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">원하시는 항목</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">컨텐츠 텍스트 등록</p><p class="sdjnai223s exslwju0">원하시는 컨텐츠 텍스트등록을 하실수 있습니다.</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">리뷰</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">원하시는 리뷰텍스트를 넣으실수 있습니다.</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">원하시는 항목</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">컨텐츠 텍스트 등록</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">Q&A</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">상세페이지 별도표기</p></dd></dl><dl class="dhbdfniie313 e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">원하시는 항목</dt><dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1">원하시는 리뷰텍스트를 넣으실수 있습니다.</p></dd></dl></div><div class="djnfdi92kedd e1vyx3w91"><div class="sjndii28idsoos eyqntbg0"><dl class="dikmfomd993ollfd e1wur6vo1"><dt class="title suifjeimkdoo e1wur6vo0">헬스장 기간권</dt><div class="dokdf0slleow e1aw4qzr0"><div><div class="MuiFormControl-root dodksfm3fe"><div variant="outlined" class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl djnfikms-eijkw321 css-xald09">
 
   <select class="eis-ojskekms">
     <option>1개월</option>
@@ -51,7 +58,6 @@
   </select>
 
   <input aria-hidden="true" tabindex="-1" class="MuiSelect-nativeInput dijfieimf93ii2if" value=""><fieldset aria-hidden="true" class="sjsdfiif83i-auiad992 ssikdj939edfos032"><legend class="css-nnbavb"><span class="notranslate">​</span></legend></fieldset></div></div></div></div></dl></div><div class="dikfosowekk-difssloe e1vyx3w90"><div class="dsif93klsf-siaid-wi8riks extc5fi9"><div class="dfisidike-dkkske-sii3isdf extc5fi8"><span class="dfski8ikke-dkfske-skdksf-sdfs extc5fi7">총 상품금액 :</span><span class="ssdfjs83kkf92d extc5fi6">0</span><span class="sdfjjs883-38kkdf-38ikdf extc5fi5">원</span></div><div class="shjsdfi8i2-s882f-28jmkasd extc5fi4"><span class="skksdf-39ikksfd-9jjsf-keiifd extc5fi3">적립</span><span class="idkfiksfd930o-83iksdkfssdfe extc5fi2">로그인 후, 적립 혜택 제공</span></div></div></div><div class="fkkksiieikfo3992-fkkskdf93 elhxzl01"><div class="sdjfsie8sioioe-99sdfoioef elhxzl00"><button class="cart-button skdf993kksdfoskle-sidifsldf e4nu7ef3" type="button" radius="3"><span class="fikdiiske-dkfksdfiikle-fksdooe e4nu7ef1">이용권 결제하기</span></button></div></div></div></div></article></div>
-
 
 
 </body>
