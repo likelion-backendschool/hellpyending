@@ -59,8 +59,14 @@
                         <input type="submit" disabled id="commentReplySubmit" value="답글등록"
                                class="btn btn-primary my-2">
                         <div class="card my-3" th:each="articleCommentReply : ${articleComment.getChild()}">
-                            <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}">수정</a>
-                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}">삭제</a>
+                            <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}"
+                               sec:authorize="isAuthenticated()"
+                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == article.users.username}"
+                            >수정</a>
+                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}"
+                               sec:authorize="isAuthenticated()"
+                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == article.users.username}"
+                            >삭제</a>
                             <div class="card-text" style="white-space: pre-line;"
                                  th:text="${articleCommentReply.comment}"></div>
                         </div>
