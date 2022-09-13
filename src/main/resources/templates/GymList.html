@@ -148,8 +148,14 @@
                         infowindow.close();
                     });
 
-                    kakao.maps.event.addListener(marker, 'mousedown', function () {
+
+             /*       kakao.maps.event.addListener(marker, 'mousedown', function() {
+                        displayGymInfo(curGym);*/
+
+
+                    kakao.maps.event.addListener(marker, 'click', function () {
                         displayGymInfo(curGym);
+
                     });
 
                     itemEl.onmouseover = function () {
