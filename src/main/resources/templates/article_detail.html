@@ -59,16 +59,25 @@
                         <input type="submit" disabled id="commentReplySubmit" value="답글등록"
                                class="btn btn-primary my-2">
                         <div class="card my-3" th:each="articleCommentReply : ${articleComment.getChild()}">
-                            <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}"
-                               sec:authorize="isAuthenticated()"
-                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == article.users.username}"
-                            >수정</a>
-                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}"
-                               sec:authorize="isAuthenticated()"
-                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == article.users.username}"
-                            >삭제</a>
-                            <div class="card-text" style="white-space: pre-line;"
-                                 th:text="${articleCommentReply.comment}"></div>
+                            <form th:action="@{|/articleComment/modify/${articleCommentReply.id}|}">
+                                <button sec:authorize="isAuthenticated()"
+                                        th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"
+                                        type="button">수정</button>
+                                <button sec:authorize="isAuthenticated()"
+                                        th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"
+                                        type="button">삭제</button>
+                                <textarea class="card-text" style="white-space: pre-line;"
+                                     th:text="${articleCommentReply.comment}" readonly></textarea>
+                            </form>
+<!--                            <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}"-->
+<!--                               sec:authorize="isAuthenticated()"-->
+<!--                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"-->
+<!--                            >수정</a>-->
+<!--                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}"-->
+<!--                               sec:authorize="isAuthenticated()"-->
+<!--                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"-->
+<!--                            >삭제</a>-->
+
                         </div>
                     </form>
                 </div>
@@ -139,6 +148,7 @@
                     }
                 });
             });
+
         </script>
 
         <!--<script layout:fragment="script" type='text/javascript'>-->
