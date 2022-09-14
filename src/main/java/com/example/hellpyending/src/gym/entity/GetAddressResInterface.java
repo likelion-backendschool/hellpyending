@@ -7,9 +7,9 @@ public interface GetAddressResInterface {
     Double getLng();
     String getGym_address();
     String getGym_phone_number();
-    int getPer1_month();
-    int getPer3_months();
-    int getPer6_months();
-    int getPer12_months();
+    int getPer1month();
+    int getPer3months();
+    int getPer6months();
+    int getPer12months();
 
 }
