@@ -36,9 +36,17 @@ public class UserRestController {
     }
     @GetMapping("/password/find")
     public String pwdFind() throws MessagingException {
-        MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMailMessage,true,"UTF-8");
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
         mimeMessageHelper.setFrom("ghdtmdvy2@naver.com");
         mimeMessageHelper.setTo("dhfl0909@naver.com");
+        mimeMessageHelper.setSubject("임시 비밀번호 안내");
+
+        StringBuilder body = new StringBuilder();
+        body.append("test");
+        mimeMessageHelper.setText(body.toString(), true);
+        javaMailSender.send(mimeMessage);
+
+        return "보내짐";
     }
 }
