@@ -230,6 +230,6 @@ gradle-app.setting
 
 *.yaml
 
-src/main/resources/*.yaml
+src/main/resources/application-base-addi.yaml
 
 .idea/**/Init
