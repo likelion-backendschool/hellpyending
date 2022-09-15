@@ -141,4 +141,7 @@ public class UserService {
         userRepository.save(users);
     }
 
+    public Users findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }
