@@ -1,5 +1,6 @@
 package com.example.hellpyending.user;
 
+import com.example.hellpyending.config.MemberContext;
 import com.example.hellpyending.user.entity.Users;
 import com.example.hellpyending.user.entity.UserType;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,6 @@ public class UserSecurityService implements UserDetailsService {
         } else {
             authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));
         }
-        return new User(Users.getUsername(), Users.getPassword(), authorities);
+        return new MemberContext(Users,authorities);
     }
 }
