@@ -15,6 +15,8 @@ logging:
 #    driver-class-name: org.mariadb.jdbc.Driver
 
 spring:
+  profiles:
+    active: base-addi
   datasource:
     url: jdbc:mariadb://rc4-pedro-server-db.cuupyzlcppur.ap-northeast-2.rds.amazonaws.com/hellpyending?useSSL=false&autoReconnect=true&validationQuery=select 1
     username: tigershrimp

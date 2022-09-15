@@ -90,7 +90,9 @@ public class Users extends BaseTimeEntity {
     @OneToMany(mappedBy = "users")
     private List<ChatMessageEntity> chatMessageEntities = new ArrayList<>();
 
-
+    // 비밀번호 찾을 때 사용 되는 인증번호 값.
+    @Column
+    private String random_num;
 
     public Users(String username, String password, List<GrantedAuthority> authorities) {
     }
