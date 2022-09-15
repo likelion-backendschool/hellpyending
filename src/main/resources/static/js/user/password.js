@@ -1,6 +1,12 @@
 function passwordFind() {
     let email = $("#email").val();
-    console.log(email)
+    let certificateKeyText = $("#certificateKeyText");
+    let certificateKey = $("#certificateKey").hide();
+    let certificateButton = $("#certificateButton").html();
+    $("#certificateKeyText").removeAttr('hidden');
+    $("#certificateKey").removeAttr('hidden');
+    $("#certificateKey").removeAttr('style');
+    certificateButton = "인증번호 재전송"
     $.ajax({
         url: "/user/password/find", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
         data: {email: email},  // HTTP 요청과 함께 서버로 보낼 데이터
@@ -9,7 +15,6 @@ function passwordFind() {
     })
         // HTTP 요청이 성공하면 요청한 데이터가 done() 메소드로 전달됨.
         .done(function (json) {
-            alert('인증번호를 보냈습니다.');
             if ($("#duplicate").length === 0) {
                 $("#check").prepend("<div id='duplicate'>" + json + "</div>");
             } else {
