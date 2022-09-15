@@ -38,12 +38,12 @@ public class UserRestController {
     public String pwdFind() throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
-        mimeMessageHelper.setFrom("ghdtmdvy2@naver.com");
-        mimeMessageHelper.setTo("ghdtmdvy2@gmail.com");
-        mimeMessageHelper.setSubject("임시 비밀번호 안내");
+        mimeMessageHelper.setFrom("ghdtmdvy2@naver.com"); // 보낼 주소
+        mimeMessageHelper.setTo("ghdtmdvy2@gmail.com"); // 받을 주소
+        mimeMessageHelper.setSubject("임시 비밀번호 안내"); // 제목
 
         StringBuilder body = new StringBuilder();
-        body.append("test");
+        body.append("test"); // 내용
         mimeMessageHelper.setText(body.toString(), true);
         javaMailSender.send(mimeMessage);
 
