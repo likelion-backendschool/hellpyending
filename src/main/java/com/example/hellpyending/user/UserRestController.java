@@ -43,7 +43,7 @@ public class UserRestController {
         Users users = users_.get();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
-        mimeMessageHelper.setFrom("ghdtmdvy2@naver.com"); // 보낼 주소
+        mimeMessageHelper.setFrom(from); // 보낼 주소
         mimeMessageHelper.setTo(email); // 받을 주소
         mimeMessageHelper.setSubject("임시 비밀번호 안내"); // 제목
 
