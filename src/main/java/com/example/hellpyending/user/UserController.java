@@ -30,6 +30,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @RequestMapping("/user")
 @Controller
@@ -216,9 +217,22 @@ public class UserController {
         return "redirect:/";
     }
     @GetMapping("/password")
-    public String pwdFind() throws MessagingException {
+    public String pwdFind() {
         return "/user/password";
     }
+
+
+    @PostMapping("/password")
+    public String pwdChange(String email,String username,String password2) {
+        Optional<Users> users_= userService.findByEmailAndUsername(email,username);
+        if (!users_.isPresent()){
+            return "access_error";
+        }
+        Users users = users_.get();
+        userService.modifyPwd(users,password2);
+        return "redirect:/";
+    }
+
     private boolean firstLoginCheck(Users users) {
         return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null || users.getPhoneNumber() == null;
     }

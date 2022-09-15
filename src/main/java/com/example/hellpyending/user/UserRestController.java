@@ -12,7 +12,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.security.Principal;
 import java.util.Optional;
-import java.util.UUID;
 
 @RequestMapping("/user")
 @RestController
@@ -35,11 +34,13 @@ public class UserRestController {
     }
     @GetMapping("/password/find")
     @ResponseBody
-    public String pwdFind(String email) throws MessagingException {
-        Users users = userService.findByEmail(email);
-        if (users == null){
-            return "존재하지 않는 이메일입니다.";
+    public String pwdFind(String email,String username) throws MessagingException {
+        Optional<Users> users_= userService.findByEmailAndUsername(email,username);
+        if (!users_.isPresent()){
+            return "정보가 일치하지 않습니다.";
         }
+
+        Users users = users_.get();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
         mimeMessageHelper.setFrom("ghdtmdvy2@naver.com"); // 보낼 주소
@@ -47,10 +48,26 @@ public class UserRestController {
         mimeMessageHelper.setSubject("임시 비밀번호 안내"); // 제목
 
         StringBuilder body = new StringBuilder();
-        body.append(Util.getTempPassword()); // 내용
+        String CertificateKey = Util.getTempPassword();
+        body.append(CertificateKey); // 내용
+        userService.createRandom_num(users,CertificateKey);
         mimeMessageHelper.setText(body.toString(), true);
         javaMailSender.send(mimeMessage);
 
-        return "보내짐";
+        return null;
+    }
+
+    @GetMapping("/password/check")
+    public String pwdChange(String email,String username,String certificateKey) {
+        Optional<Users> users_= userService.findByEmailAndUsername(email,username);
+        if (!users_.isPresent()){
+            return "인증에 실패하였습니다.";
+        }
+        Users users = users_.get();
+
+        if (users.getRandom_num().equals(certificateKey)){
+            return "인증이 되었습니다.";
+        }
+        return "인증에 실패하였습니다.";
     }
 }
