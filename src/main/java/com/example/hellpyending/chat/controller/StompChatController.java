@@ -35,7 +35,7 @@ public class StompChatController {
         System.out.println("진입");
 
         message.setMessage(message.getCommentUserNickName() + "님이 게시글에 답글을 달았습니다.");
-        template.convertAndSend("/sub/chat/article/message/" + message.getArticleUserId(), message);
+        template.convertAndSend("/sub/article/message/" + message.getArticleUserId(), message);
     }
 
 

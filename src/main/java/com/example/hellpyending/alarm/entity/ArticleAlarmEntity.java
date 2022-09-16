@@ -9,6 +9,6 @@ import lombok.Setter;
 public class ArticleAlarmEntity {
 
     private String commentUserNickName;
-    private long ArticleUserId;
+    private String articleUserId;
     private String message;
 }

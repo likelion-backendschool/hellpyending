@@ -164,12 +164,14 @@
 $(document).ready(function(){
 
     var commentUserNickName =[[${#authentication.getPrincipal().getUsername}]];
-        console.log(commentUserNickName);
-        var ArticleUserId =[[${#authentication.getPrincipal().getUsername}]];
+    console.log(commentUserNickName);
+    var articleUserId =[[${article.users.id}]];
+    console.log(articleUserId);
         $("#commentReplySubmit_").on("click", function(e){
 
             console.log(commentUserNickName);
-            stomp.send('/pub/article/message', {}, JSON.stringify({commentUserNickName: commentUserNickName, ArticleUserId: ArticleUserId}));
+            console.log(articleUserId);
+            stomp.send('/pub/article/message', {}, JSON.stringify({commentUserNickName: commentUserNickName, articleUserId: articleUserId}));
 
             // 유저 닉네임, 답글단 유저 닉네임 , 게시글 작성한 유저 idx
         });
