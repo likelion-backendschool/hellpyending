@@ -1,5 +1,6 @@
 package com.example.hellpyending.user;
 
+import com.example.hellpyending.config.Util;
 import com.example.hellpyending.user.entity.UserCreateForm;
 import com.example.hellpyending.user.entity.UserOauth2CreateForm;
 import com.example.hellpyending.user.entity.Users;
@@ -50,6 +51,7 @@ public class UserController {
     }
     @PostMapping("/signup")
     String signUp(@Valid UserCreateForm userCreateForm, BindingResult bindingResult){
+
 
         String birth = "%s-%s-%s".formatted(userCreateForm.getYear(),userCreateForm.getMonth(),userCreateForm.getDay());
         LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);

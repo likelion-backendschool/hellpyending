@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity(debug = true) // WebSecurity에서 어떤 필터를 거쳤는지 알 수 있음.
+//@EnableWebSecurity(debug = true) // WebSecurity에서 어떤 필터를 거쳤는지 알 수 있음.
 @AllArgsConstructor
 public class SpringSecurityConfig {
     private final Environment environment; // 각 환경에 대한 설정 변경이 필요하기 위해 가져옴.

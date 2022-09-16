@@ -125,7 +125,7 @@ public class UserService {
         }
     }
 
-    private String parseLocalDate(String birthday) {
+    private static String parseLocalDate(String birthday) {
         String[] bits = birthday.split("/");
         return "%s-%s-%s".formatted(bits[2],bits[0],bits[1]);
     }
