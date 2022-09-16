@@ -33,9 +33,15 @@ public class RoomController {
     private final ChatMessageService chatMessageService;
 
     //채팅방 목록 조회
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/rooms")
     public ModelAndView rooms_db(Principal principal){
 
+        if (principal==null) {
+            ModelAndView mv = new ModelAndView("access_error");
+            return mv;
+
+        }
 
         Users users = this.userService.getUser(principal.getName());
         chatRoomService.findAllRoomsFromUser(users);
@@ -47,6 +53,7 @@ public class RoomController {
     }
 
     //채팅방 개설
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/room")
     public String create(@RequestParam String name, RedirectAttributes rttr){
 
@@ -61,6 +68,10 @@ public class RoomController {
     @PostMapping(value = "/room/{another_user_id}")
     public String create_db(@RequestParam String name, RedirectAttributes rttr,@PathVariable(name = "another_user_id") long another_user_id,Principal principal){
 
+        if (principal==null) {
+            return "access_error";
+
+        }
         Users users = this.userService.getUser(principal.getName());
         ChatRoom room = chatRoomService.createChatRoom(users,another_user_id,name);
         log.info("# Create Chat Room , name: " + name);
@@ -72,6 +83,12 @@ public class RoomController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/delete")
     public String deleteChatRoom(@RequestParam String roomId,Principal principal){
+
+        if (principal==null) {
+            return "access_error";
+
+        }
+
         chatRoomService.deleteChatRoom(roomId);
         log.info("# delete Chat Room , name: " + roomId);
 
@@ -82,8 +99,9 @@ public class RoomController {
 
 
     //채팅방 조회
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/room")
-    public void getRoom(String roomId, Model model){
+    public void getRoom(String roomId, Model model,Principal principal){
 
         log.info("# get Chat Room, roomID : " + roomId);
        // model.addAttribute("room", chatRoomRepository.findRoomById(roomId));

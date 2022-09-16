@@ -228,6 +228,6 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij+all,windows,macos,visualstudiocode
 
-*.yaml
+src/main/resources/application-base-addi.yaml
 
 .idea/**/Init

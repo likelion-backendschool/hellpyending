@@ -3,10 +3,10 @@ window.onload = function () {
         //카카오 지도 발생
         new daum.Postcode({
             oncomplete: function (data) { //선택시 입력값 세팅
-                document.getElementById("address_1st").value = data.address; // 주소 넣기
-                document.getElementById("address_2st").value = data.sido;
-                document.getElementById("address_3st").value = data.sigungu;
-                document.getElementById("address_4st").value = data.bname;
+                document.getElementById("address_1st").value = data.sido; // 주소 넣기
+                document.getElementById("address_2st").value = data.sigungu;
+                document.getElementById("address_3st").value = data.bname;
+                document.getElementById("address_4st").value = data.address;
                 document.getElementById("address_detail").value = '';
                 document.getElementById("address_detail").focus(); //상세입력 포커싱
             }
@@ -14,7 +14,10 @@ window.onload = function () {
 
     });
 }
-
+data.address;
+data.sido;
+data.sigungu;
+data.bname;
 function btnPwdActive() {
     const target1 = document.getElementById('password1');
     const target2 = document.getElementById('password2');
