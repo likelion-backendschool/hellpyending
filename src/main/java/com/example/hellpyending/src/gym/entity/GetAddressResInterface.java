@@ -11,5 +11,5 @@ public interface GetAddressResInterface {
     int getPer3months();
     int getPer6months();
     int getPer12months();
-
+    String getGym_image_address();
 }
