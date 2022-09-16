@@ -6,6 +6,7 @@ import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,11 +23,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @RequestMapping("/user")
 @Controller
@@ -210,6 +214,22 @@ public class UserController {
             bindingResult.reject("signupFailed", e.getMessage());
             return "/user/oauth2_signup";
         }
+        return "redirect:/";
+    }
+    @GetMapping("/password")
+    public String pwdFind() {
+        return "/user/password";
+    }
+
+
+    @PostMapping("/password")
+    public String pwdChange(String email,String username,String password2) {
+        Optional<Users> users_= userService.findByEmailAndUsername(email,username);
+        if (!users_.isPresent()){
+            return "access_error";
+        }
+        Users users = users_.get();
+        userService.modifyPwd(users,password2);
         return "redirect:/";
     }
 
