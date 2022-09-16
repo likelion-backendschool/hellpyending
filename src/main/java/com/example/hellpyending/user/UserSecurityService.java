@@ -1,12 +1,11 @@
 package com.example.hellpyending.user;
 
-import com.example.hellpyending.config.MemberContext;
+import com.example.hellpyending.config.UsersContext;
 import com.example.hellpyending.user.entity.Users;
 import com.example.hellpyending.user.entity.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +33,6 @@ public class UserSecurityService implements UserDetailsService {
         } else {
             authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));
         }
-        return new MemberContext(Users,authorities);
+        return new UsersContext(Users,authorities);
     }
 }

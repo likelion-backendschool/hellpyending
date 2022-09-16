@@ -12,20 +12,20 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
-public class MemberContext extends User implements OAuth2User {
+public class UsersContext extends User implements OAuth2User {
     private final Long id;
     private final String email;
     private Map<String, Object> attributes;
     private String userNameAttributeName;
 
 
-    public MemberContext(Users users, List<GrantedAuthority> authorities) {
+    public UsersContext(Users users, List<GrantedAuthority> authorities) {
         super(users.getUsername(), users.getPassword(), authorities);
         this.id = users.getId();
         this.email = users.getEmail();
     }
 
-    public MemberContext(Users users, List<GrantedAuthority> authorities, Map<String, Object> attributes, String userNameAttributeName) {
+    public UsersContext(Users users, List<GrantedAuthority> authorities, Map<String, Object> attributes, String userNameAttributeName) {
         this(users, authorities);
         this.attributes = attributes;
         this.userNameAttributeName = userNameAttributeName;

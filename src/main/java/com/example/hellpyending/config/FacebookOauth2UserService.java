@@ -5,16 +5,13 @@ import com.example.hellpyending.user.UserService;
 import com.example.hellpyending.user.entity.Sex;
 import com.example.hellpyending.user.entity.UserType;
 import com.example.hellpyending.user.entity.Users;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +64,6 @@ public class FacebookOauth2UserService implements OAuth2UserService<OAuth2UserRe
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));
-        return new MemberContext(users,authorities,oAuth2User.getAttributes(),userNameAttributeName);
+        return new UsersContext(users,authorities,oAuth2User.getAttributes(),userNameAttributeName);
     }
 }
