@@ -1,11 +1,31 @@
 <th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
         <h2 class="border-bottom py-2" th:text="${article.title}"></h2>
 
 
-        <h3 th:text="${article.users.nickname}">
-        </h3>
+        <div class="d-flex justify-content-between">
+            <div>
+                <h3 th:text="${article.users.nickname}">
+                </h3>
+            </div>
+            <div class="d-flex">
+                <div sec:authorize="isAuthenticated()">
+                    <div id="likeBox" style="margin: 4px 10px;">
+                    </div>
+                </div>
+                <div sec:authorize="!isAuthenticated()">
+                    <div style="margin: 4px 10px;">
+                        <i class='bi bi-heart'></i>
+                    </div>
+                </div>
+                <div>
+                <span id="pushCount" th:text="${pushCount}">
+                </span>
+                </div>
+
+            </div>
+        </div>
 
 
         <div class="card my-3">
@@ -60,9 +80,11 @@
                           th:object="${articleCommentForm}" method="post" class="my-3">
                         <div th:replace="form_errors :: formErrorsFragment"></div>
 
-                        <textarea  th:id="|commentReply${articleComment.id}|" name="content" rows="1" class="form-control"></textarea>
+                        <textarea th:id="|commentReply${articleComment.id}|" name="content" rows="1"
+                                  class="form-control"></textarea>
 
-                        <input type="submit" name="commentReplySubmit_new" disabled th:id="|commentReplySubmit${articleComment.id}|" value="답글등록"
+                        <input type="submit" name="commentReplySubmit_new"
+                               th:id="|commentReplySubmit${articleComment.id}|" value="답글등록"
                                class="btn btn-primary my-2">
                         <div class="card my-3" th:each="articleCommentReply : ${articleComment.getChild()}">
                             <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}">수정</a>
@@ -100,6 +122,43 @@
 
 
         <script layout:fragment="script" type='text/javascript'>
+            function likeStatus() {
+                $.ajax({
+                    url: "/article/likeStatus/[[${article.id}]]",
+                    method: "GET",
+                }).done(function (data) {
+                    if (data == "false") {
+                        $("#likeBox").append("<i class='bi bi-heart'></i>")
+                    } else {
+                        $("#likeBox").append('<i class="bi bi-heart-fill"></i>')
+                    }
+                })
+            }
+
+            $(document).ready(function () {
+                $("#likeBox").empty();
+                likeStatus();
+            })
+
+            $(document).on('click', '#likeBox', function () {
+                let count = parseInt($("#pushCount").text());
+                $.ajax({
+                    url: "/article/pushLike/[[${article.id}]]",
+                    method: "GET",
+                }).done(function (data) {
+                    if (data == "pushLike") {
+                        $("#likeBox").empty();
+                        $("#likeBox").append('<i class="bi bi-heart-fill"></i>')
+                        $("#pushCount").text(++count);
+                    } else {
+                        $("#likeBox").empty();
+                        $("#likeBox").append("<i class='bi bi-heart'></i>")
+                        $("#pushCount").text(--count);
+                    }
+                })
+            })
+
+
             const delete_elements = document.getElementsByClassName("delete");
             Array.from(delete_elements).forEach(function (element) {
                 element.addEventListener('click', function () {
@@ -119,26 +178,7 @@
                 });
             });
 
-            const _elements = document.getElementsByName("commentReplySubmit_new")
-            $(document).ready(function () {
-                $('#commentReply').on('input change', function () {
-                    if ($(this).val() != '') {
-                        $(_elements).prop('disabled', false);
-                    } else {
-                        $(_elements).prop('disabled', true);
-                    }
-                });
-            });
 
-            $(document).ready(function () {
-                $('#commentReply_').on('input change', function () {
-                    if ($(this).val() != '') {
-                        $('#commentReplySubmit_').prop('disabled', false);
-                    } else {
-                        $('#commentReplySubmit_').prop('disabled', true);
-                    }
-                });
-            });
         </script>
 
         <!--<script layout:fragment="script" type='text/javascript'>-->

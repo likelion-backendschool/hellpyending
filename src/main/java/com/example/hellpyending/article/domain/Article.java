@@ -64,6 +64,9 @@ public class Article {
     @Column(nullable = false)
     private String address_3st;
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    Set<ArticleLike> likes = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
@@ -91,8 +94,20 @@ public class Article {
         articleHashtags.add(new ArticleHashtag(keywordContent));
     }
 
-
-
+    public Article(Long id, LocalDateTime create, LocalDateTime update, String title, String content, Integer hitCount, String imageUrl, DeleteType deleteYn, String address_1st, String address_2st, String address_3st, Users users) {
+        this.id = id;
+        this.create = create;
+        this.update = update;
+        this.title = title;
+        this.content = content;
+        this.hitCount = hitCount;
+        this.imageUrl = imageUrl;
+        this.deleteYn = deleteYn;
+        this.address_1st = address_1st;
+        this.address_2st = address_2st;
+        this.address_3st = address_3st;
+        this.users = users;
+    }
 
 
 //    @OneToMany(mappedBy = "article")

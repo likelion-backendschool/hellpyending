@@ -2,13 +2,13 @@ package com.example.hellpyending.article.controller;
 
 import com.example.hellpyending.article.domain.Article;
 
-import com.example.hellpyending.article.domain.ArticleImg;
-
+import com.example.hellpyending.article.domain.ArticleLike;
 import com.example.hellpyending.article.exception.DataNotFoundException;
 
 import com.example.hellpyending.article.form.ArticleCommentForm;
 import com.example.hellpyending.article.form.ArticleForm;
 import com.example.hellpyending.article.service.ArticleImgService;
+import com.example.hellpyending.article.service.ArticleLikeService;
 import com.example.hellpyending.article.service.ArticleService;
 import com.example.hellpyending.user.UserSecurityService;
 import com.example.hellpyending.user.UserService;
@@ -41,7 +41,10 @@ public class ArticleController {
 
     private final ArticleImgService articleImgService;
     private final ArticleService articleService;
+
+    private final ArticleLikeService articleLikeService;
     private final UserService userService;
+
     private final UserSecurityService userSecurityService;
 
     @GetMapping("/list")
@@ -70,12 +73,10 @@ public class ArticleController {
     @GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable long id, ArticleCommentForm articleCommentForm, HttpServletRequest request, HttpServletResponse response) {
         Article article = articleService.getArticle(id);
-
         articleService.setHitCount(id, request, response); // 조회수 증가
-
-
+        int pushCount = articleLikeService.countArticleLike(id);
+        model.addAttribute("pushCount",pushCount);
         model.addAttribute("article", article);
-
         return "article_detail";
     }
 
@@ -99,22 +100,53 @@ public class ArticleController {
     }
 
 
+    @GetMapping("/pushLike/{articleId}")
+    @ResponseBody
+    public String pushLike(@PathVariable Long articleId, Principal principal) {
+        if (principal == null) {
+            return "AccessDenied";
+        }
+        Users users = userService.getUser(principal.getName());
+        Article article = articleService.getArticle(articleId);
+        boolean articleLike = articleLikeService.isArticleLike(users.getId(), article.getId());
+        if (!articleLike) {
+            articleLikeService.doLike(new ArticleLike(article, users));
+            return "pushLike";
+        } else {
+            articleLikeService.undoLike(users.getId(), article.getId());
+            return "unPushLike";
+        }
+    }
+
+
+    @GetMapping("/likeStatus/{articleId}")
+    @ResponseBody
+    public String likeStatus(@PathVariable Long articleId, Principal principal) {
+        if (principal == null) {
+            return "AccessDenied";
+        }
+        Users users = userService.getUser(principal.getName());
+        Article article = articleService.getArticle(articleId);
+        return String.valueOf(articleLikeService.isArticleLike(users.getId(), article.getId()));
+    }
+
+
+
+
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String articleCreate_img(Model model, @Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal
-    ,@RequestParam(value = "files", required = false) List<MultipartFile> files
-    ,@RequestParam(value = "tag", required = false) List<String> tags) throws IOException {
+            ,@RequestParam(value = "files", required = false) List<MultipartFile> files
+            ,@RequestParam(value = "tag", required = false) List<String> tags) throws IOException {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
-
-
         Users users = this.userService.getUser(principal.getName());
         articleService.create(articleForm.getTitle(), articleForm.getContent(), users,files,tags);
-
         return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String articleModify(ArticleForm articleForm, @PathVariable(name = "id") Long id, Principal principal) {
@@ -174,7 +206,6 @@ public class ArticleController {
             return null;
         }
     }
-
 
 
 }
