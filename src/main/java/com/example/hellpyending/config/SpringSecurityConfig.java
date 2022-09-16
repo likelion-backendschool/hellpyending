@@ -134,9 +134,9 @@ public class SpringSecurityConfig {
                 .scope(
                         "email",
                         "profile",
-                        "openid"
+                        "openid",
 //                        "https://www.googleapis.com/auth/user.addresses.read",
-//                        "https://www.googleapis.com/auth/user.birthday.read"
+                        "https://www.googleapis.com/auth/user.birthday.read"
                 )
                 .build();
     }

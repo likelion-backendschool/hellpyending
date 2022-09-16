@@ -29,6 +29,7 @@ spring:
           facebook:
             client-id: "648549323204830"
             client-secret: "a7778702a88530fe7ba9e58fd76880a4"
+
           google:
             client-id: "386877204084-gioi2ct43scks1gspejeihjjvrvv1e96.apps.googleusercontent.com"
             client-secret: "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"
