@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
 <th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
 
@@ -100,6 +104,12 @@
 
 
         <script layout:fragment="script" type='text/javascript'>
+
+
+
+
+
+
             const delete_elements = document.getElementsByClassName("delete");
             Array.from(delete_elements).forEach(function (element) {
                 element.addEventListener('click', function () {
@@ -148,3 +158,23 @@
         <!--</script>-->
     </th:block>
 </th:block>
+</html>
+<script th:inline="javascript">
+
+$(document).ready(function(){
+
+    var commentUserNickName =[[${#authentication.getPrincipal().getUsername}]];
+        console.log(commentUserNickName);
+        var ArticleUserId =[[${#authentication.getPrincipal().getUsername}]];
+        $("#commentReplySubmit_").on("click", function(e){
+
+            console.log(commentUserNickName);
+            stomp.send('/pub/article/message', {}, JSON.stringify({commentUserNickName: commentUserNickName, ArticleUserId: ArticleUserId}));
+
+            // 유저 닉네임, 답글단 유저 닉네임 , 게시글 작성한 유저 idx
+        });
+
+
+
+});
+</script>

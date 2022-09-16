@@ -1,5 +1,6 @@
 package com.example.hellpyending.chat.controller;
 
+import com.example.hellpyending.alarm.entity.ArticleAlarmEntity;
 import com.example.hellpyending.chat.entity.ChatMessage;
 import com.example.hellpyending.chat.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
@@ -28,4 +29,15 @@ public class StompChatController {
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
         this.chatMessageService.createMessage(message);
     }
+    @MessageMapping(value = "/article/message")
+    public void articleMessage(ArticleAlarmEntity message){
+        // 유저 알림 방
+        System.out.println("진입");
+
+        message.setMessage(message.getCommentUserNickName() + "님이 게시글에 답글을 달았습니다.");
+        template.convertAndSend("/sub/chat/article/message/" + message.getArticleUserId(), message);
+    }
+
+
+
 }
