@@ -62,7 +62,7 @@
 
                         <textarea  th:id="|commentReply${articleComment.id}|" name="content" rows="1" class="form-control"></textarea>
 
-                        <input type="submit" name="commentReplySubmit_new" disabled th:id="|commentReplySubmit${articleComment.id}|" value="답글등록"
+                        <input type="submit" name="commentReplySubmit_new"  th:id="|commentReplySubmit${articleComment.id}|" value="답글등록"
                                class="btn btn-primary my-2">
                         <div class="card my-3" th:each="articleCommentReply : ${articleComment.getChild()}">
                             <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}">수정</a>
@@ -119,26 +119,7 @@
                 });
             });
 
-            const _elements = document.getElementsByName("commentReplySubmit_new")
-            $(document).ready(function () {
-                $('#commentReply').on('input change', function () {
-                    if ($(this).val() != '') {
-                        $(_elements).prop('disabled', false);
-                    } else {
-                        $(_elements).prop('disabled', true);
-                    }
-                });
-            });
 
-            $(document).ready(function () {
-                $('#commentReply_').on('input change', function () {
-                    if ($(this).val() != '') {
-                        $('#commentReplySubmit_').prop('disabled', false);
-                    } else {
-                        $('#commentReplySubmit_').prop('disabled', true);
-                    }
-                });
-            });
         </script>
 
         <!--<script layout:fragment="script" type='text/javascript'>-->
