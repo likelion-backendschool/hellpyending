@@ -62,38 +62,13 @@
 
                         <textarea  th:id="|commentReply${articleComment.id}|" name="content" rows="1" class="form-control"></textarea>
 
-                        <input type="submit" name="commentReplySubmit_new" disabled th:id="|commentReplySubmit${articleComment.id}|" value="답글등록"
+                        <input type="submit" name="commentReplySubmit_new"  th:id="|commentReplySubmit${articleComment.id}|" value="답글등록"
                                class="btn btn-primary my-2">
                         <div class="card my-3" th:each="articleCommentReply : ${articleComment.getChild()}">
-                            <form th:action="@{|/articleComment/CommentReply/save|}">
-                                <button type="button"
-                                        onclick="modify(this.form)"
-                                        sec:authorize="isAuthenticated()"
-                                        th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}">
-                                    수정</button>
-                                <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}"
-                                   sec:authorize="isAuthenticated()"
-                                   th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"
-                                >삭제</a>
-
-                                <button sec:authorize="isAuthenticated()"
-                                        th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"
-                                        onclick="commentReplySave(this.form); return false"
-                                        type="button"
-                                        hidden>
-                                        저장
-                                </button>
-                                <input class="card-text" style="white-space: pre-line;"
-                                          id="commentReplyExist"
-                                     th:value="${articleCommentReply.comment}" readonly/>
-                                <span th:text="${articleCommentReply.id}" hidden></span>
-                            </form>
-<!--                            <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}"-->
-<!--                               sec:authorize="isAuthenticated()"-->
-<!--                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"-->
-<!--                            >수정</a>-->
-
-
+                            <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}">수정</a>
+                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}">삭제</a>
+                            <div class="card-text" style="white-space: pre-line;"
+                                 th:text="${articleCommentReply.comment}"></div>
                         </div>
                     </form>
                 </div>
@@ -144,76 +119,7 @@
                 });
             });
 
-            const _elements = document.getElementsByName("commentReplySubmit_new")
-            $(document).ready(function () {
-                $('#commentReply').on('input change', function () {
-                    if ($(this).val() != '') {
-                        $(_elements).prop('disabled', false);
-                    } else {
-                        $(_elements).prop('disabled', true);
-                    }
-                });
-            });
 
-            $(document).ready(function () {
-                $('#commentReply_').on('input change', function () {
-                    if ($(this).val() != '') {
-                        $('#commentReplySubmit_').prop('disabled', false);
-                    } else {
-                        $('#commentReplySubmit_').prop('disabled', true);
-                    }
-                });
-            });
-
-            function modify(form){
-                let Modify = form.childNodes[1];
-                let CommentReply = form.childNodes[7];
-                let Save = form.childNodes[5];
-                console.log(form.childNodes);
-
-                if (CommentReply.readOnly === true) {
-                    Modify.innerHTML = "수정취소";
-                    CommentReply.readOnly = false;
-                    Save.hidden = false;
-                } else {
-                    Modify.innerHTML = "수정";
-                    CommentReply.readOnly = true;
-                    Save.hidden = true;
-                }
-            }
-            function commentReplySave(form) {
-                let Modify = form.childNodes[1];
-                let CommentReply = form.childNodes[7];
-                let Save = form.childNodes[5];
-                let SaveCommentReply = form.childNodes[7].value;
-                let CommentId = form.childNodes[9].innerHTML;
-                console.log(SaveCommentReply);
-                console.log(CommentId);
-                $.ajax({
-                    url: "/articleComment/CommentReply/save", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
-                    data: {SaveCommentReply: SaveCommentReply, CommentId:CommentId},  // HTTP 요청과 함께 서버로 보낼 데이터
-                    method: "GET",   // HTTP 요청 메소드(GET, POST 등)
-                    dataType: "html" // 서버에서 보내줄 데이터의 타입
-                })
-                    // HTTP 요청이 성공하면 요청한 데이터가 done() 메소드로 전달됨.
-                    .done(function (json) {
-                        SaveCommentReply.value = json;
-                        Modify.innerHTML = "수정";
-                        CommentReply.readOnly = true;
-                        Save.hidden = true;
-                        // $("<div class=\"content\">").html(json.html).appendTo("body");
-                    })
-                    // HTTP 요청이 실패하면 오류와 상태에 관한 정보가 fail() 메소드로 전달됨.
-                    .fail(function (xhr, status, errorThrown) {
-                        $("#text").html("오류가 발생했다.<br>")
-                            .append("오류명: " + errorThrown + "<br>")
-                            .append("상태: " + status);
-                    })
-                    //
-                    .always(function (xhr, status) {
-                        $("#text").html("요청이 완료되었습니다!");
-                    });
-            }
         </script>
 
         <!--<script layout:fragment="script" type='text/javascript'>-->
