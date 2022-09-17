@@ -89,10 +89,27 @@
 
                                class="btn btn-primary my-2">
                         <div class="card my-3" th:each="articleCommentReply : ${articleComment.getChild()}">
-                            <a th:href="@{|/articleComment/modify/${articleCommentReply.id}|}">수정</a>
-                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}">삭제</a>
-                            <div class="card-text" style="white-space: pre-line;"
-                                 th:text="${articleCommentReply.comment}"></div>
+                            <button type="button"
+                                    onclick="modify(this)"
+                                    sec:authorize="isAuthenticated()"
+                                    th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}">
+                                수정</button>
+                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}"
+                               sec:authorize="isAuthenticated()"
+                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"
+                            >삭제</a>
+
+                            <button sec:authorize="isAuthenticated()"
+                                    th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"
+                                    onclick="commentReplySave(this); return false"
+                                    type="button"
+                                    hidden>
+                                저장
+                            </button>
+                            <input class="card-text" style="white-space: pre-line;"
+                                   id="commentReplyExist"
+                                   th:value="${articleCommentReply.comment}" readonly/>
+                            <span th:text="${articleCommentReply.id}" hidden></span>
                         </div>
                     </form>
                 </div>
@@ -180,7 +197,56 @@
                 });
             });
 
+            function modify(button){
+                let parentNode = button.parentNode;
+                let Modify = parentNode.childNodes[1];
+                let CommentReply = parentNode.childNodes[7];
+                let Save = parentNode.childNodes[5];
 
+                if (CommentReply.readOnly === true) {
+                    Modify.innerHTML = "수정취소";
+                    CommentReply.readOnly = false;
+                    Save.hidden = false;
+                } else {
+                    Modify.innerHTML = "수정";
+                    CommentReply.readOnly = true;
+                    Save.hidden = true;
+                }
+            }
+            function commentReplySave(button) {
+                let parentNode = button.parentNode;
+                let Modify = parentNode.childNodes[1];
+                let CommentReply = parentNode.childNodes[7];
+                let Save = parentNode.childNodes[5];
+                let SaveCommentReply = parentNode.childNodes[7].value;
+                let CommentId = parentNode.childNodes[9].innerHTML;
+                console.log(SaveCommentReply);
+                console.log(CommentId);
+                $.ajax({
+                    url: "/articleComment/CommentReply/save", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+                    data: {SaveCommentReply: SaveCommentReply, CommentId:CommentId},  // HTTP 요청과 함께 서버로 보낼 데이터
+                    method: "GET",   // HTTP 요청 메소드(GET, POST 등)
+                    dataType: "html" // 서버에서 보내줄 데이터의 타입
+                })
+                    // HTTP 요청이 성공하면 요청한 데이터가 done() 메소드로 전달됨.
+                    .done(function (json) {
+                        SaveCommentReply.value = json;
+                        Modify.innerHTML = "수정";
+                        CommentReply.readOnly = true;
+                        Save.hidden = true;
+                        // $("<div class=\"content\">").html(json.html).appendTo("body");
+                    })
+                    // HTTP 요청이 실패하면 오류와 상태에 관한 정보가 fail() 메소드로 전달됨.
+                    .fail(function (xhr, status, errorThrown) {
+                        $("#text").html("오류가 발생했다.<br>")
+                            .append("오류명: " + errorThrown + "<br>")
+                            .append("상태: " + status);
+                    })
+                    //
+                    .always(function (xhr, status) {
+                        $("#text").html("요청이 완료되었습니다!");
+                    });
+            }
         </script>
 
         <!--<script layout:fragment="script" type='text/javascript'>-->
