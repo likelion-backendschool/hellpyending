@@ -1,5 +1,7 @@
 package com.example.hellpyending.user;
 
+import com.example.hellpyending.config.UsersContext;
+import com.example.hellpyending.config.Util;
 import com.example.hellpyending.user.entity.UserCreateForm;
 import com.example.hellpyending.user.entity.UserOauth2CreateForm;
 import com.example.hellpyending.user.entity.Users;
@@ -50,6 +52,7 @@ public class UserController {
     }
     @PostMapping("/signup")
     String signUp(@Valid UserCreateForm userCreateForm, BindingResult bindingResult){
+
 
         String birth = "%s-%s-%s".formatted(userCreateForm.getYear(),userCreateForm.getMonth(),userCreateForm.getDay());
         LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
@@ -174,10 +177,10 @@ public class UserController {
 
     @GetMapping("/oauth2/information/update")
     @PreAuthorize("isAuthenticated()")
-    String oauth2_information_update(Model model,UserUpdateForm userUpdateForm, Authentication authentication,
-                              @AuthenticationPrincipal UserDetails userDetails, UserOauth2CreateForm userOauth2CreateForm,HttpSession httpSession){
+    String oauth2_information_update(Model model, UserOauth2CreateForm userOauth2CreateForm, Authentication authentication,
+                                     @AuthenticationPrincipal UsersContext usersContext){
         String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
-        Users users = userService.getUser(email);
+        Users users = userService.findByEmail(email);
         if (firstLoginCheck(users)){
             return "/user/oauth2_signup";
         }
@@ -189,13 +192,16 @@ public class UserController {
     String oauth2_information_update(@Valid UserOauth2CreateForm userOauth2CreateForm, BindingResult bindingResult, Authentication authentication,
                                      @AuthenticationPrincipal UserDetails userDetails){
         String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
-
+        String birth = "%s-%s-%s".formatted(userOauth2CreateForm.getYear(),userOauth2CreateForm.getMonth(),userOauth2CreateForm.getDay());
+        LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
         if (bindingResult.hasErrors()) {
             return "/user/oauth2_signup";
         }
         try {
             userService.create(
                     email,
+                    birthday,
+                    userOauth2CreateForm.getSex(),
                     userOauth2CreateForm.getPhoneNumber(),
                     userOauth2CreateForm.getAddress_1st(),
                     userOauth2CreateForm.getAddress_2st(),
@@ -234,7 +240,8 @@ public class UserController {
     }
 
     private boolean firstLoginCheck(Users users) {
-        return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null || users.getPhoneNumber() == null;
+        return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null ||
+                users.getPhoneNumber() == null || users.getBirthday() == null;
     }
 
 }

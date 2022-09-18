@@ -4,6 +4,16 @@
             <div role="alert" th:if="${#fields.hasAnyErrors()}">
                 <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
             </div>
+            <div>
+                <select name="year" id="year"></select>년
+                <select name="month" id="month"></select>월
+                <select name="day" id="day"></select>일
+            </div>
+            <span>성별</span>
+            <div>
+                <label><input type="radio" name="sex" value="MALE" checked/>남성</label>
+                <label><input type="radio" name="sex" value="FEMALE"/>여성</label>
+            </div>
             <span>휴대폰 번호</span>
             <div>
                 <input type="text" name="phoneNumber" placeholder="휴대폰 번호를 입력해주세요" maxlength='11' pattern="[0-9]+"

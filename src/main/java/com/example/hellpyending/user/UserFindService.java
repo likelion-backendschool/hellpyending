@@ -14,4 +14,8 @@ public class UserFindService {
     public boolean existsByUsername(String name) {
         return userRepository.existsByUsername(name);
     }
+
+    public boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
 }

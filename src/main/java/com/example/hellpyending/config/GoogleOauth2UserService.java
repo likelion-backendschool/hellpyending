@@ -1,8 +1,13 @@
 package com.example.hellpyending.config;
 
 import com.example.hellpyending.user.UserService;
+import com.example.hellpyending.user.entity.Sex;
+import com.example.hellpyending.user.entity.UserType;
+import com.example.hellpyending.user.entity.Users;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -10,7 +15,11 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 // 구글은 OpenID Connect 1.0 를 이용하여 통신하기 때문에 OidcUserRequest 라고 쓰는 것을 유의하자.
@@ -29,19 +38,26 @@ public class GoogleOauth2UserService implements OAuth2UserService<OidcUserReques
 
         // 유저 정보 조회를 하여 객체를 반환
         final OidcUser oidcUser = oidcUserService.loadUser(userRequest);
-
+        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint()
+                .getUserNameAttributeName();
         final OAuth2AccessToken accessToken = userRequest.getAccessToken();
 
         // 기본적으로 스프링 부트에서 OAuth2 회원 정보를 가져오기 위한 getAttributes 메서드가 있다.
-        String name = oidcUser.getAttributes().get("name").toString();
+        final String username = "GOOGLE_%s".formatted(oidcUser.getName());
+        String nickname = oidcUser.getAttributes().get("name").toString();
         String email = oidcUser.getAttributes().get("email").toString();
 //        String gender = oidcUser.getAttributes().get("gender").toString();
 //        String birthday = oidcUser.getAttributes().get("birthday").toString();
-        userService.requestRegistration(name,email);
-        return new DefaultOidcUser(
-                oidcUser.getAuthorities(),
-                oidcUser.getIdToken(),
-                oidcUser.getUserInfo()
-        );
+        userService.requestRegistration(username,nickname,email);
+
+        Users users = Users.builder()
+                .username(username)
+                .nickname(nickname)
+                .email(email)
+                .password("")
+                .build();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));
+        return (OidcUser) new UsersContext(users,authorities,oidcUser.getAttributes(),userNameAttributeName);
     }
 }

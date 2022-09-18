@@ -42,7 +42,7 @@ public class Users extends BaseTimeEntity {
     @Column(length = 20, nullable = false, unique = true)
     private String username;
 
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(length = 30, nullable = false, unique = true)
     private String nickname;
 
     @Column(length = 30, unique = true)
@@ -58,6 +58,7 @@ public class Users extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "delete_yn")
     private DeleteType deleteYn;
+
 
     // 광역시
     // ex) 인천, 서울, 부산 ...
@@ -89,10 +90,6 @@ public class Users extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "users")
     private List<ChatMessageEntity> chatMessageEntities = new ArrayList<>();
-
-    // 비밀번호 찾을 때 사용 되는 인증번호 값.
-    @Column
-    private String random_num;
 
     public Users(String username, String password, List<GrantedAuthority> authorities) {
     }
