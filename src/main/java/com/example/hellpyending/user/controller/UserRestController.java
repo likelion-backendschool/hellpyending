@@ -2,6 +2,7 @@ package com.example.hellpyending.user.controller;
 
 import com.example.hellpyending.config.Util;
 import com.example.hellpyending.user.service.UserService;
+
 import com.example.hellpyending.user.entity.EmailCertificateKey;
 import com.example.hellpyending.user.entity.Users;
 import com.example.hellpyending.user.redis.EmailRedisRepository;
@@ -86,6 +87,7 @@ public class UserRestController {
             return "인증에 실패하였습니다.";
         }
         EmailCertificateKey emailCK = emailCK_.get(); // 있는 지 체크.
+
 
         if (emailCK.getCertificateKey().equals(certificateKey)){
             return "인증이 되었습니다.";
