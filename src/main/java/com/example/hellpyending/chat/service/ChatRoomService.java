@@ -4,7 +4,7 @@ import com.example.hellpyending.chat.entity.ChatRoom;
 import com.example.hellpyending.chat.entity.ChatRoomUser;
 import com.example.hellpyending.chat.repository.ChatRoomRepositoryJPA;
 import com.example.hellpyending.chat.repository.ChatRoomUserRepository;
-import com.example.hellpyending.user.UserRepository;
+import com.example.hellpyending.user.repository.UserRepository;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

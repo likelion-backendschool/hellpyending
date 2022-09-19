@@ -1,5 +1,6 @@
-package com.example.hellpyending.user.exercise;
+package com.example.hellpyending.user.exercise.repository;
 
+import com.example.hellpyending.user.entity.Exercise;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

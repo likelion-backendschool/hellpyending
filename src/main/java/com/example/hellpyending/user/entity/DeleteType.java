@@ -1,4 +1,4 @@
-package com.example.hellpyending;
+package com.example.hellpyending.user.entity;
 
 import lombok.Getter;
 @Getter

@@ -1,7 +1,7 @@
 //package com.example.hellpyending.config;
 //
-//import com.example.hellpyending.DeleteType;
-//import com.example.hellpyending.user.UserService;
+//import com.example.hellpyending.user.entity.DeleteType;
+//import com.example.hellpyending.user.service.UserService;
 //import com.example.hellpyending.user.entity.Sex;
 //import com.example.hellpyending.user.entity.UserType;
 //import com.example.hellpyending.user.entity.Users;

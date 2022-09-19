@@ -1,4 +1,4 @@
-package com.example.hellpyending.user.exercise;
+package com.example.hellpyending.user.entity;
 
 public enum ExerciseIntensity {
     HIGH("HIGH"),

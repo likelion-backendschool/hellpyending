@@ -1,6 +1,6 @@
 package com.example.hellpyending.article.domain;
 
-import com.example.hellpyending.DeleteType;
+import com.example.hellpyending.user.entity.DeleteType;
 import lombok.*;
 
 import javax.persistence.*;

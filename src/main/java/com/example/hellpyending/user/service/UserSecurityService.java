@@ -1,6 +1,7 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.service;
 
 import com.example.hellpyending.config.UsersContext;
+import com.example.hellpyending.user.repository.UserRepository;
 import com.example.hellpyending.user.entity.Users;
 import com.example.hellpyending.user.entity.UserType;
 import lombok.RequiredArgsConstructor;

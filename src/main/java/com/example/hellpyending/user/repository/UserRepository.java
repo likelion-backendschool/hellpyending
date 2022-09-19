@@ -1,4 +1,4 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.repository;
 
 import com.example.hellpyending.user.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;

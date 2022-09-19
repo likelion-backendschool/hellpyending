@@ -1,20 +1,16 @@
 package com.example.hellpyending.article.service;
 
-import com.example.hellpyending.DeleteType;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.article.domain.ArticleImg;
-import com.example.hellpyending.article.repository.ArticleCommentRepository;
 import com.example.hellpyending.article.repository.ArticleImgRepository;
 import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Slf4j
 @Service

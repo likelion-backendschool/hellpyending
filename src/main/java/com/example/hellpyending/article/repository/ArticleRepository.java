@@ -1,6 +1,6 @@
 package com.example.hellpyending.article.repository;
 
-import com.example.hellpyending.DeleteType;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.article.domain.Article;
 
 import org.springframework.data.domain.Page;
@@ -13,8 +13,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import java.util.List;
 import java.util.Optional;
 
 @Repository

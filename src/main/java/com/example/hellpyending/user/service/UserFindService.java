@@ -1,5 +1,6 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.service;
 
+import com.example.hellpyending.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
