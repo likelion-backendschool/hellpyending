@@ -59,6 +59,7 @@ public class Users extends BaseTimeEntity {
     @Column(name = "delete_yn")
     private DeleteType deleteYn;
 
+
     // 광역시
     // ex) 인천, 서울, 부산 ...
     @Column
@@ -89,10 +90,6 @@ public class Users extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "users")
     private List<ChatMessageEntity> chatMessageEntities = new ArrayList<>();
-
-    // 비밀번호 찾을 때 사용 되는 인증번호 값.
-    @Column
-    private String random_num;
 
     public Users(String username, String password, List<GrantedAuthority> authorities) {
     }

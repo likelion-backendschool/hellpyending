@@ -150,10 +150,6 @@ public class UserService {
         return userRepository.findByEmailAndUsername(email,username);
     }
 
-    public void createRandom_num(Users users,String certificateKey) {
-        users.setRandom_num(certificateKey);
-        userRepository.save(users);
-    }
 
     public void modifyPwd(Users users, String pwd) {
         users.setPassword(passwordEncoder.encode(pwd));
