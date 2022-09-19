@@ -5,7 +5,7 @@ import com.example.hellpyending.article.domain.ArticleComment;
 import com.example.hellpyending.article.form.ArticleCommentForm;
 import com.example.hellpyending.article.service.ArticleCommentService;
 import com.example.hellpyending.article.service.ArticleService;
-import com.example.hellpyending.user.UserService;
+import com.example.hellpyending.user.service.UserService;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

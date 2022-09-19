@@ -1,6 +1,8 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.controller;
 
 import com.example.hellpyending.config.Util;
+import com.example.hellpyending.user.service.UserService;
+
 import com.example.hellpyending.user.entity.EmailCertificateKey;
 import com.example.hellpyending.user.entity.Users;
 import com.example.hellpyending.user.redis.EmailRedisRepository;
@@ -24,8 +26,12 @@ public class UserRestController {
 
     private final EmailRedisRepository emailRedisRepository;
 
+
     @Value("${spring.mail.username}") // 보내는 사람 메일 주소
     private String from;
+    /**
+     닉네임 중복 체크 ajax
+     **/
     @GetMapping("/information/check")
     @ResponseBody
     public String check(Principal principal, String nickname){
@@ -36,6 +42,9 @@ public class UserRestController {
 
         return "닉네임이 중복 되었습니다.";
     }
+    /**
+     비밀번호 찾기 ajax
+     **/
     @GetMapping("/password/find")
     @ResponseBody
     public String pwdFind(String email,String username) throws MessagingException {
@@ -61,7 +70,9 @@ public class UserRestController {
 
         return null;
     }
-
+    /**
+     인증번호 체크 ajax
+     **/
     @GetMapping("/password/check")
     public String pwdChange(String email,String username,String certificateKey) {
         Optional<Users> users_= userService.findByEmailAndUsername(email,username);
@@ -72,7 +83,12 @@ public class UserRestController {
         Users users = users_.get();
 
         Optional<EmailCertificateKey> emailCK_ = emailRedisRepository.findById(users.getUsername()); // key 값 저장 된 것을 가져오기.
+        if (!emailCK_.isPresent()){
+            return "인증에 실패하였습니다.";
+        }
         EmailCertificateKey emailCK = emailCK_.get(); // 있는 지 체크.
+
+
         if (emailCK.getCertificateKey().equals(certificateKey)){
             return "인증이 되었습니다.";
         }

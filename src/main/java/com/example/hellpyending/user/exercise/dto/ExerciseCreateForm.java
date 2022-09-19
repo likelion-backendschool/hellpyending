@@ -1,4 +1,4 @@
-package com.example.hellpyending.user.exercise;
+package com.example.hellpyending.user.exercise.dto;
 
 import com.example.hellpyending.user.entity.Users;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,9 @@
 <th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
 
-        <form method="post" th:object="${userUpdateForm}" th:action="@{/user/information/update}"
+        <form method="post" th:object="${userUpdateForm}" th:action="@{|/user/information/${users.id}|}"
               onsubmit="info_submit(this); return false;">
+            <input type="hidden" name="_method" value="PUT">
             <div role="alert" th:if="${#fields.hasAnyErrors()}">
                 <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
             </div>

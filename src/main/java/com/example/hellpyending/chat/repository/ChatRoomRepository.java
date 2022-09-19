@@ -1,15 +1,14 @@
 package com.example.hellpyending.chat.repository;
 
 import com.example.hellpyending.chat.entity.ChatRoom;
-import com.example.hellpyending.chat.entity.ChatRoomDTO;
-import com.example.hellpyending.user.UserRepository;
+import com.example.hellpyending.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.stream.Stream;
+
 @RequiredArgsConstructor
 @Repository
 public class ChatRoomRepository {

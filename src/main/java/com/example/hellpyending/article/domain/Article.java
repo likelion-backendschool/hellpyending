@@ -1,16 +1,14 @@
 package com.example.hellpyending.article.domain;
 
-import com.example.hellpyending.DeleteType;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

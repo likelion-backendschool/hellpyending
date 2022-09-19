@@ -1,18 +1,17 @@
 package com.example.hellpyending.article.service;
 
-import com.example.hellpyending.DeleteType;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.article.domain.ArticleComment;
 import com.example.hellpyending.article.exception.DataNotFoundException;
 import com.example.hellpyending.article.repository.ArticleCommentRepository;
-import com.example.hellpyending.user.UserRepository;
+import com.example.hellpyending.user.repository.UserRepository;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
