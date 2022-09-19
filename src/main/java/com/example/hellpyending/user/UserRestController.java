@@ -72,7 +72,11 @@ public class UserRestController {
         Users users = users_.get();
 
         Optional<EmailCertificateKey> emailCK_ = emailRedisRepository.findById(users.getUsername()); // key 값 저장 된 것을 가져오기.
+        if (!emailCK_.isPresent()){
+            return "인증에 실패하였습니다.";
+        }
         EmailCertificateKey emailCK = emailCK_.get(); // 있는 지 체크.
+
         if (emailCK.getCertificateKey().equals(certificateKey)){
             return "인증이 되었습니다.";
         }

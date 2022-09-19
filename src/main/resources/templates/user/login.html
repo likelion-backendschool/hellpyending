@@ -11,6 +11,10 @@
             </div>
             <span>로그인 유지</span>
             <input type="checkbox" name="remember-me"/>
+            <span th:if="${error} == 'true'">
+                <p id="valid" class="alert alert-danger" th:text="${exception}"></p>
+            </span>
+
             <div>
                 <button type="submit">로그인</button>
                 <a th:href="@{/user/password}">비밀번호 찾기</a>
