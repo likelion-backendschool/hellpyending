@@ -3,11 +3,12 @@ package com.example.hellpyending.src.gym;
 import com.example.hellpyending.article.exception.DataNotFoundException;
 import com.example.hellpyending.src.gym.entity.GetAddressRes;
 import com.example.hellpyending.src.gym.entity.GetAddressResInterface;
+import com.example.hellpyending.src.gym.entity.Gym;
 import com.example.hellpyending.user.UserService;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,6 +80,15 @@ public class gymController {
     @RequestMapping("/getGymInfo/*/*")
     public String getGymInfo() {
 
+        return "GymInfo";
+    }
+
+    @GetMapping("/getGymInfo/{gym_id}")
+    public String getGymInfo(@PathVariable("gym_id") long gym_id, Model model, Principal principal) {
+        Gym gym = gymService.findGymById(gym_id);
+        Users user = userService.getUser(principal.getName());
+        model.addAttribute("gym", gym);
+        model.addAttribute("user", user);
         return "GymInfo";
     }
 

@@ -54,7 +54,7 @@ public class RoomController {
 
     //채팅방 개설
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(value = "/room")
+    @PostMapping(value = "/create")
     public String create(@RequestParam String name, RedirectAttributes rttr){
 
         log.info("# Create Chat Room , name: " + name);
