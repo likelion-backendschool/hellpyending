@@ -40,11 +40,12 @@
 <script th:inline="javascript">
 
     $(document).ready(function () {
-        var id = 9;
+        var id = [[${users.id}]];
+        console.log(id)
         stomp.connect({}, function () {
             console.log("STOMP Connection")
             //4. subscribe(path, callback)으로 메세지를 받을 수 있음
-            stomp.subscribe("/sub/article/message/9", function (article) {
+            stomp.subscribe("/sub/article/message/"+id, function (article) {
                 var content = JSON.parse(article.body);
                 var message = content.message;
                 var str = '';
