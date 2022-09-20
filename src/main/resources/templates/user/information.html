@@ -28,5 +28,41 @@
                 <a href="#">약관 및 정책</a>
             </li>
         </ul>
+
+
+        <div id="alarm">
+
+        </div>
     </th:block>
 </th:block>
+
+
+<script th:inline="javascript">
+
+    $(document).ready(function () {
+        var id = [[${users.id}]];
+        console.log(id)
+        stomp.connect({}, function () {
+            console.log("STOMP Connection")
+            //4. subscribe(path, callback)으로 메세지를 받을 수 있음
+            stomp.subscribe("/sub/article/message/"+id, function (article) {
+                var content = JSON.parse(article.body);
+                var message = content.message;
+                var str = '';
+                console.log(1);
+
+                str = "<div class='col-6'>";
+                str += "<div class='alert alert-warning'>";
+                str += "<b>"+ message + "</b>";
+                str += "</div></div>";
+                $("#alarm").append(str);
+                console.log(2);
+
+
+            });
+
+          });
+
+    });
+
+</script>

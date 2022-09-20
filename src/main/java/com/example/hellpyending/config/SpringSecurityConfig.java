@@ -45,7 +45,7 @@ public class SpringSecurityConfig {
 
         http.httpBasic().disable(); // basic filter 비활성화
         http.rememberMe(); // 로그인 유지 기능 ( 브라우저 창을 닫더라도 세션 값이 유지가 되어 로그인이 되어있음 )
-        http.csrf(); // csrf 가 기본 값으로 들어있지만 명시적으로 작성.
+        http.csrf().disable(); // csrf 가 기본 값으로 들어있지만 명시적으로 작성.
         http.authorizeRequests()
                 // GET 요청으로 "/test" URL을 접속 했을 때 인증 받은 사람(로그인 되어 있는 사람)만 접근이 가능하다.
                 .antMatchers(HttpMethod.GET,"/test").authenticated()
@@ -58,6 +58,7 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.POST,"/articleComment/*").authenticated()
                 .antMatchers(HttpMethod.GET,"/articleComment/*/*").authenticated()
                 .antMatchers(HttpMethod.POST,"/articleComment/*/*").authenticated()
+                .antMatchers(HttpMethod.POST,"/payment/*").permitAll()
                 .antMatchers(HttpMethod.GET,"/exercise/*").authenticated()
                 .antMatchers(HttpMethod.GET,"/user/login").permitAll()
                 .antMatchers(HttpMethod.GET,"/user/signup").permitAll()
