@@ -1,4 +1,4 @@
-package com.example.hellpyending.user.exercise;
+package com.example.hellpyending.user.entity;
 
 import com.example.hellpyending.config.BaseTimeEntity;
 import com.example.hellpyending.user.entity.Users;

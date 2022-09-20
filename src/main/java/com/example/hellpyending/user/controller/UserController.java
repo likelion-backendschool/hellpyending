@@ -1,16 +1,17 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.controller;
 
+import com.example.hellpyending.config.UsersContext;
+import com.example.hellpyending.user.service.UserService;
+import com.example.hellpyending.user.dto.UserUpdateForm;
 import com.example.hellpyending.user.entity.UserCreateForm;
 import com.example.hellpyending.user.entity.UserOauth2CreateForm;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -18,13 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
@@ -40,16 +36,30 @@ public class UserController {
 
     private final PasswordEncoder passwordEncoder;
 
+    /**
+      유저 로그인
+     **/
     @GetMapping("/login")
-    String login(UserCreateForm userCreateForm){
+    String login(@RequestParam(value = "error", required = false)String error,
+                 @RequestParam(value = "exception", required = false)String exception,
+                 UserCreateForm userCreateForm, Model model){
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
         return "/user/login";
     }
+    /**
+     유저 회원가입 창
+     **/
     @GetMapping("/signup")
     String signUp(UserCreateForm userCreateForm){
         return "/user/signup";
     }
+    /**
+     유저 회원가입
+     **/
     @PostMapping("/signup")
     String signUp(@Valid UserCreateForm userCreateForm, BindingResult bindingResult){
+
 
         String birth = "%s-%s-%s".formatted(userCreateForm.getYear(),userCreateForm.getMonth(),userCreateForm.getDay());
         LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
@@ -90,31 +100,22 @@ public class UserController {
         }
         return "redirect:/";
     }
-    //    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
-    @RequestMapping("/user")
-    @ResponseBody
-    public Authentication user(){
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-    //    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    @RequestMapping("/admin")
-    @ResponseBody
-    public Authentication admin(){
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
+    /**
+     유저 정보 창
+     **/
     @GetMapping("/information")
     @PreAuthorize("isAuthenticated()")
-    String information(Model model, Principal principal,UserUpdateForm userUpdateForm){
+    String information(Model model, Principal principal, UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
         return "/user/information";
     }
-
-    @GetMapping("/information/update")
+    /**
+     유저 정보 수정 창
+     **/
+    @GetMapping("/information/{id}")
     @PreAuthorize("isAuthenticated()")
-    String information_update(Model model, Principal principal,UserUpdateForm userUpdateForm, Authentication authentication,
+    String information_update(Model model, @PathVariable long id, Principal principal,UserUpdateForm userUpdateForm, Authentication authentication,
                               @AuthenticationPrincipal UserDetails userDetails){
         Users users = userService.getUser(principal.getName());
 
@@ -122,9 +123,11 @@ public class UserController {
         model.addAttribute("users",users);
         return "/user/information_update";
     }
-
+    /**
+     유저 정보 수정
+     **/
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/information/update")
+    @PostMapping("/information/{id}")
     String information_update(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult, HttpSession httpSession){
         Users users = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
@@ -166,36 +169,38 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 토큰 발행 하는 곳.
-    @GetMapping("/token")
-    public OAuth2AuthenticationToken home(final  OAuth2AuthenticationToken token){
-        return token;
-    }
-
-    @GetMapping("/oauth2/information/update")
+    /**
+     oauth2 유저 회원가입 창
+     **/
+    @GetMapping("/oauth2/information")
     @PreAuthorize("isAuthenticated()")
-    String oauth2_information_update(Model model,UserUpdateForm userUpdateForm, Authentication authentication,
-                              @AuthenticationPrincipal UserDetails userDetails, UserOauth2CreateForm userOauth2CreateForm,HttpSession httpSession){
+    String oauth2_information_update(Model model, UserOauth2CreateForm userOauth2CreateForm, Authentication authentication,
+                                     @AuthenticationPrincipal UsersContext usersContext){
         String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
-        Users users = userService.getUser(email);
+        Users users = userService.findByEmail(email);
         if (firstLoginCheck(users)){
             return "/user/oauth2_signup";
         }
         return "redirect:/";
     }
-
-    @PostMapping("/oauth2/information/update")
+    /**
+     oauth2 유저 회원가입
+     **/
+    @PostMapping("/oauth2/information")
     @PreAuthorize("isAuthenticated()")
     String oauth2_information_update(@Valid UserOauth2CreateForm userOauth2CreateForm, BindingResult bindingResult, Authentication authentication,
                                      @AuthenticationPrincipal UserDetails userDetails){
         String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
-
+        String birth = "%s-%s-%s".formatted(userOauth2CreateForm.getYear(),userOauth2CreateForm.getMonth(),userOauth2CreateForm.getDay());
+        LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
         if (bindingResult.hasErrors()) {
             return "/user/oauth2_signup";
         }
         try {
             userService.create(
                     email,
+                    birthday,
+                    userOauth2CreateForm.getSex(),
                     userOauth2CreateForm.getPhoneNumber(),
                     userOauth2CreateForm.getAddress_1st(),
                     userOauth2CreateForm.getAddress_2st(),
@@ -216,12 +221,17 @@ public class UserController {
         }
         return "redirect:/";
     }
+    /**
+     oauth2 유저 패스워드 찾기 창
+     **/
     @GetMapping("/password")
     public String pwdFind() {
         return "/user/password";
     }
 
-
+    /**
+     oauth2 유저 패스워드 찾기
+     **/
     @PostMapping("/password")
     public String pwdChange(String email,String username,String password2) {
         Optional<Users> users_= userService.findByEmailAndUsername(email,username);
@@ -234,7 +244,8 @@ public class UserController {
     }
 
     private boolean firstLoginCheck(Users users) {
-        return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null || users.getPhoneNumber() == null;
+        return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null ||
+                users.getPhoneNumber() == null || users.getBirthday() == null;
     }
 
 }

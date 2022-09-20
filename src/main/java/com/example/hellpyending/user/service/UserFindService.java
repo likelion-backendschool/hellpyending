@@ -1,5 +1,6 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.service;
 
+import com.example.hellpyending.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,5 +14,9 @@ public class UserFindService {
 
     public boolean existsByUsername(String name) {
         return userRepository.existsByUsername(name);
+    }
+
+    public boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 }

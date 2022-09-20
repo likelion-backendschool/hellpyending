@@ -1,12 +1,8 @@
 package com.example.hellpyending.article.domain;
 
-import com.example.hellpyending.DeleteType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity

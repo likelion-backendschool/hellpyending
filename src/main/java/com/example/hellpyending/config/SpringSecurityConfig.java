@@ -1,6 +1,8 @@
 package com.example.hellpyending.config;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,18 +23,21 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity(debug = true) // WebSecurity에서 어떤 필터를 거쳤는지 알 수 있음.
+@EnableWebSecurity // WebSecurity에서 어떤 필터를 거쳤는지 알 수 있음.
 @AllArgsConstructor
 public class SpringSecurityConfig {
     private final Environment environment; // 각 환경에 대한 설정 변경이 필요하기 위해 가져옴.
     private final String registration = "spring.security.oauth2.client.registration."; // facebook과 google의 커스텀 마이징을 위한 yml 파일 가져오기.
 
+    private final AuthenticationFailureHandler customFailureHandler;
     private final FacebookOauth2UserService facebookOauth2UserService;
     private final GoogleOauth2UserService googleOauth2UserService;
     @Bean
@@ -67,6 +72,7 @@ public class SpringSecurityConfig {
         http.formLogin()
                 // login 페이지가 어떤 것인지 설정.
                 .loginPage("/user/login")
+                .failureHandler(customFailureHandler)
                 // login 성공시 루트 페이지로 이동 ( alwayUse를 false로 입력 시 접속 하려던 URL로 바로 이동 )
                 .defaultSuccessUrl("/",false)
                 // login은 모두 접근 가능
@@ -79,7 +85,7 @@ public class SpringSecurityConfig {
                                 .oidcUserService(googleOauth2UserService) // google 인증, OpenID Connect 1.0를 이용하여 통신(인증)하기 때문에 메서드 이름이 다르다.
                                 .userService(facebookOauth2UserService) // facebook 인증, OAuth2 통신
                         )
-                        .defaultSuccessUrl("/user/oauth2/information/update",false)
+                        .defaultSuccessUrl("/user/oauth2/information",false)
                 );
                 // login 성공시 루트 페이지로 이동 ( alwayUse를 false로 입력 시 접속 하려던 URL로 바로 이동 )
 
@@ -135,9 +141,9 @@ public class SpringSecurityConfig {
                 .scope(
                         "email",
                         "profile",
-                        "openid"
+                        "openid",
 //                        "https://www.googleapis.com/auth/user.addresses.read",
-//                        "https://www.googleapis.com/auth/user.birthday.read"
+                        "https://www.googleapis.com/auth/user.birthday.read"
                 )
                 .build();
     }

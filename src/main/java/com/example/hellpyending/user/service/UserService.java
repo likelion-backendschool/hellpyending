@@ -1,6 +1,8 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.service;
 
 import com.example.hellpyending.article.exception.DataNotFoundException;
+import com.example.hellpyending.config.Util;
+import com.example.hellpyending.user.repository.UserRepository;
 import com.example.hellpyending.user.entity.Sex;
 import com.example.hellpyending.user.entity.Users;
 import com.example.hellpyending.user.entity.UserType;
@@ -79,21 +81,20 @@ public class UserService {
         userRepository.save(users);
     }
     public void requestRegistration(
-            final String name,
+            final String username,
+            final String nickname,
             final String email,
             final String gender,
-            final String birthday
-            ){
+            final String birthday){
         final boolean existsEmail = userFindService.existsByEmail(email);
-        final boolean existsUsername = userFindService.existsByUsername(name);
+        final boolean existsUsername = userFindService.existsByUsername(username);
+        final boolean existsNickname = userFindService.existsByNickname(nickname);
 
-        if(existsEmail == false && existsUsername == false){
-
-
+        if(existsEmail == false && existsUsername == false && existsNickname == false){
             LocalDate birth = LocalDate.parse(parseLocalDate(birthday), DateTimeFormatter.ISO_DATE);
             Users user = Users.builder()
-                    .username(email)
-                    .nickname(name)
+                    .username(username)
+                    .nickname(nickname)
                     .sex(gender == "male" ? Sex.MALE : Sex.FEMALE )
                     .email(email)
                     .birthday(birth)
@@ -104,20 +105,19 @@ public class UserService {
     }
 
     public void requestRegistration(
-            final String name,
+            final String username,
+            final String nickname,
             final String email
     ){
         final boolean existsEmail = userFindService.existsByEmail(email);
-        final boolean existsUsername = userFindService.existsByUsername(name);
+        final boolean existsUsername = userFindService.existsByUsername(username);
+        final boolean existsNickname = userFindService.existsByNickname(nickname);
 
-        if(existsEmail == false && existsUsername == false){
-
-
-//            LocalDate birth = LocalDate.parse(parseLocalDate(birthday), DateTimeFormatter.ISO_DATE);
+        if(existsEmail == false && existsUsername == false && existsNickname == false){
             Users user = Users.builder()
-                    .username(email)
-                    .nickname(name)
-                    .sex(Sex.MALE)
+                    .username(username)
+                    .nickname(nickname)
+                    .password(passwordEncoder.encode(Util.getTempPassword()))
                     .email(email)
                     .userType(UserType.USER)
                     .build();
@@ -125,14 +125,16 @@ public class UserService {
         }
     }
 
-    private String parseLocalDate(String birthday) {
+    private static String parseLocalDate(String birthday) {
         String[] bits = birthday.split("/");
         return "%s-%s-%s".formatted(bits[2],bits[0],bits[1]);
     }
 
-    public void create(String email, String phoneNumber, String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
+    public void create(String email, LocalDate birth, Sex Sex,String phoneNumber, String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
         Users users = userRepository.findByEmail(email);
+        users.setSex(Sex);
         users.setPhoneNumber(phoneNumber);
+        users.setBirthday(birth);
         users.setAddress_1st(address_1st);
         users.setAddress_2st(address_2st);
         users.setAddress_3st(address_3st);
@@ -149,10 +151,6 @@ public class UserService {
         return userRepository.findByEmailAndUsername(email,username);
     }
 
-    public void createRandom_num(Users users,String certificateKey) {
-        users.setRandom_num(certificateKey);
-        userRepository.save(users);
-    }
 
     public void modifyPwd(Users users, String pwd) {
         users.setPassword(passwordEncoder.encode(pwd));

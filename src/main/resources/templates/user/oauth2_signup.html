@@ -1,8 +1,18 @@
 <th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
-        <form method="post" th:object="${userOauth2CreateForm}" th:action="@{/user/oauth2/information/update}">
+        <form method="post" th:object="${userOauth2CreateForm}" th:action="@{/user/oauth2/information}">
             <div role="alert" th:if="${#fields.hasAnyErrors()}">
                 <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
+            </div>
+            <div>
+                <select name="year" id="year"></select>년
+                <select name="month" id="month"></select>월
+                <select name="day" id="day"></select>일
+            </div>
+            <span>성별</span>
+            <div>
+                <label><input type="radio" name="sex" value="MALE" checked/>남성</label>
+                <label><input type="radio" name="sex" value="FEMALE"/>여성</label>
             </div>
             <span>휴대폰 번호</span>
             <div>

@@ -3,7 +3,7 @@
         <h3 th:text="${users.nickname}"></h3>
         <h4 th:text="${users.email}"></h4>
         <div>
-            <a th:href="@{/user/information/update}">내 정보 수정</a>
+            <a th:href="@{|/user/information/${users.id}|}">내 정보 수정</a>
         </div>
         <ul>
             <li>

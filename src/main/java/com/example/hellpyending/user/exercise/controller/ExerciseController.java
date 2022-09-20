@@ -1,7 +1,10 @@
-package com.example.hellpyending.user.exercise;
+package com.example.hellpyending.user.exercise.controller;
 
-import com.example.hellpyending.user.UserService;
+import com.example.hellpyending.user.service.UserService;
 import com.example.hellpyending.user.entity.Users;
+import com.example.hellpyending.user.entity.Exercise;
+import com.example.hellpyending.user.exercise.dto.ExerciseCreateForm;
+import com.example.hellpyending.user.exercise.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
