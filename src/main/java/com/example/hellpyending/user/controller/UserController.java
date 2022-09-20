@@ -175,10 +175,12 @@ public class UserController {
     @GetMapping("/oauth2/information")
     @PreAuthorize("isAuthenticated()")
     String oauth2_information_update(Model model, UserOauth2CreateForm userOauth2CreateForm, Authentication authentication,
-                                     @AuthenticationPrincipal UsersContext usersContext){
+                                     @AuthenticationPrincipal UsersContext usersContext,HttpSession httpSession){
         String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
         Users users = userService.findByEmail(email);
         if (firstLoginCheck(users)){
+            httpSession.invalidate();
+            model.addAttribute("users",users);
             return "/user/oauth2_signup";
         }
         return "redirect:/";
@@ -189,8 +191,8 @@ public class UserController {
     @PostMapping("/oauth2/information")
     @PreAuthorize("isAuthenticated()")
     String oauth2_information_update(@Valid UserOauth2CreateForm userOauth2CreateForm, BindingResult bindingResult, Authentication authentication,
-                                     @AuthenticationPrincipal UserDetails userDetails){
-        String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
+                                     @AuthenticationPrincipal UserDetails userDetails,HttpSession httpSession, String email){
+
         String birth = "%s-%s-%s".formatted(userOauth2CreateForm.getYear(),userOauth2CreateForm.getMonth(),userOauth2CreateForm.getDay());
         LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
         if (bindingResult.hasErrors()) {

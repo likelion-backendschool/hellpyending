@@ -140,9 +140,7 @@ public class SpringSecurityConfig {
                 .scope(
                         "email",
                         "profile",
-                        "openid",
-//                        "https://www.googleapis.com/auth/user.addresses.read",
-                        "https://www.googleapis.com/auth/user.birthday.read"
+                        "openid"
                 )
                 .build();
     }

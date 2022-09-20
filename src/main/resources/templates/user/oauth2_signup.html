@@ -4,6 +4,8 @@
             <div role="alert" th:if="${#fields.hasAnyErrors()}">
                 <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
             </div>
+            <input name="email" th:value="${users.email}" hidden/>
+            <span>생년 월일</span>
             <div>
                 <select name="year" id="year"></select>년
                 <select name="month" id="month"></select>월
