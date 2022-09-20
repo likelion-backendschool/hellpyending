@@ -7,34 +7,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/gym_km.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-        let link = document.location.href.split("/");
 
-        let lat = link[5];
-        let lng = link[6];
-        console.log("현재 헬스장의 위도", lat);
-        console.log("현재 헬스장의 경도", lng);
-
-        let getAddress = "/gym/displayGymInfo/" + lat + "/" + lng;
-        console.log("백엔드로 부터 맵핑을 요청할 주소", getAddress);
-
-        $.get(getAddress, function (curGym) {
-            console.log("백엔드로 부터 넘겨받은 헬스장 정보", curGym);
-
-            let displayGymInfo = "";
-            displayGymInfo += curGym.gym_name + "<br>";
-            displayGymInfo += curGym.gym_address;
-
-            // <img src={curGym.gym_image_address}></img>
-            if (curGym.gym_phone_number) {
-                displayGymInfo += "<br>" + curGym.gym_phone_number;
-            }
-            console.log("출력할 헬스장 정보", displayGymInfo);
-
-            $('.diojosijoi32').text(curGym.gym_name);
-            $('.idifjwiie223').text(curGym.gym_address);
-            $('.sidjaj2324asd.callnumber').text(curGym.gym_phone_number);
-
-        });
     </script>
 </head>
 <body>
@@ -43,20 +16,20 @@
 <div class="fijdosw-sidifjs-wieisd e1brqtzw0">
     <article id="product-atf" class="pksdpfkssp e17iylht1">
         <div class="s0ks-0fpoks eu57hp00">
-            <img class="w-10 h-10 object-cover rounded" th:src="@{https://picsum.photos/200/300}" alt="">
+            <img class="w-10 h-10 object-cover rounded" alt="">
         </div>
         <div class="pospdfppsd e17iylht0">
             <div class="css-0 ezpe9l15">
                 <div class="uisdovoose ezpe9l14">헬스장</div>
                 <div class="osjdfoiosewdf ezpe9l13">
-                    <div class="spokpdooew ezpe9l12"><h2 class="diojosijoi32 ezpe9l11">헬스장명을 불러오는중입니다.</h2>
+                    <div class="spokpdooew ezpe9l12"><h2 class="diojosijoi32 ezpe9l11" th:text="${gym.gymName}">헬스장명을 불러오는중입니다.</h2>
                         <button class=" diofsheh21 eaxuegm1"></button>
                     </div>
                     <p class="sndij393iifdf ezpe9l10"> 저희 헬스장에서 퀄리티높은 품질을 느껴보세요.</p></div>
             </div>
             <div class="dndinif93ikids e1q8tigr7"><span class="okdskoowod e1q8tigr5">헬스장주소</span><span
                     class="sidifsoso151 e1q8tigr4"></span></div>
-            <div class="idifjwiie223 eicg42l0">헬스장 주소를 불러오는중입니다.</div>
+            <div class="idifjwiie223 eicg42l0" th:text="${gym.gymAddress}">헬스장 주소를 불러오는중입니다.</div>
             <div class="siksfieienm23 ejdfx860">
                 <dl class="dhbdfniie313 e1wur6vo1">
                     <dt class="title suifjeimkdoo e1wur6vo0">영업시간</dt>
@@ -66,7 +39,7 @@
                 </dl>
                 <dl class="dhbdfniie313 e1wur6vo1">
                     <dt class="title suifjeimkdoo e1wur6vo0">헬스장번호</dt>
-                    <dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1 callnumber">헬스장 번호를 불러오는중입니다.</p>
+                    <dd class="sduu3iefkd exslwju2"><p class="sidjaj2324asd exslwju1 callnumber" th:if="${gymPhoneNumber}" th:text="${gymPhoneNumber}" >헬스장 번호를 불러오는중입니다.</p>
                     </dd>
                 </dl>
                 <dl class="dhbdfniie313 e1wur6vo1">
@@ -101,12 +74,13 @@
                                     <div variant="outlined"
                                          class="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl djnfikms-eijkw321 css-xald09">
 
-                                        <select class="eis-ojskekms">
-                                            <option>1개월</option>
-                                            <option>3개월</option>
-                                            <option>6개월</option>
+                                        <select class="eis-ojskekms" name="price" onchange="showValue(this)" id="price_selector">
+                                            <option value="0">선택하세요</option>
+                                            <option value="1">1개월 [[${gym.per1Month}]]원</option>
+                                            <option value="3">3개월 [[${gym.per3Months}]]원</option>
+                                            <option value="6">6개월 [[${gym.per6Months}]]원</option>
+                                            <option value="12">12개월 [[${gym.per12Months}]]원</option>
                                         </select>
-
                                         <input aria-hidden="true" tabindex="-1"
                                                class="MuiSelect-nativeInput dijfieimf93ii2if" value="">
                                         <fieldset aria-hidden="true" class="sjsdfiif83i-auiad992 ssikdj939edfos032">
@@ -121,8 +95,9 @@
                 <div class="dikfosowekk-difssloe e1vyx3w90">
                     <div class="dsif93klsf-siaid-wi8riks extc5fi9">
                         <div class="dfisidike-dkkske-sii3isdf extc5fi8"><span
-                                class="dfski8ikke-dkfske-skdksf-sdfs extc5fi7">총 상품금액 :</span><span
-                                class="ssdfjs83kkf92d extc5fi6">0</span><span
+                                class="dfski8ikke-dkfske-skdksf-sdfs extc5fi7">총 상품금액 :</span>
+                            <span
+                                class="ssdfjs83kkf92d extc5fi6" id="priceElement">0</span><span
                                 class="sdfjjs883-38kkdf-38ikdf extc5fi5">원</span></div>
                         <div class="shjsdfi8i2-s882f-28jmkasd extc5fi4"><span
                                 class="skksdf-39ikksfd-9jjsf-keiifd extc5fi3">적립</span><span
@@ -131,7 +106,8 @@
                 </div>
                 <div class="fkkksiieikfo3992-fkkskdf93 elhxzl01">
                     <div class="sdjfsie8sioioe-99sdfoioef elhxzl00">
-                        <button class="cart-button skdf993kksdfoskle-sidifsldf e4nu7ef3" type="button" radius="3"><span
+                        <button class="cart-button skdf993kksdfoskle-sidifsldf e4nu7ef3" type="button" radius="3"
+                                onclick="requestPay()"><span
                                 class="fikdiiske-dkfksdfiikle-fksdooe e4nu7ef1">이용권 결제하기</span></button>
                     </div>
                 </div>
@@ -143,3 +119,95 @@
 
 </body>
 </html>
+
+
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+
+
+<script>
+
+    let price = 0;
+    let gym_type="[[${gym.gymName}]]";
+    const showValue = (target) => {
+        let value = target.value;
+        if(value==1){
+            document.getElementById(`priceElement`).innerHTML = [[${gym.per1Month}]] ;
+            price = [[${gym.per1Month}]];
+            gym_type += " 헬스장 이용권 1개월";
+        }
+        if(value==3){
+            document.getElementById(`priceElement`).innerHTML = [[${gym.per3Months}]] ;
+            price = [[${gym.per3Months}]];
+            gym_type +=" 헬스장 이용권 3개월";
+        }
+        if(value==6){
+            document.getElementById(`priceElement`).innerHTML = [[${gym.per6Months}]] ;
+            price = [[${gym.per6Months}]];
+            gym_type +=" 헬스장 이용권 6개월";
+        }
+        if(value==12){
+            document.getElementById(`priceElement`).innerHTML = [[${gym.per12Months}]] ;
+            price = [[${gym.per12Months}]];
+            gym_type +=" 헬스장 이용권 12개월";
+        }
+    }
+
+
+    function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+
+    var IMP = window.IMP; // 생략 가능
+    IMP.init("imp65135010"); // 예: imp00000000
+    function requestPay() {
+        // IMP.request_pay(param, callback) 결제창 호출
+        let today = new Date();
+        let year = today.getFullYear(); // 년도
+        let month = today.getMonth() + 1;  // 월
+        let date = today.getDate();  // 날짜
+        IMP.request_pay({ // param
+            pg: "html5_inicis",
+            pay_method: "card",
+            merchant_uid: "ORD"+year+month+date+"-"+rand(10000,99999), // 난수 발생기
+            name: "(주)헬피엔딩",
+            amount: 100,
+            //amount: price,
+            buyer_email: "[[${user.email}]]", //이메일
+            buyer_name: "[[${user.nickname}]]", // 난수
+            buyer_tel: "[[${user.phoneNumber}]]", // 핸드폰 번호
+            gym_product : gym_type
+        }, function (rsp) {
+            console.log(rsp);
+            if (rsp.success) {
+
+
+                fetch('http://localhost:8080/payment/create',{
+                    method: 'POST',
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        imp_uid: rsp.imp_uid,
+                        merchant_uid: rsp.merchant_uid,
+                        buyer_email: rsp.buyer_email,
+                        buyer_name: rsp.buyer_name,
+                        buyer_tel: rsp.buyer_tel,
+                        amount: rsp.paid_amount,
+                        pay_method: rsp.pay_method,
+                        gym_product: gym_type
+                    })
+                }).then(response => {
+                    console.log("됐다");
+                });
+
+            } else {
+                var msg = '결제에 실패하였습니다.';
+                msg += '에러내용 : ' + rsp.error_msg;
+            }
+            alert(msg);
+        });
+    }
+
+
+
+</script>

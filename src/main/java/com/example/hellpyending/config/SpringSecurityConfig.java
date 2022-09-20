@@ -1,6 +1,8 @@
 package com.example.hellpyending.config;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,18 +23,21 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-//@EnableWebSecurity(debug = true) // WebSecurity에서 어떤 필터를 거쳤는지 알 수 있음.
+@EnableWebSecurity // WebSecurity에서 어떤 필터를 거쳤는지 알 수 있음.
 @AllArgsConstructor
 public class SpringSecurityConfig {
     private final Environment environment; // 각 환경에 대한 설정 변경이 필요하기 위해 가져옴.
     private final String registration = "spring.security.oauth2.client.registration."; // facebook과 google의 커스텀 마이징을 위한 yml 파일 가져오기.
 
+    private final AuthenticationFailureHandler customFailureHandler;
     private final FacebookOauth2UserService facebookOauth2UserService;
     private final GoogleOauth2UserService googleOauth2UserService;
     @Bean
@@ -40,7 +45,7 @@ public class SpringSecurityConfig {
 
         http.httpBasic().disable(); // basic filter 비활성화
         http.rememberMe(); // 로그인 유지 기능 ( 브라우저 창을 닫더라도 세션 값이 유지가 되어 로그인이 되어있음 )
-        http.csrf(); // csrf 가 기본 값으로 들어있지만 명시적으로 작성.
+        http.csrf().disable(); // csrf 가 기본 값으로 들어있지만 명시적으로 작성.
         http.authorizeRequests()
                 // GET 요청으로 "/test" URL을 접속 했을 때 인증 받은 사람(로그인 되어 있는 사람)만 접근이 가능하다.
                 .antMatchers(HttpMethod.GET,"/test").authenticated()
@@ -53,6 +58,7 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.POST,"/articleComment/*").authenticated()
                 .antMatchers(HttpMethod.GET,"/articleComment/*/*").authenticated()
                 .antMatchers(HttpMethod.POST,"/articleComment/*/*").authenticated()
+                .antMatchers(HttpMethod.POST,"/payment/*").permitAll()
                 .antMatchers(HttpMethod.GET,"/exercise/*").authenticated()
                 .antMatchers(HttpMethod.GET,"/user/login").permitAll()
                 .antMatchers(HttpMethod.GET,"/user/signup").permitAll()
@@ -66,6 +72,7 @@ public class SpringSecurityConfig {
         http.formLogin()
                 // login 페이지가 어떤 것인지 설정.
                 .loginPage("/user/login")
+                .failureHandler(customFailureHandler)
                 // login 성공시 루트 페이지로 이동 ( alwayUse를 false로 입력 시 접속 하려던 URL로 바로 이동 )
                 .defaultSuccessUrl("/",false)
                 // login은 모두 접근 가능
@@ -78,7 +85,7 @@ public class SpringSecurityConfig {
                                 .oidcUserService(googleOauth2UserService) // google 인증, OpenID Connect 1.0를 이용하여 통신(인증)하기 때문에 메서드 이름이 다르다.
                                 .userService(facebookOauth2UserService) // facebook 인증, OAuth2 통신
                         )
-                        .defaultSuccessUrl("/user/oauth2/information/update",false)
+                        .defaultSuccessUrl("/user/oauth2/information",false)
                 );
                 // login 성공시 루트 페이지로 이동 ( alwayUse를 false로 입력 시 접속 하려던 URL로 바로 이동 )
 

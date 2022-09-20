@@ -1,12 +1,11 @@
 package com.example.hellpyending.src.gym;
 
 
-import com.example.hellpyending.src.gym.entity.GetAddressRes;
 import com.example.hellpyending.src.gym.entity.GetAddressResInterface;
 import com.example.hellpyending.src.gym.entity.Gym;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.example.hellpyending.user.entity.Users;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,5 +36,11 @@ public class gymService {
     public GetAddressResInterface findByLatAndLng(double lat, double lng) {
         GetAddressResInterface result = this.gymRepository.findByLatAndLng(lat, lng);
         return result;
+    }
+
+    public Gym findGymById(long gym_id) {
+        Gym result = gymRepository.findById(gym_id).get();
+        return result;
+
     }
 }

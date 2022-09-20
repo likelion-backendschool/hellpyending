@@ -1,6 +1,6 @@
 package com.example.hellpyending.article.domain;
 
-import com.example.hellpyending.DeleteType;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

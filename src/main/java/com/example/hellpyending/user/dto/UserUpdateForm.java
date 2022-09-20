@@ -1,4 +1,4 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.dto;
 
 import com.example.hellpyending.user.entity.Sex;
 import lombok.Getter;

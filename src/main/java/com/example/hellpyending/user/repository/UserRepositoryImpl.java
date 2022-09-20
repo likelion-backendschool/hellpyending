@@ -1,4 +1,4 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

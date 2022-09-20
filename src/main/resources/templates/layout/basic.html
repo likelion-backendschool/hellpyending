@@ -14,10 +14,15 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <!-- Custom styles for this template -->
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+
 
         <link rel="stylesheet" type="text/css" th:href="@{/css/simple-sidebar.css}">
         <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
         <link rel="stylesheet" type="text/css" th:href="@{/css/gym.css}">
+
     </head>
 
     <body>
@@ -73,6 +78,7 @@
             </nav>
 
             <div class="container-fluid">
+
                 <th:block th:replace="${content}"></th:block>
             </div>
             <!-- /#page-content-wrapper -->
@@ -83,6 +89,13 @@
         <!-- Bootstrap core JavaScript -->
         <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 
+        <script>
+            var sockJs = new SockJS("/stomp/tigerShrimp", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+            //1. SockJS를 내부에 들고있는 stomp를 내어줌
+            var stomp = Stomp.over(sockJs);
+
+
+        </script>
         <!-- Menu Toggle Script -->
         <script>
             $("#menu-toggle").click(function(e) {
@@ -102,3 +115,4 @@
     </body>
 </th:block>
 </html>
+

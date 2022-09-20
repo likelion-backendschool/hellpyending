@@ -56,9 +56,7 @@
 
         console.log(roomName + ", " + roomId + ", " + username);
 
-        var sockJs = new SockJS("/stomp/chat", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
-        //1. SockJS를 내부에 들고있는 stomp를 내어줌
-        var stomp = Stomp.over(sockJs);
+
 
         //2. connection이 맺어지면 실행
         stomp.connect({}, function (){
@@ -91,7 +89,7 @@
             });
 
             //3. send(path, header, message)로 메세지를 보낼 수 있음
-            // stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}))
+            //stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}))
         });
 
         $("#button-send").on("click", function(e){

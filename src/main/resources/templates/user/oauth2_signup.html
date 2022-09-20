@@ -1,6 +1,6 @@
 <th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
-        <form method="post" th:object="${userOauth2CreateForm}" th:action="@{/user/oauth2/information/update}">
+        <form method="post" th:object="${userOauth2CreateForm}" th:action="@{/user/oauth2/information}">
             <div role="alert" th:if="${#fields.hasAnyErrors()}">
                 <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
             </div>

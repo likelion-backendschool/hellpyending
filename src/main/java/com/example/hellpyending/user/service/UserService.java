@@ -1,7 +1,8 @@
-package com.example.hellpyending.user;
+package com.example.hellpyending.user.service;
 
 import com.example.hellpyending.article.exception.DataNotFoundException;
 import com.example.hellpyending.config.Util;
+import com.example.hellpyending.user.repository.UserRepository;
 import com.example.hellpyending.user.entity.Sex;
 import com.example.hellpyending.user.entity.Users;
 import com.example.hellpyending.user.entity.UserType;

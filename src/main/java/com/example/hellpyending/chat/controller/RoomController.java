@@ -5,14 +5,13 @@ import com.example.hellpyending.chat.entity.ChatRoomDTO;
 import com.example.hellpyending.chat.repository.ChatRoomRepository;
 import com.example.hellpyending.chat.service.ChatMessageService;
 import com.example.hellpyending.chat.service.ChatRoomService;
-import com.example.hellpyending.user.UserService;
+import com.example.hellpyending.user.service.UserService;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -54,7 +53,7 @@ public class RoomController {
 
     //채팅방 개설
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(value = "/room")
+    @PostMapping(value = "/create")
     public String create(@RequestParam String name, RedirectAttributes rttr){
 
         log.info("# Create Chat Room , name: " + name);

@@ -1,10 +1,7 @@
 package com.example.hellpyending.user.entity;
 
 
-import com.example.hellpyending.DeleteType;
-import com.example.hellpyending.article.domain.ArticleHashtag;
 import com.example.hellpyending.chat.entity.ChatMessageEntity;
-import com.example.hellpyending.chat.entity.ChatRoom;
 import com.example.hellpyending.chat.entity.ChatRoomUser;
 import com.example.hellpyending.config.BaseTimeEntity;
 import lombok.*;

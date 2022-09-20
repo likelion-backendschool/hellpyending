@@ -1,7 +1,7 @@
 package com.example.hellpyending.src.gym.entity;
 
 public interface GetAddressResInterface {
-
+    long getId();
     String getGym_name();
     Double getLat();
     Double getLng();

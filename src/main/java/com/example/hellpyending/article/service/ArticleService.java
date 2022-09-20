@@ -1,13 +1,8 @@
 package com.example.hellpyending.article.service;
 
-import com.example.hellpyending.DeleteType;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.article.domain.Article;
-import com.example.hellpyending.article.domain.ArticleHashtag;
 import com.example.hellpyending.article.exception.DataNotFoundException;
-
-import com.example.hellpyending.article.repository.ArticleHashtagRepository;
-
-import com.example.hellpyending.article.form.ArticleForm;
 
 import com.example.hellpyending.article.repository.ArticleRepository;
 import com.example.hellpyending.user.entity.Users;
@@ -27,7 +22,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

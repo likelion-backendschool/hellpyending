@@ -1,7 +1,9 @@
-package com.example.hellpyending.user.exercise;
+package com.example.hellpyending.user.exercise.service;
 
 
 import com.example.hellpyending.user.entity.Users;
+import com.example.hellpyending.user.entity.Exercise;
+import com.example.hellpyending.user.exercise.repository.ExerciseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
