@@ -20,7 +20,7 @@ public class Payment {
     private String buyer_email;
     private String buyer_name;
     private String buyer_tel;
-    private String amount;
+    private int amount;
     private String pay_method;
 
 

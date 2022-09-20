@@ -17,13 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class paymentController {
     private final paymentService paymentService;
 
-    //채팅방 개설
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/create")
+    @PostMapping(value = "/create")
     public String create(@RequestBody PostPaymentReq postPaymentReq1) {
 
         paymentService.create(postPaymentReq1);
-        return "success";
+        return "redirect:/";
     }
 
 //    //채팅방 개설

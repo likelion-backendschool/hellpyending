@@ -20,7 +20,7 @@ public class paymentService {
         payment.setMerchant_uid(postPaymentReq.getMerchant_uid());
         payment.setBuyer_email(postPaymentReq.getBuyer_email());
         payment.setBuyer_name(postPaymentReq.getBuyer_name());
-        payment.setBuyer_tel(postPaymentReq.getImp_uid());
+        payment.setBuyer_tel(postPaymentReq.getBuyer_tel());
         payment.setAmount(postPaymentReq.getAmount());
         payment.setCreate(LocalDateTime.now());
         payment.setUpdate(LocalDateTime.now());

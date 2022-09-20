@@ -174,27 +174,45 @@
         }, function (rsp) {
             console.log(rsp);
             if (rsp.success) {
-                $.ajax({
-                    url: "/payment/create",
-                    type: 'POST',
+
+
+                fetch('http://localhost:8080/payment/create',{
+                    method: 'POST',
+                    cache: 'no-cache',
                     headers: { 'Content-Type': 'application/json' },
-                    data: {
+                    body: JSON.stringify({
                         imp_uid: rsp.imp_uid,
                         merchant_uid: rsp.merchant_uid,
                         buyer_email: rsp.buyer_email,
                         buyer_name: rsp.buyer_name,
                         buyer_tel: rsp.buyer_tel,
-                        amount: rsp.amount,
+                        amount: rsp.paid_amount,
                         pay_method: rsp.pay_method
-                    }
-                }).done(function (data) {
-                    console("됐다")
-                    // var msg = '결제가 완료되었습니다.';
-                    // msg += '고유ID : ' + rsp.imp_uid;
-                    // msg += '상점 거래ID : ' + rsp.merchant_uid;
-                    // msg += '결제 금액 : ' + rsp.paid_amount;
-                    // msg += '카드 승인번호 : ' + rsp.apply_num;
-                })
+                    })
+                }).then(response => {
+                    console.log("됐다");
+                });
+                // $.ajax({
+                //     url: "/payment/create",
+                //     type: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     data: {
+                //         imp_uid: rsp.imp_uid,
+                //         merchant_uid: rsp.merchant_uid,
+                //         buyer_email: rsp.buyer_email,
+                //         buyer_name: rsp.buyer_name,
+                //         buyer_tel: rsp.buyer_tel,
+                //         amount: rsp.amount,
+                //         pay_method: rsp.pay_method
+                //     }
+                // }).done(function (data) {
+                //     console("됐다")
+                //     // var msg = '결제가 완료되었습니다.';
+                //     // msg += '고유ID : ' + rsp.imp_uid;
+                //     // msg += '상점 거래ID : ' + rsp.merchant_uid;
+                //     // msg += '결제 금액 : ' + rsp.paid_amount;
+                //     // msg += '카드 승인번호 : ' + rsp.apply_num;
+                // })
             } else {
                 var msg = '결제에 실패하였습니다.';
                 msg += '에러내용 : ' + rsp.error_msg;
