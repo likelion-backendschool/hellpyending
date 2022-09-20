@@ -13,6 +13,13 @@
             <div>
                 <h3 th:text="${article.users.nickname}">
                 </h3>
+                <form th:action="@{|/chat/room/${article.users.id}|}" method="post">
+                    <button class="btn btn-primary" role="button"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${article.users != null and #authentication.getPrincipal().getUsername() != article.users.username}"
+                       th:text="채팅하기"></button>
+                </form>
+
             </div>
             <div class="d-flex">
                 <div sec:authorize="isAuthenticated()">
