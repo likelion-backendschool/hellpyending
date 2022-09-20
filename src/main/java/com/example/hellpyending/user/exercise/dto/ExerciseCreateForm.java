@@ -14,7 +14,11 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class ExerciseCreateForm {
     @Column
-    private String Dates;
+    private String year;
+    @Column
+    private String month;
+    @Column
+    private String day;
 
 
     @Column

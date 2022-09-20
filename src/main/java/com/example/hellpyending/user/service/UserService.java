@@ -156,4 +156,8 @@ public class UserService {
         users.setPassword(passwordEncoder.encode(pwd));
         userRepository.save(users);
     }
+
+    public Optional<Users> findById(Long id) {
+        return userRepository.findById(id);
+    }
 }

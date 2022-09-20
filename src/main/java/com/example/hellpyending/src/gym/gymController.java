@@ -5,15 +5,19 @@ import com.example.hellpyending.payment.dto.PostPaymentReq;
 import com.example.hellpyending.payment.service.paymentService;
 import com.example.hellpyending.src.gym.entity.GetAddressRes;
 import com.example.hellpyending.src.gym.entity.GetAddressResInterface;
-import com.example.hellpyending.src.gym.entity.Gym;
 
+import com.example.hellpyending.src.gym.entity.Gym;
 import com.example.hellpyending.user.entity.Users;
 import com.example.hellpyending.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import java.security.Principal;
 import java.util.List;
@@ -45,7 +49,7 @@ public class gymController {
 
     @ResponseBody
     @GetMapping("/getGymList/{address_type}")
-    public GetAddressRes showList_new(@PathVariable("address_type") int address_type,  Principal principal) {
+    public GetAddressRes showList_new(@PathVariable("address_type") int address_type, Principal principal) {
 
         System.out.println("GET HERE");
         Optional<Users> user = this.userService.findByUsername(principal.getName());

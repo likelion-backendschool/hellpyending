@@ -42,8 +42,6 @@ public class GoogleOauth2UserService implements OAuth2UserService<OidcUserReques
         final String username = "GOOGLE_%s".formatted(oidcUser.getName());
         String nickname = oidcUser.getAttributes().get("name").toString();
         String email = oidcUser.getAttributes().get("email").toString();
-//        String gender = oidcUser.getAttributes().get("gender").toString();
-//        String birthday = oidcUser.getAttributes().get("birthday").toString();
         userService.requestRegistration(username,nickname,email);
 
         Users users = Users.builder()
