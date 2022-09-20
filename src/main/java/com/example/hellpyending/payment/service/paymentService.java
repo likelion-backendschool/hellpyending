@@ -9,13 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class paymentService {
     private final paymentRepository paymentRepository;
-    public void create(PostPaymentReq postPaymentReq , Users user) {
+    public void create(PostPaymentReq postPaymentReq , Optional<Users> user) {
 
 
         Payment payment = new Payment();
@@ -28,7 +29,7 @@ public class paymentService {
         payment.setGym_product(postPaymentReq.getGym_product());
         payment.setCreate(LocalDateTime.now());
         payment.setUpdate(LocalDateTime.now());
-        payment.setUsers(user);
+        payment.setUsers(user.get());
         paymentRepository.save(payment);
     }
 }

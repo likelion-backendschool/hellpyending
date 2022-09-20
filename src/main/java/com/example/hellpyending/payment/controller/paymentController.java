@@ -10,7 +10,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,18 +23,9 @@ public class paymentController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/create")
     public String create(@RequestBody PostPaymentReq postPaymentReq1) {
-        Users user = userService.getUser(postPaymentReq1.getBuyer_name());
+        Optional<Users> user = userService.findByNickname(postPaymentReq1.getBuyer_name());
         paymentService.create(postPaymentReq1,user);
-        return "redirect:/";
+        return "index";
     }
 
-//    //채팅방 개설
-//    @PreAuthorize("isAuthenticated()")
-//    @GetMapping(value = "/create")
-//    public String create1(@RequestBody PostPaymentReq postPaymentReq2){
-//
-//        paymentService.create(postPaymentReq2);
-//        return "/";
-//    }
-//}
 }
