@@ -1,6 +1,7 @@
 package com.example.hellpyending.payment.entity;
 
 
+import com.example.hellpyending.user.entity.Users;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,11 +23,16 @@ public class Payment {
     private String buyer_tel;
     private int amount;
     private String pay_method;
-
+    private String gym_product;
 
     @Column(name = "create_at")
     private LocalDateTime create;
 
     @Column(name = "update_at")
     private LocalDateTime update;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users users;
+
 }
