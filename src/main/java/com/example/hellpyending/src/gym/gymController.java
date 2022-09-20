@@ -4,8 +4,9 @@ import com.example.hellpyending.article.exception.DataNotFoundException;
 import com.example.hellpyending.src.gym.entity.GetAddressRes;
 import com.example.hellpyending.src.gym.entity.GetAddressResInterface;
 import com.example.hellpyending.src.gym.entity.Gym;
-import com.example.hellpyending.user.UserService;
+
 import com.example.hellpyending.user.entity.Users;
+import com.example.hellpyending.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
