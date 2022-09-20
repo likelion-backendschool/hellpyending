@@ -127,23 +127,28 @@
 <script>
 
     let price = 0;
+    let gym_type="[[${gym.gymName}]]";
     const showValue = (target) => {
         let value = target.value;
         if(value==1){
             document.getElementById(`priceElement`).innerHTML = [[${gym.per1Month}]] ;
             price = [[${gym.per1Month}]];
+            gym_type += " 헬스장 이용권 1개월";
         }
         if(value==3){
             document.getElementById(`priceElement`).innerHTML = [[${gym.per3Months}]] ;
             price = [[${gym.per3Months}]];
+            gym_type +=" 헬스장 이용권 3개월";
         }
         if(value==6){
             document.getElementById(`priceElement`).innerHTML = [[${gym.per6Months}]] ;
             price = [[${gym.per6Months}]];
+            gym_type +=" 헬스장 이용권 6개월";
         }
         if(value==12){
             document.getElementById(`priceElement`).innerHTML = [[${gym.per12Months}]] ;
             price = [[${gym.per12Months}]];
+            gym_type +=" 헬스장 이용권 12개월";
         }
     }
 
@@ -170,7 +175,8 @@
             //amount: price,
             buyer_email: "[[${user.email}]]", //이메일
             buyer_name: "[[${user.nickname}]]", // 난수
-            buyer_tel: "[[${user.phoneNumber}]]" // 핸드폰 번호
+            buyer_tel: "[[${user.phoneNumber}]]", // 핸드폰 번호
+            gym_product : gym_type
         }, function (rsp) {
             console.log(rsp);
             if (rsp.success) {
@@ -187,32 +193,13 @@
                         buyer_name: rsp.buyer_name,
                         buyer_tel: rsp.buyer_tel,
                         amount: rsp.paid_amount,
-                        pay_method: rsp.pay_method
+                        pay_method: rsp.pay_method,
+                        gym_product: gym_type
                     })
                 }).then(response => {
                     console.log("됐다");
                 });
-                // $.ajax({
-                //     url: "/payment/create",
-                //     type: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     data: {
-                //         imp_uid: rsp.imp_uid,
-                //         merchant_uid: rsp.merchant_uid,
-                //         buyer_email: rsp.buyer_email,
-                //         buyer_name: rsp.buyer_name,
-                //         buyer_tel: rsp.buyer_tel,
-                //         amount: rsp.amount,
-                //         pay_method: rsp.pay_method
-                //     }
-                // }).done(function (data) {
-                //     console("됐다")
-                //     // var msg = '결제가 완료되었습니다.';
-                //     // msg += '고유ID : ' + rsp.imp_uid;
-                //     // msg += '상점 거래ID : ' + rsp.merchant_uid;
-                //     // msg += '결제 금액 : ' + rsp.paid_amount;
-                //     // msg += '카드 승인번호 : ' + rsp.apply_num;
-                // })
+
             } else {
                 var msg = '결제에 실패하였습니다.';
                 msg += '에러내용 : ' + rsp.error_msg;

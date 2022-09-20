@@ -18,4 +18,6 @@ public class PostPaymentReq {
     private String buyer_tel;
     private int amount;
     private String pay_method;
+
+    private String gym_product;
 }
