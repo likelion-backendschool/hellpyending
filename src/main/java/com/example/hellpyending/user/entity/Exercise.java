@@ -5,6 +5,7 @@ import com.example.hellpyending.user.entity.Users;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -18,7 +19,7 @@ public class Exercise extends BaseTimeEntity {
     private Long id;
 
     @Column
-    private String dates;
+    private LocalDate dates;
 
     @Column
     private String DayOfWeek;

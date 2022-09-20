@@ -4,6 +4,7 @@ package com.example.hellpyending.user.entity;
 import com.example.hellpyending.chat.entity.ChatMessageEntity;
 import com.example.hellpyending.chat.entity.ChatRoomUser;
 import com.example.hellpyending.config.BaseTimeEntity;
+import com.example.hellpyending.payment.entity.Payment;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -87,6 +88,9 @@ public class Users extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "users")
     private List<ChatMessageEntity> chatMessageEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users")
+    private List<Payment> payment = new ArrayList<>();
 
     public Users(String username, String password, List<GrantedAuthority> authorities) {
     }

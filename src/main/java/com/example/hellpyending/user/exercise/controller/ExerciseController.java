@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @RequestMapping("/exercise")
 @Controller
 @RequiredArgsConstructor
@@ -47,11 +50,12 @@ public class ExerciseController {
     @PreAuthorize("isAuthenticated()")
     String create_(Model model, Principal principal, @Valid ExerciseCreateForm exerciseCreateForm, BindingResult bindingResult){
         Users users = userService.getUser(principal.getName());
-
+        String Dates_ = "%s-%s-%s".formatted(exerciseCreateForm.getYear(),exerciseCreateForm.getMonth(),exerciseCreateForm.getDay());
+        LocalDate Dates = LocalDate.parse(Dates_, DateTimeFormatter.ISO_DATE);
         exerciseService.create(
                 users,
                 exerciseCreateForm.getDayOfWeek(),
-                exerciseCreateForm.getDates(),
+                Dates,
                 exerciseCreateForm.getType(),
                 exerciseCreateForm.getIntensity(),
                 exerciseCreateForm.getHour(),

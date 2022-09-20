@@ -249,5 +249,15 @@ public class UserController {
         return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null ||
                 users.getPhoneNumber() == null || users.getBirthday() == null;
     }
+    @GetMapping("/payment/{id}")
+    public String payment(@PathVariable Long id,Model model){
+        Optional<Users> users_ = userService.findById(id);
+        if (!users_.isPresent()){
+            return "/access_error";
+        }
+        Users users = users_.get();
+        model.addAttribute("users",users);
+        return "/user/payment";
+    }
 
 }

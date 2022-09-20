@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class ExerciseService {
         return exerciseRepository.findByAuthor_Id(id, pageable);
     }
 
-    public void create(Users users, String dayOfWeek, String dates, String type, String intensity, Integer hour, Integer calorie) {
+    public void create(Users users, String dayOfWeek, LocalDate dates, String type, String intensity, Integer hour, Integer calorie) {
         Exercise exercise = Exercise.builder().
                 author(users).
                 DayOfWeek(dayOfWeek).
