@@ -5,11 +5,32 @@
 <th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
         <h2 class="border-bottom py-2" th:text="${article.title}"></h2>
 
 
-        <h3 th:text="${article.users.nickname}">
-        </h3>
+        <div class="d-flex justify-content-between">
+            <div>
+                <h3 th:text="${article.users.nickname}">
+                </h3>
+            </div>
+            <div class="d-flex">
+                <div sec:authorize="isAuthenticated()">
+                    <div id="likeBox" style="margin: 4px 10px;">
+                    </div>
+                </div>
+                <div sec:authorize="!isAuthenticated()">
+                    <div style="margin: 4px 10px;">
+                        <i class='bi bi-heart'></i>
+                    </div>
+                </div>
+                <div>
+                <span id="pushCount" th:text="${pushCount}">
+                </span>
+                </div>
+
+            </div>
+        </div>
 
 
         <div class="card my-3">
@@ -121,7 +142,41 @@
 
 
         <script layout:fragment="script" type='text/javascript'>
+            function likeStatus() {
+                $.ajax({
+                    url: "/article/likeStatus/[[${article.id}]]",
+                    method: "GET",
+                }).done(function (data) {
+                    if (data == "false") {
+                        $("#likeBox").append("<i class='bi bi-heart'></i>")
+                    } else {
+                        $("#likeBox").append('<i class="bi bi-heart-fill"></i>')
+                    }
+                })
+            }
 
+            $(document).ready(function () {
+                $("#likeBox").empty();
+                likeStatus();
+            })
+
+            $(document).on('click', '#likeBox', function () {
+                let count = parseInt($("#pushCount").text());
+                $.ajax({
+                    url: "/article/pushLike/[[${article.id}]]",
+                    method: "GET",
+                }).done(function (data) {
+                    if (data == "pushLike") {
+                        $("#likeBox").empty();
+                        $("#likeBox").append('<i class="bi bi-heart-fill"></i>')
+                        $("#pushCount").text(++count);
+                    } else {
+                        $("#likeBox").empty();
+                        $("#likeBox").append("<i class='bi bi-heart'></i>")
+                        $("#pushCount").text(--count);
+                    }
+                })
+            })
 
 
 
@@ -198,30 +253,7 @@
             }
         </script>
 
-        <!--<script layout:fragment="script" type='text/javascript'>-->
-        <!--<script th:inline="javascript" type='text/javascript'>-->
 
-        <!--    function dataSend() {-->
-        <!--        var data = $("#input").val();-->
-        <!--        var messageDTO = {-->
-        <!--            result: data-->
-        <!--        };-->
-        <!--        $.ajax({-->
-        <!--            type: "delete",-->
-        <!--            url: url,-->
-        <!--            dataType: 'text'-->
-        <!--        }).done(function (result) {-->
-        <!--            if (result == "ok") {-->
-        <!--                alert("삭제에 성공하였습니다.");-->
-        <!--                // location.href ~~~-->
-        <!--            } else {-->
-        <!--                alert("삭제에 실패하였습니다.");-->
-        <!--            }-->
-        <!--        }).fail(function (error) {-->
-        <!--            alert("삭제에 실패하였습니다.");-->
-        <!--        });-->
-        <!--    }-->
-        <!--</script>-->
     </th:block>
 </th:block>
 </html>
@@ -241,8 +273,6 @@ $(document).ready(function(){
 
             // 유저 닉네임, 답글단 유저 닉네임 , 게시글 작성한 유저 idx
         });
-
-
 
 });
 </script>
