@@ -71,7 +71,7 @@ public class gymController {
     @RequestMapping("/search")
     public String searchGymList() {
 
-        return "GymList";
+        return "/gym/GymList";
     }
 
     @RequestMapping("/beforeGymList")
@@ -95,7 +95,7 @@ public class gymController {
         Users user = userService.getUser(principal.getName());
         model.addAttribute("gym", gym);
         model.addAttribute("user", user);
-        return "GymInfo";
+        return "/gym/GymInfo";
     }
 
     @ResponseBody
