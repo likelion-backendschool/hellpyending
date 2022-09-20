@@ -7,7 +7,7 @@ $(document).ready(function () {
     var Intensity = ['강','중','하'];
 
     //년도 selectbox만들기
-    for (var i = 2022; i <= year; i++) {
+    for (var i = 2021; i <= year; i++) {
         $('#year').append('<option value="' + i + '">' + i + '년</option>');
     }
     // 강도별 selectbox 만들기
@@ -16,7 +16,7 @@ $(document).ready(function () {
     }
 
     // 요일별 selectbox 만들기
-    for (var i = 0; i <= 7; i++) {
+    for (var i = 0; i <= 6; i++) {
         $('#DayOfWeek').append('<option>'+ DayOfWeek[i] + '요일</option>');
     }
 
