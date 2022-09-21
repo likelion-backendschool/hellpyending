@@ -66,10 +66,15 @@
                         search_condition = "/gym/getGymList/3"
                         searchPlaces(search_condition);
                     }
-                    alert("변경완료");
                 }
             }
         };
+
+        var myPosition =  new kakao.maps.LatLng(33.450701, 126.570667);
+        var myMarker = new kakao.maps.Marker({
+            position: myPosition,
+            clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
+        });
 
 
         var markers = [];
@@ -80,8 +85,36 @@
                 level: 3 // 지도의 확대 레벨
             };
 
+
+
+
+
         // 지도를 생성합니다
         var map = new kakao.maps.Map(mapContainer, mapOption);
+
+
+        /* 내 마커 표시!*/
+        var myPosition =  new kakao.maps.LatLng(user_address[1], user_address[0]);
+        var myMarker = new kakao.maps.Marker({
+            position: myPosition,
+            clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
+        });
+
+        myMarker.setMap(map);
+
+        var MyiwContent = '<div style="padding:5px;">내 위치!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            MyiwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+        // 인포윈도우를 생성합니다
+
+        var MYinfowindow = new kakao.maps.InfoWindow({
+            content : MyiwContent,
+            removable : MyiwRemoveable
+        });
+
+        MYinfowindow.open(map, myMarker);
+
+
 
         var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
 
@@ -124,6 +157,10 @@
             // 지도에 표시되고 있는 마커를 제거합니다
             removeMarker();
             console.log(places.length)
+            if(places.length==0){
+                alert('근처에 운동할 곳이 산과 바다 밖에 없네요...');
+                return
+            }
             for (var i = 0; i < places.length; i++) {
                 console.log(i);
                 // 마커를 생성하고 지도에 표시합니다
