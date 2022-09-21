@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 // 구글은 OpenID Connect 1.0 를 이용하여 통신하기 때문에 OidcUserRequest 라고 쓰는 것을 유의하자.
@@ -44,12 +45,24 @@ public class GoogleOauth2UserService implements OAuth2UserService<OidcUserReques
         String email = oidcUser.getAttributes().get("email").toString();
         userService.requestRegistration(username,nickname,email);
 
-        Users users = Users.builder()
-                .username(username)
-                .nickname(nickname)
-                .email(email)
-                .password("")
-                .build();
+        Optional<Users> users_ = userService.findByEmail(email);
+        Users users = null;
+        if (!users_.isPresent()) {
+            users = Users.builder()
+                    .username(username)
+                    .password("")
+                    .nickname(nickname)
+                    .email(email)
+                    .build();
+        } else {
+            users = Users.builder()
+                    .username(users_.get().getUsername())
+                    .password("")
+                    .nickname(nickname)
+                    .email(email)
+                    .build();
+        }
+
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));
         return (OidcUser) new UsersContext(users,authorities,oidcUser.getAttributes(),userNameAttributeName);

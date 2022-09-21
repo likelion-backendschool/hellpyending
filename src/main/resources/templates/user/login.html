@@ -1,6 +1,9 @@
 <th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
         <form th:action="@{/user/login}" method="post">
+            <span th:if="${error} == 'true'">
+                <p id="valid" class="alert alert-danger" th:text="${exception}"></p>
+            </span>
             <span>아이디</span>
             <div>
                 <input type="text" name="username" placeholder="아이디를 입력해주세요" required/>
@@ -11,10 +14,6 @@
             </div>
             <span>로그인 유지</span>
             <input type="checkbox" name="remember-me"/>
-            <span th:if="${error} == 'true'">
-                <p id="valid" class="alert alert-danger" th:text="${exception}"></p>
-            </span>
-
             <div>
                 <button type="submit">로그인</button>
                 <a th:href="@{/user/password}">비밀번호 찾기</a>

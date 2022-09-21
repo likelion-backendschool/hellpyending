@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class FacebookOauth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -37,22 +38,34 @@ public class FacebookOauth2UserService implements OAuth2UserService<OAuth2UserRe
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint()
                 .getUserNameAttributeName();
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        System.out.println("attributes" + attributes);
         // 기본적으로 스프링 부트에서 OAuth2 회원 정보를 가져오기 위한 getAttributes 메서드가 있다.
 
         final String username = "FACEBOOK_%s".formatted(oAuth2User.getName());
         final String nickname = attributes.get("name").toString();
         final String email = attributes.get("email").toString();
 
+
+
         // name과 email을 가져와 회원가입을 시키게 만듦.
         userService.requestRegistration(username,nickname,email);
 
-        Users users = Users.builder()
-                .username(username)
-                .password("")
-                .nickname(nickname)
-                .email(email)
-                .build();
+        Optional<Users> users_ = userService.findByEmail(email);
+        Users users = null;
+        if (!users_.isPresent()) {
+            users = Users.builder()
+                    .username(username)
+                    .password("")
+                    .nickname(nickname)
+                    .email(email)
+                    .build();
+        } else {
+            users = Users.builder()
+                    .username(users_.get().getUsername())
+                    .password("")
+                    .nickname(users_.get().getNickname())
+                    .email(users_.get().getEmail())
+                    .build();
+        }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));
