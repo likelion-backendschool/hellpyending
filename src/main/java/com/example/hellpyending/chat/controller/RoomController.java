@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -62,17 +63,21 @@ public class RoomController {
     }
 
 
-
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/room/{another_user_id}")
-    public String create_db(@RequestParam String name, RedirectAttributes rttr,@PathVariable(name = "another_user_id") long another_user_id,Principal principal){
+    public String create_db(RedirectAttributes rttr,@PathVariable(name = "another_user_id") long another_user_id,Principal principal){
 
+        Optional<Users> another_user = this.userService.findById(another_user_id);
         if (principal==null) {
             return "access_error";
-
         }
+
+        String name="";
         Users users = this.userService.getUser(principal.getName());
-        ChatRoom room = chatRoomService.createChatRoom(users,another_user_id,name);
+        if(this.chatRoomService.IsExistRoom(users,another_user.get()) == 1){
+            return "ExistChatRoom";
+        }
+        ChatRoom room = chatRoomService.createChatRoom(users,another_user.get(),name);
         log.info("# Create Chat Room , name: " + name);
 
         rttr.addFlashAttribute("roomName", chatRoomRepository.createChatRoomDTO(room));

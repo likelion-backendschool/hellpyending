@@ -30,9 +30,11 @@ public class ChatRoomService {
 
     }
 
-    public ChatRoom createChatRoom(Users users,long Another_user_id,String name) {
-        Optional<Users> another_user = this.userRepository.findById(Another_user_id);
+    public ChatRoom createChatRoom(Users users,Users another_user,String name) {
+
+
         List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
+        name=users.getUsername()+"_"+another_user.getUsername()+"채팅방";
         ChatRoom room = ChatRoom.create(name);
         chatRoomRepository.save(room);
         ChatRoomUser chatRoomUser1 = new ChatRoomUser();
@@ -43,7 +45,7 @@ public class ChatRoomService {
         chatRoomUser1.setUsers(users);
         chatRoomUserList.add(chatRoomUser1);
         chatRoomUser2.setChatRoom(room);
-        chatRoomUser2.setUsers(another_user.get());
+        chatRoomUser2.setUsers(another_user);
         chatRoomUserList.add(chatRoomUser2);
         this.chatRoomUserRepository.saveAll(chatRoomUserList);
         return room;
@@ -57,5 +59,15 @@ public class ChatRoomService {
     public void deleteChatRoom(String name) {
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(name);
         chatRoomRepository.delete(chatRoom);
+    }
+
+    public int IsExistRoom(Users user, Users another_user) {
+        int check  = this.chatRoomUserRepository.IsExistRoom(user.getId(),another_user.getId());
+        if(check==2){
+            return 1;
+        }
+        else{
+            return 0;
+        }
     }
 }
