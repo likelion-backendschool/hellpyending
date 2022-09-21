@@ -48,10 +48,11 @@ public class ArticleController {
     private final UserSecurityService userSecurityService;
 
     @GetMapping("/list")
-    public String list(String kw, Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<Article> paging = articleService.getList(kw, page);
-
+    public String list(@RequestParam(defaultValue = "")String kw, Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "search_subject")String type) {
+        Page<Article> paging = articleService.getList(type,kw, page);
         model.addAttribute("paging", paging);
+        model.addAttribute("type",type);
+        model.addAttribute("kw",kw);
         return "article_list";
     }
     @PreAuthorize("isAuthenticated()")
