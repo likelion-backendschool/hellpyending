@@ -109,11 +109,11 @@ public class UserService {
             final String nickname,
             final String email
     ){
-        final boolean existsEmail = userFindService.existsByEmail(email);
+        Optional<Users> users_ = this.findByEmail(email);
         final boolean existsUsername = userFindService.existsByUsername(username);
         final boolean existsNickname = userFindService.existsByNickname(nickname);
 
-        if(existsEmail == false && existsUsername == false && existsNickname == false){
+        if(users_.isPresent() == false && existsUsername == false && existsNickname == false){
             Users user = Users.builder()
                     .username(username)
                     .nickname(nickname)
@@ -131,7 +131,8 @@ public class UserService {
     }
 
     public void create(String email, LocalDate birth, Sex Sex,String phoneNumber, String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
-        Users users = userRepository.findByEmail(email);
+        Optional<Users> users_ = userRepository.findByEmail(email);
+        Users users = users_.get();
         users.setSex(Sex);
         users.setPhoneNumber(phoneNumber);
         users.setBirthday(birth);
@@ -143,7 +144,7 @@ public class UserService {
         userRepository.save(users);
     }
 
-    public Users findByEmail(String email) {
+    public Optional<Users> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 

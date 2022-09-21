@@ -177,7 +177,8 @@ public class UserController {
     String oauth2_information_update(Model model, UserOauth2CreateForm userOauth2CreateForm, Authentication authentication,
                                      @AuthenticationPrincipal UsersContext usersContext,HttpSession httpSession){
         String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
-        Users users = userService.findByEmail(email);
+        Optional<Users> users_ = userService.findByEmail(email);
+        Users users = users_.get();
         if (firstLoginCheck(users)){
             httpSession.invalidate();
             model.addAttribute("users",users);
