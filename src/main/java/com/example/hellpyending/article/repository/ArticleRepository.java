@@ -16,8 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface
-ArticleRepository extends JpaRepository<Article, Long> {
+public interface ArticleRepository extends JpaRepository<Article, Long>,ArticleQueryRepository {
 
     Page<Article> findByDeleteYn(DeleteType deleteYn, Pageable pageable);
 
