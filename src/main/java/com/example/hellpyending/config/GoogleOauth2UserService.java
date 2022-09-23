@@ -43,28 +43,17 @@ public class GoogleOauth2UserService implements OAuth2UserService<OidcUserReques
         final String username = "GOOGLE_%s".formatted(oidcUser.getName());
         String nickname = oidcUser.getAttributes().get("name").toString();
         String email = oidcUser.getAttributes().get("email").toString();
-        userService.requestRegistration(username,nickname,email);
+        userService.requestRegistration(username,email,nickname);
 
-        Optional<Users> users_ = userService.findByEmail(email);
-        Users users = null;
-        if (!users_.isPresent()) {
-            users = Users.builder()
-                    .username(username)
-                    .password("")
-                    .nickname(nickname)
-                    .email(email)
-                    .build();
-        } else {
-            users = Users.builder()
-                    .username(users_.get().getUsername())
-                    .password("")
-                    .nickname(nickname)
-                    .email(email)
-                    .build();
-        }
+        Optional<Users> users_1 = userService.findByUsername(username);
+        Optional<Users> users_2 = userService.findByEmail(email);
+        Optional<Users> users_3 = userService.findByNickname(nickname);
+        Users users = Util.userContextSave(users_1,users_2,users_3,username,nickname,email);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));
         return (OidcUser) new UsersContext(users,authorities,oidcUser.getAttributes(),userNameAttributeName);
     }
+
+
 }

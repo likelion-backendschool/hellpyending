@@ -21,6 +21,7 @@ public class UsersContext extends User implements OAuth2User,OidcUser {
     private final Long id;
     private final String email;
     private final LocalDate birthday;
+    private final String nickname;
     private Map<String, Object> attributes;
     private String userNameAttributeName;
 
@@ -30,6 +31,7 @@ public class UsersContext extends User implements OAuth2User,OidcUser {
         this.id = users.getId();
         this.email = users.getEmail();
         this.birthday = users.getBirthday();
+        this.nickname = users.getNickname();
     }
 
     public UsersContext(Users users, List<GrantedAuthority> authorities, Map<String, Object> attributes, String userNameAttributeName) {
