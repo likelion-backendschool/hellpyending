@@ -47,25 +47,12 @@ public class FacebookOauth2UserService implements OAuth2UserService<OAuth2UserRe
 
 
         // name과 email을 가져와 회원가입을 시키게 만듦.
-        userService.requestRegistration(username,nickname,email);
+        userService.requestRegistration(username,email,nickname);
 
-        Optional<Users> users_ = userService.findByEmail(email);
-        Users users = null;
-        if (!users_.isPresent()) {
-            users = Users.builder()
-                    .username(username)
-                    .password("")
-                    .nickname(nickname)
-                    .email(email)
-                    .build();
-        } else {
-            users = Users.builder()
-                    .username(users_.get().getUsername())
-                    .password("")
-                    .nickname(users_.get().getNickname())
-                    .email(users_.get().getEmail())
-                    .build();
-        }
+        Optional<Users> users_1 = userService.findByUsername(username);
+        Optional<Users> users_2 = userService.findByEmail(email);
+        Optional<Users> users_3 = userService.findByNickname(nickname);
+        Users users = Util.userContextSave(users_1,users_2,users_3,username,nickname,email);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));
