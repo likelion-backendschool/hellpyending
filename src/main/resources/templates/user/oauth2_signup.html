@@ -5,6 +5,8 @@
                 <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
             </div>
             <input name="email" th:value="${users.email}" hidden/>
+            <input name="username" th:value="${users.username}" hidden/>
+            <input name="nickname" th:value="${users.nickname}" hidden/>
             <span>생년 월일</span>
             <div>
                 <select name="year" id="year"></select>년

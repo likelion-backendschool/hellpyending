@@ -177,7 +177,7 @@ public class UserController {
     String oauth2_information_update(Model model, UserOauth2CreateForm userOauth2CreateForm, Authentication authentication,
                                      @AuthenticationPrincipal UsersContext usersContext,HttpSession httpSession){
         String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
-        Optional<Users> users_ = userService.findByEmail(email);
+        Optional<Users> users_ = userService.findByEmailOrUsernameOrNickname(email,usersContext.getUsername(),usersContext.getNickname());
         Users users = users_.get();
         if (firstLoginCheck(users)){
             httpSession.invalidate();
@@ -192,7 +192,7 @@ public class UserController {
     @PostMapping("/oauth2/information")
     @PreAuthorize("isAuthenticated()")
     String oauth2_information_update(@Valid UserOauth2CreateForm userOauth2CreateForm, BindingResult bindingResult, Authentication authentication,
-                                     @AuthenticationPrincipal UserDetails userDetails,HttpSession httpSession, String email){
+                                     @AuthenticationPrincipal UserDetails userDetails,HttpSession httpSession, String email,String username, String nickname){
 
         String birth = "%s-%s-%s".formatted(userOauth2CreateForm.getYear(),userOauth2CreateForm.getMonth(),userOauth2CreateForm.getDay());
         LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
@@ -202,6 +202,8 @@ public class UserController {
         try {
             userService.create(
                     email,
+                    username,
+                    nickname,
                     birthday,
                     userOauth2CreateForm.getSex(),
                     userOauth2CreateForm.getPhoneNumber(),

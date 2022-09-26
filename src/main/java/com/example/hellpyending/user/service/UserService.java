@@ -106,20 +106,19 @@ public class UserService {
 
     public void requestRegistration(
             final String username,
-            final String nickname,
-            final String email
+            final String email,
+            final String nickname
     ){
         Optional<Users> users_ = this.findByEmail(email);
         final boolean existsUsername = userFindService.existsByUsername(username);
         final boolean existsNickname = userFindService.existsByNickname(nickname);
-
         if(users_.isPresent() == false && existsUsername == false && existsNickname == false){
             Users user = Users.builder()
                     .username(username)
-                    .nickname(nickname)
                     .password(passwordEncoder.encode(Util.getTempPassword()))
                     .email(email)
                     .userType(UserType.USER)
+                    .nickname(nickname)
                     .build();
             userRepository.save(user);
         }
@@ -130,8 +129,8 @@ public class UserService {
         return "%s-%s-%s".formatted(bits[2],bits[0],bits[1]);
     }
 
-    public void create(String email, LocalDate birth, Sex Sex,String phoneNumber, String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
-        Optional<Users> users_ = userRepository.findByEmail(email);
+    public void create(String email, String username, String nickname,LocalDate birth, Sex Sex,String phoneNumber, String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
+        Optional<Users> users_ = userRepository.findByEmailOrUsernameOrNickname(email,username,nickname);
         Users users = users_.get();
         users.setSex(Sex);
         users.setPhoneNumber(phoneNumber);
@@ -160,5 +159,13 @@ public class UserService {
 
     public Optional<Users> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    public Optional<Users> findByEmailOrUsernameOrNickname(String email, String name, String nickName) {
+        return userRepository.findByEmailOrUsernameOrNickname(email,name,nickName);
+    }
+
+    public Optional<Users> findByEmailOrUsername(String email, String username) {
+        return userRepository.findByEmailOrUsername(email,username);
     }
 }
