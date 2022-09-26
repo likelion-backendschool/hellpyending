@@ -92,7 +92,7 @@
                           th:object="${articleCommentForm}" method="post" class="my-3">
                         <div th:replace="form_errors :: formErrorsFragment"></div>
 
-                        <textarea  th:id="|commentReply${articleComment.id}|" name="content" rows="1" class="form-control"></textarea>
+                        <textarea  th:id="|commentReply${articleComment.id}|" name="content" rows="1" class="form-control" placeholder="직접입력" required></textarea>
 
                         <input type="submit" name="commentReplySubmit_new"  th:id="|commentReplySubmit${articleComment.id}|" value="답글등록"
                                class="btn btn-primary my-2">
