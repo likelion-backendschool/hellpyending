@@ -143,4 +143,8 @@ public class UserService {
     public Optional<Users> findByEmailOrUsername(String email, String username) {
         return userRepository.findByEmailOrUsername(email,username);
     }
+
+    public void delete(String username) {
+        userRepository.deleteByUsername(username);
+    }
 }

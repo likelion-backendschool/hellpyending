@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
@@ -264,5 +265,11 @@ public class UserController {
         model.addAttribute("users",users);
         return "/user/payment";
     }
-
+    @Transactional
+    @GetMapping("/delete")
+    public String delete(@AuthenticationPrincipal UsersContext usersContext,HttpSession httpSession){
+        userService.delete(usersContext.getUsername());
+        httpSession.invalidate();
+        return "redirect:/";
+    }
 }
