@@ -6,7 +6,11 @@
             </div>
             <input name="email" th:value="${users.email}" hidden/>
             <input name="username" th:value="${users.username}" hidden/>
-            <input name="nickname" th:value="${users.nickname}" hidden/>
+            <span>닉네임</span>
+            <div id="check">
+                <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요" required/>
+                <button onclick="id_check(); return false">중복 체크</button>
+            </div>
             <span>생년 월일</span>
             <div>
                 <select name="year" id="year"></select>년

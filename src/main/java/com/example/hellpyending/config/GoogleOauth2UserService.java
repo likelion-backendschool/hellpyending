@@ -41,14 +41,12 @@ public class GoogleOauth2UserService implements OAuth2UserService<OidcUserReques
 
         // 기본적으로 스프링 부트에서 OAuth2 회원 정보를 가져오기 위한 getAttributes 메서드가 있다.
         final String username = "GOOGLE_%s".formatted(oidcUser.getName());
-        String nickname = oidcUser.getAttributes().get("name").toString();
         String email = oidcUser.getAttributes().get("email").toString();
-        userService.requestRegistration(username,email,nickname);
+        // name과 email을 가져와 회원가입을 시키게 만듦.
+        userService.requestRegistration(username,email);
 
-        Optional<Users> users_1 = userService.findByUsername(username);
         Optional<Users> users_2 = userService.findByEmail(email);
-        Optional<Users> users_3 = userService.findByNickname(nickname);
-        Users users = Util.userContextSave(users_1,users_2,users_3,username,nickname,email);
+        Users users = Util.userContextSave(users_2,username,email);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));

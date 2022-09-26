@@ -80,45 +80,19 @@ public class UserService {
         }
         userRepository.save(users);
     }
-    public void requestRegistration(
-            final String username,
-            final String nickname,
-            final String email,
-            final String gender,
-            final String birthday){
-        final boolean existsEmail = userFindService.existsByEmail(email);
-        final boolean existsUsername = userFindService.existsByUsername(username);
-        final boolean existsNickname = userFindService.existsByNickname(nickname);
-
-        if(existsEmail == false && existsUsername == false && existsNickname == false){
-            LocalDate birth = LocalDate.parse(parseLocalDate(birthday), DateTimeFormatter.ISO_DATE);
-            Users user = Users.builder()
-                    .username(username)
-                    .nickname(nickname)
-                    .sex(gender == "male" ? Sex.MALE : Sex.FEMALE )
-                    .email(email)
-                    .birthday(birth)
-                    .userType(UserType.USER)
-                    .build();
-            userRepository.save(user);
-        }
-    }
 
     public void requestRegistration(
             final String username,
-            final String email,
-            final String nickname
+            final String email
     ){
         Optional<Users> users_ = this.findByEmail(email);
-        final boolean existsUsername = userFindService.existsByUsername(username);
-        final boolean existsNickname = userFindService.existsByNickname(nickname);
-        if(users_.isPresent() == false && existsUsername == false && existsNickname == false){
+        if(users_.isPresent() == false){
             Users user = Users.builder()
                     .username(username)
                     .password(passwordEncoder.encode(Util.getTempPassword()))
+                    .nickname(username)
                     .email(email)
                     .userType(UserType.USER)
-                    .nickname(nickname)
                     .build();
             userRepository.save(user);
         }
@@ -132,6 +106,7 @@ public class UserService {
     public void create(String email, String username, String nickname,LocalDate birth, Sex Sex,String phoneNumber, String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
         Optional<Users> users_ = userRepository.findByEmailOrUsernameOrNickname(email,username,nickname);
         Users users = users_.get();
+        users.setNickname(nickname);
         users.setSex(Sex);
         users.setPhoneNumber(phoneNumber);
         users.setBirthday(birth);

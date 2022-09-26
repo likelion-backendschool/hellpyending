@@ -191,11 +191,13 @@ public class UserController {
      **/
     @PostMapping("/oauth2/information")
     @PreAuthorize("isAuthenticated()")
-    String oauth2_information_update(@Valid UserOauth2CreateForm userOauth2CreateForm, BindingResult bindingResult, Authentication authentication,
-                                     @AuthenticationPrincipal UserDetails userDetails,HttpSession httpSession, String email,String username, String nickname){
+    String oauth2_information_update(@Valid UserOauth2CreateForm userOauth2CreateForm, BindingResult bindingResult, String email,String username, String nickname, Model model){
 
         String birth = "%s-%s-%s".formatted(userOauth2CreateForm.getYear(),userOauth2CreateForm.getMonth(),userOauth2CreateForm.getDay());
         LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
+        Optional<Users> users_ = userService.findByEmail(email);
+        Users users = users_.get();
+        model.addAttribute("users",users);
         if (bindingResult.hasErrors()) {
             return "/user/oauth2_signup";
         }
@@ -203,7 +205,7 @@ public class UserController {
             userService.create(
                     email,
                     username,
-                    nickname,
+                    userOauth2CreateForm.getNickname(),
                     birthday,
                     userOauth2CreateForm.getSex(),
                     userOauth2CreateForm.getPhoneNumber(),
@@ -250,7 +252,7 @@ public class UserController {
 
     private boolean firstLoginCheck(Users users) {
         return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null ||
-                users.getPhoneNumber() == null || users.getBirthday() == null;
+                users.getPhoneNumber() == null || users.getBirthday() == null || users.getNickname() == null;
     }
     @GetMapping("/payment/{id}")
     public String payment(@PathVariable Long id,Model model){
