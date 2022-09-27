@@ -19,6 +19,10 @@ public class UserOauth2CreateForm {
     @NotEmpty(message = "생년월일은 필수항목입니다.")
     private String day;
 
+    @NotEmpty(message = "닉네임은 필수항목입니다.")
+    @Size(max = 20)
+    private String nickname;
+
     @NotNull(message = "성별은 필수항목입니다.")
     private Sex sex;
 

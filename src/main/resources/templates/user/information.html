@@ -13,19 +13,10 @@
                 <a th:href="@{|/article/list/${users.id}|}">내가 쓴 글</a>
             </li>
             <li>
-                <a href="#">공지사항</a>
-            </li>
-            <li>
-                <a href="#">이벤트</a>
-            </li>
-            <li>
                 <a th:href="@{|/user/payment/${users.id}|}">결제내역</a>
             </li>
             <li>
-                <a href="#">자주 묻는 질문</a>
-            </li>
-            <li>
-                <a href="#">약관 및 정책</a>
+                <a th:href="@{|/user/delete|}" onclick="!confirm('탈퇴 하시겠습니까?\n탈퇴한 아이디는 한 달 동안 재가입이 안 됩니다.');">회원탈퇴</a>
             </li>
         </ul>
 

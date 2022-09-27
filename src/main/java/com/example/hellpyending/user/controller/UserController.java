@@ -1,6 +1,7 @@
 package com.example.hellpyending.user.controller;
 
 import com.example.hellpyending.config.UsersContext;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.user.service.UserService;
 import com.example.hellpyending.user.dto.UserUpdateForm;
 import com.example.hellpyending.user.entity.UserCreateForm;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
@@ -207,7 +209,12 @@ public class UserController {
     String oauth2_information_update(Model model, UserOauth2CreateForm userOauth2CreateForm, Authentication authentication,
                                      @AuthenticationPrincipal UsersContext usersContext,HttpSession httpSession){
         String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
-        Users users = userService.findByEmail(email);
+        Optional<Users> users_ = userService.findByEmailOrUsernameOrNickname(email,usersContext.getUsername(),usersContext.getNickname());
+        Users users = users_.get();
+        if (users.getDeleteYn() == DeleteType.DELETE){
+            httpSession.invalidate();
+            return "/user/delete_account";
+        }
         if (firstLoginCheck(users)){
             httpSession.invalidate();
             model.addAttribute("users",users);
@@ -220,17 +227,21 @@ public class UserController {
      **/
     @PostMapping("/oauth2/information")
     @PreAuthorize("isAuthenticated()")
-    String oauth2_information_update(@Valid UserOauth2CreateForm userOauth2CreateForm, BindingResult bindingResult, Authentication authentication,
-                                     @AuthenticationPrincipal UserDetails userDetails,HttpSession httpSession, String email){
+    String oauth2_information_update(@Valid UserOauth2CreateForm userOauth2CreateForm, BindingResult bindingResult, String email,String username, String nickname, Model model){
 
         String birth = "%s-%s-%s".formatted(userOauth2CreateForm.getYear(),userOauth2CreateForm.getMonth(),userOauth2CreateForm.getDay());
         LocalDate birthday = LocalDate.parse(birth, DateTimeFormatter.ISO_DATE);
+        Optional<Users> users_ = userService.findByEmail(email);
+        Users users = users_.get();
+        model.addAttribute("users",users);
         if (bindingResult.hasErrors()) {
             return "/user/oauth2_signup";
         }
         try {
             userService.create(
                     email,
+                    username,
+                    userOauth2CreateForm.getNickname(),
                     birthday,
                     userOauth2CreateForm.getSex(),
                     userOauth2CreateForm.getPhoneNumber(),
@@ -277,7 +288,7 @@ public class UserController {
 
     private boolean firstLoginCheck(Users users) {
         return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null ||
-                users.getPhoneNumber() == null || users.getBirthday() == null;
+                users.getPhoneNumber() == null || users.getBirthday() == null || users.getNickname() == null;
     }
     @GetMapping("/payment/{id}")
     public String payment(@PathVariable Long id,Model model){
@@ -288,6 +299,27 @@ public class UserController {
         Users users = users_.get();
         model.addAttribute("users",users);
         return "/user/payment";
+    }
+    @Transactional
+    @GetMapping("/delete")
+    public String delete(@AuthenticationPrincipal UsersContext usersContext,HttpSession httpSession){
+        userService.delete(usersContext.getUsername());
+        httpSession.invalidate();
+        return "redirect:/";
+    }
+
+    @GetMapping("/check")
+    public String check(@AuthenticationPrincipal UsersContext usersContext,HttpSession httpSession){
+        Optional<Users> users_ = userService.findByUsername(usersContext.getUsername());
+        if (!users_.isPresent()){
+            return "access_error";
+        }
+        Users users = users_.get();
+        if (users.getDeleteYn() == DeleteType.DELETE){
+            httpSession.invalidate();
+            return "/user/delete_account";
+        }
+        return "redirect:/";
     }
 
 }

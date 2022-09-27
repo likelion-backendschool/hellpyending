@@ -1,5 +1,6 @@
 package com.example.hellpyending.article.form;
 
+import com.example.hellpyending.article.domain.ArticleComment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

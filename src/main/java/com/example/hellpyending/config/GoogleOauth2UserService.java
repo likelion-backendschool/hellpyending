@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 // 구글은 OpenID Connect 1.0 를 이용하여 통신하기 때문에 OidcUserRequest 라고 쓰는 것을 유의하자.
@@ -40,18 +41,17 @@ public class GoogleOauth2UserService implements OAuth2UserService<OidcUserReques
 
         // 기본적으로 스프링 부트에서 OAuth2 회원 정보를 가져오기 위한 getAttributes 메서드가 있다.
         final String username = "GOOGLE_%s".formatted(oidcUser.getName());
-        String nickname = oidcUser.getAttributes().get("name").toString();
         String email = oidcUser.getAttributes().get("email").toString();
-        userService.requestRegistration(username,nickname,email);
+        // name과 email을 가져와 회원가입을 시키게 만듦.
+        userService.requestRegistration(username,email);
 
-        Users users = Users.builder()
-                .username(username)
-                .nickname(nickname)
-                .email(email)
-                .password("")
-                .build();
+        Optional<Users> users_2 = userService.findByEmail(email);
+        Users users = Util.userContextSave(users_2,username,email);
+
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(UserType.USER.getUserType()));
         return (OidcUser) new UsersContext(users,authorities,oidcUser.getAttributes(),userNameAttributeName);
     }
+
+
 }

@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    alert('부가정보를 입력하여 회원가입을 해주세요.');
     var now = new Date();
     var year = now.getFullYear();
     var mon = (now.getMonth() + 1) > 9 ? '' + (now.getMonth() + 1) : '0' + (now.getMonth() + 1);

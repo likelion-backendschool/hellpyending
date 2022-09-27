@@ -13,11 +13,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface
-ArticleRepository extends JpaRepository<Article, Long> {
+public interface ArticleRepository extends JpaRepository<Article, Long>,ArticleQueryRepository {
 
     Page<Article> findByDeleteYn(DeleteType deleteYn, Pageable pageable);
 
@@ -33,4 +34,5 @@ ArticleRepository extends JpaRepository<Article, Long> {
     int updateView(@Param("id") Long id);
 
 
+    List<Article> findByUsers_IdAndDeleteYn(Long id, DeleteType normal);
 }

@@ -31,6 +31,7 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+
     private final ArticleImgService articleImgService;
     private final static String VIEWCOOKIENAME = "alreadyViewCookie";
 
@@ -56,7 +57,7 @@ public class ArticleService {
         }
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능-
-        return articleRepository.findByUsers_IdAndDeleteYn(id,DeleteType.NORMAL, pageable);
+        return articleRepository.findByUsers_IdAndDeleteYn(id, DeleteType.NORMAL, pageable);
 
     }
 
@@ -69,15 +70,14 @@ public class ArticleService {
     }
 
 
-
     @Transactional
     public void modify(Article article, String title, String content) {
 
 
-            article.setTitle(title);
-            article.setContent(content);
-            article.setUpdate(LocalDateTime.now());
-            articleRepository.save(article);
+        article.setTitle(title);
+        article.setContent(content);
+        article.setUpdate(LocalDateTime.now());
+        articleRepository.save(article);
 
     }
 
@@ -110,30 +110,25 @@ public class ArticleService {
         article.setAddress_2st(users.getAddress_2st());
         article.setAddress_3st(users.getAddress_3st());// 지역명은 회원가입 할 때 가져오는 것, 조회수는 생각 해보자
         article.setUsers(users);
-        articleRepository.save(article);
 
-        long article_id = articleRepository.last_insert_id();
-
+        //long article_id = articleRepository.last_insert_id();
+        long article_id = articleRepository.save(article).getId();
 
         // 업로드한 이미지가 없을경우
-        if(files.get(0).getOriginalFilename().equals("")){
-        }
-        else{
+        if (files.get(0).getOriginalFilename().equals("")) {
+        } else {
             insertImgFile(article_id, files);
         }
 
         //게시글에 해시태그를 포함 할 경우
-        if(tags.size()!=0){
-            insertHashTag(article,tags);
+        if (tags.size() != 0) {
+            insertHashTag(article, tags);
         }
-
-
-
     }
 
     private void insertHashTag(Article article_id, List<String> tags) {
 
-        for(String tag : tags){
+        for (String tag : tags) {
             article_id.addArticleHashtag(tag);
 
         }
@@ -145,27 +140,15 @@ public class ArticleService {
             Article article = getArticle(article_id);
             if (files != null) {
                 for (MultipartFile multipartFile : files) {
-                    articleImgService.post_img(article,multipartFile);
+                    articleImgService.post_img(article, multipartFile);
                 }
             }
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
         return article_id;
     }
-
-
-
-
-//    @Transactional
-//    public void setHitCount(Article article) {
-//        Integer PrevHitCount = article.getHitCount();
-//        PrevHitCount++;
-//        article.setHitCount(PrevHitCount);
-//        articleRepository.save(article);
-//    }
 
     @Transactional
     public int setHitCount(Long id, HttpServletRequest request, HttpServletResponse response) {
@@ -176,9 +159,9 @@ public class ArticleService {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 // 이미 조회를 한 경우 체크
-                if (cookie.getName().equals(VIEWCOOKIENAME+id)) checkCookie = true;
+                if (cookie.getName().equals(VIEWCOOKIENAME + id)) checkCookie = true;
             }
-            if(!checkCookie){
+            if (!checkCookie) {
                 Cookie newCookie = createCookieForForNotOverlap(id);
                 response.addCookie(newCookie);
                 result = articleRepository.updateView(id);
@@ -197,10 +180,10 @@ public class ArticleService {
      * @return
      * */
     private Cookie createCookieForForNotOverlap(Long id) {
-        Cookie cookie = new Cookie(VIEWCOOKIENAME+id, String.valueOf(id));
-        cookie.setComment("조회수 중복 증가 방지 쿠키");	// 쿠키 용도 설명 기재
-        cookie.setMaxAge(getRemainSecondForTommorow()); 	// 하루를 준다.
-        cookie.setHttpOnly(true);				// 서버에서만 조작 가능
+        Cookie cookie = new Cookie(VIEWCOOKIENAME + id, String.valueOf(id));
+        cookie.setComment("조회수 중복 증가 방지 쿠키");    // 쿠키 용도 설명 기재
+        cookie.setMaxAge(getRemainSecondForTommorow());    // 하루를 준다.
+        cookie.setHttpOnly(true);                // 서버에서만 조작 가능
         return cookie;
     }
 
@@ -211,5 +194,19 @@ public class ArticleService {
         return (int) now.until(tommorow, ChronoUnit.SECONDS);
     }
 
+    public Page<Article> getList(String type, String kw, int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("create"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
+        if (kw == null || kw.trim().length() == 0) {
+            return articleRepository.findByDeleteYn(DeleteType.NORMAL, pageable);
+        }
+        if (type.equals("search_hashtag")) {
+            return  articleRepository.findByHashTagContainsAndDeleteYn(kw, DeleteType.NORMAL, pageable);
+        } else if (type.equals("search_subject")) {
+            return articleRepository.findByTitleContainsAndDeleteYn(kw, DeleteType.NORMAL, pageable);
+        } else {
+            return  articleRepository.findByUserContainsAndDeleteYn(kw, DeleteType.NORMAL, pageable);
+        }
+    }
 }
-

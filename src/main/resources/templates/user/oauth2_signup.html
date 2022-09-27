@@ -5,6 +5,12 @@
                 <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
             </div>
             <input name="email" th:value="${users.email}" hidden/>
+            <input name="username" th:value="${users.username}" hidden/>
+            <span>닉네임</span>
+            <div id="check">
+                <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요" required/>
+                <button onclick="id_check(); return false">중복 체크</button>
+            </div>
             <span>생년 월일</span>
             <div>
                 <select name="year" id="year"></select>년
@@ -51,6 +57,6 @@
     </th:block>
 </th:block>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script th:src="@{/js/user/signup.js}"></script>
+<script th:src="@{/js/user/oauth2_signup.js}"></script>
 </html>
 

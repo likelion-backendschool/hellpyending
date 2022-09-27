@@ -1,7 +1,12 @@
 package com.example.hellpyending.user.service;
 
+import com.example.hellpyending.article.domain.Article;
+import com.example.hellpyending.article.domain.ArticleComment;
 import com.example.hellpyending.article.exception.DataNotFoundException;
+import com.example.hellpyending.article.repository.ArticleCommentRepository;
+import com.example.hellpyending.article.repository.ArticleRepository;
 import com.example.hellpyending.config.Util;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.user.repository.UserRepository;
 import com.example.hellpyending.user.entity.Sex;
 import com.example.hellpyending.user.entity.Users;
@@ -12,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +25,10 @@ import java.util.Optional;
 public class UserService {
     private final UserFindService userFindService;
     private final UserRepository userRepository;
+
+    private final ArticleRepository articleRepository;
+
+    private final ArticleCommentRepository articleCommentRepository;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -80,44 +90,17 @@ public class UserService {
         }
         userRepository.save(users);
     }
-    public void requestRegistration(
-            final String username,
-            final String nickname,
-            final String email,
-            final String gender,
-            final String birthday){
-        final boolean existsEmail = userFindService.existsByEmail(email);
-        final boolean existsUsername = userFindService.existsByUsername(username);
-        final boolean existsNickname = userFindService.existsByNickname(nickname);
-
-        if(existsEmail == false && existsUsername == false && existsNickname == false){
-            LocalDate birth = LocalDate.parse(parseLocalDate(birthday), DateTimeFormatter.ISO_DATE);
-            Users user = Users.builder()
-                    .username(username)
-                    .nickname(nickname)
-                    .sex(gender == "male" ? Sex.MALE : Sex.FEMALE )
-                    .email(email)
-                    .birthday(birth)
-                    .userType(UserType.USER)
-                    .build();
-            userRepository.save(user);
-        }
-    }
 
     public void requestRegistration(
             final String username,
-            final String nickname,
             final String email
     ){
-        final boolean existsEmail = userFindService.existsByEmail(email);
-        final boolean existsUsername = userFindService.existsByUsername(username);
-        final boolean existsNickname = userFindService.existsByNickname(nickname);
-
-        if(existsEmail == false && existsUsername == false && existsNickname == false){
+        Optional<Users> users_ = this.findByEmail(email);
+        if(users_.isPresent() == false){
             Users user = Users.builder()
                     .username(username)
-                    .nickname(nickname)
                     .password(passwordEncoder.encode(Util.getTempPassword()))
+                    .nickname(username)
                     .email(email)
                     .userType(UserType.USER)
                     .build();
@@ -130,8 +113,10 @@ public class UserService {
         return "%s-%s-%s".formatted(bits[2],bits[0],bits[1]);
     }
 
-    public void create(String email, LocalDate birth, Sex Sex,String phoneNumber, String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
-        Users users = userRepository.findByEmail(email);
+    public void create(String email, String username, String nickname,LocalDate birth, Sex Sex,String phoneNumber, String address_1st, String address_2st, String address_3st, String address_4st, String address_detail) {
+        Optional<Users> users_ = userRepository.findByEmailOrUsernameOrNickname(email,username,nickname);
+        Users users = users_.get();
+        users.setNickname(nickname);
         users.setSex(Sex);
         users.setPhoneNumber(phoneNumber);
         users.setBirthday(birth);
@@ -143,7 +128,7 @@ public class UserService {
         userRepository.save(users);
     }
 
-    public Users findByEmail(String email) {
+    public Optional<Users> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
@@ -159,5 +144,31 @@ public class UserService {
 
     public Optional<Users> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    public Optional<Users> findByEmailOrUsernameOrNickname(String email, String name, String nickName) {
+        return userRepository.findByEmailOrUsernameOrNickname(email,name,nickName);
+    }
+
+    public Optional<Users> findByEmailOrUsername(String email, String username) {
+        return userRepository.findByEmailOrUsername(email,username);
+    }
+
+    public void delete(String username) {
+        Optional<Users> users_ = userRepository.findByUsername(username);
+        Users users = users_.get();
+        List<Article> articles = articleRepository.findByUsers_IdAndDeleteYn(users.getId(),DeleteType.NORMAL);
+        List<ArticleComment> articleComments = articleCommentRepository.findByUsers_IdAndDeleteYn(users.getId(),DeleteType.NORMAL);
+        users.setDeleteYn(DeleteType.DELETE);
+        for (Article article : articles){
+            article.setDeleteYn(DeleteType.DELETE);
+        }
+        for (ArticleComment articleComment : articleComments){
+            articleComment.setDeleteYn(DeleteType.DELETE);
+        }
+        articleRepository.saveAll(articles);
+        articleCommentRepository.saveAll(articleComments);
+        userRepository.save(users);
+
     }
 }
