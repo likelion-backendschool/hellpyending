@@ -18,75 +18,19 @@ public class Util {
         }
         return str;
     }
-    public static Users userContextSave(Optional<Users> users_1, Optional<Users> users_2, Optional<Users> users_3, String username, String nickname, String email) {
-        // 1 2 3
-        if (users_1.isPresent() && users_2.isPresent() && users_3.isPresent()){
+    public static Users userContextSave(Optional<Users> users_2, String username, String email) {
+        // email 연동
+        if (users_2.isPresent()){
             return Users.builder()
-                    .username(users_1.get().getUsername())
+                    .username(users_2.get().getUsername())
                     .password("")
                     .email(users_2.get().getEmail())
-                    .nickname(users_3.get().getNickname())
-                    .build();
-        }
-        // 1 x x
-        else if(users_1.isPresent() && !users_2.isPresent() && !users_3.isPresent()){
-            return Users.builder()
-                    .username(users_1.get().getUsername())
-                    .password("")
-                    .email(email)
-                    .nickname(nickname)
-                    .build();
-        }
-        // x 2 x
-        else if(!users_1.isPresent() && users_2.isPresent() && !users_3.isPresent()){
-            return Users.builder()
-                    .username(username)
-                    .password("")
-                    .email(users_2.get().getEmail())
-                    .nickname(nickname)
-                    .build();
-        }
-        // x x 3
-        else if(!users_1.isPresent() && !users_2.isPresent() && users_3.isPresent()){
-            return Users.builder()
-                    .username(username)
-                    .password("")
-                    .email(email)
-                    .nickname(users_3.get().getNickname())
-                    .build();
-        }
-        // x o o
-        else if (!users_1.isPresent() && users_2.isPresent() && users_3.isPresent()) {
-            return Users.builder()
-                    .username(username)
-                    .password("")
-                    .email(users_2.get().getEmail())
-                    .nickname(users_3.get().getNickname())
-                    .build();
-        }
-        // o o x
-        else if (users_1.isPresent() && users_2.isPresent() && !users_3.isPresent()) {
-            return Users.builder()
-                    .username(users_1.get().getUsername())
-                    .password("")
-                    .email(users_2.get().getEmail())
-                    .nickname(nickname)
-                    .build();
-        }
-        // o x o
-        else if (users_1.isPresent() && !users_2.isPresent() && users_3.isPresent()) {
-            return Users.builder()
-                    .username(users_1.get().getUsername())
-                    .password("")
-                    .email(email)
-                    .nickname(users_3.get().getNickname())
                     .build();
         } else {
             return Users.builder()
                     .username(username)
                     .password("")
                     .email(email)
-                    .nickname(nickname)
                     .build();
         }
     }
