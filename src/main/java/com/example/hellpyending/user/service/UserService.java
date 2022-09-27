@@ -2,8 +2,10 @@ package com.example.hellpyending.user.service;
 
 import com.example.hellpyending.article.domain.Article;
 import com.example.hellpyending.article.domain.ArticleComment;
+import com.example.hellpyending.article.domain.ArticleLike;
 import com.example.hellpyending.article.exception.DataNotFoundException;
 import com.example.hellpyending.article.repository.ArticleCommentRepository;
+import com.example.hellpyending.article.repository.ArticleLikeRepository;
 import com.example.hellpyending.article.repository.ArticleRepository;
 import com.example.hellpyending.config.Util;
 import com.example.hellpyending.user.entity.DeleteType;
@@ -14,6 +16,7 @@ import com.example.hellpyending.user.entity.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +33,8 @@ public class UserService {
 
     private final ArticleCommentRepository articleCommentRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final ArticleLikeRepository articleLikeRepository;
 
 
     public void create(String username, String password, String nickname, Sex sex, String email, String phoneNumber, LocalDate birthday,
@@ -154,21 +159,25 @@ public class UserService {
         return userRepository.findByEmailOrUsername(email,username);
     }
 
+    @Transactional
     public void delete(String username) {
         Optional<Users> users_ = userRepository.findByUsername(username);
         Users users = users_.get();
         List<Article> articles = articleRepository.findByUsers_IdAndDeleteYn(users.getId(),DeleteType.NORMAL);
         List<ArticleComment> articleComments = articleCommentRepository.findByUsers_IdAndDeleteYn(users.getId(),DeleteType.NORMAL);
+        List<ArticleLike> articleLikes  = articleLikeRepository.findByUsers_Id(users.getId());
+
         users.setDeleteYn(DeleteType.DELETE);
         for (Article article : articles){
             article.setDeleteYn(DeleteType.DELETE);
         }
         for (ArticleComment articleComment : articleComments){
             articleComment.setDeleteYn(DeleteType.DELETE);
+            articleComment.setComment("탈퇴한 유저의 댓글입니다.");
         }
+        articleLikeRepository.deleteAll(articleLikes);
         articleRepository.saveAll(articles);
         articleCommentRepository.saveAll(articleComments);
         userRepository.save(users);
-
     }
 }
