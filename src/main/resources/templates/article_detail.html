@@ -268,7 +268,7 @@
 
 $(document).ready(function(){
 
-    var commentUserNickName =[[${#authentication.getPrincipal().getUsername}]];
+    var commentUserNickName =[[${#authentication.getPrincipal() != 'anonymousUser' && #authentication.getPrincipal().getUsername}]];
     console.log(commentUserNickName);
     var articleUserId =[[${article.users.id}]];
     console.log(articleUserId);
