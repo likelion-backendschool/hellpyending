@@ -169,5 +169,6 @@ public class UserService {
         articleRepository.saveAll(articles);
         articleCommentRepository.saveAll(articleComments);
         userRepository.save(users);
+
     }
 }
