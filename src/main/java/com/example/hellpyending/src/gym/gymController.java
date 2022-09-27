@@ -69,28 +69,23 @@ public class gymController {
     }
 
     @RequestMapping("/search")
-    public String searchGymList() {
+    public String searchGymList(Principal principal) {
+
+        if (principal == null) {
+            return "access_error";
+        }
 
         return "/gym/GymList";
     }
 
-    @RequestMapping("/beforeGymList")
-    public String beforeGymList() {
-
-        return "beforeGymList";
-    }
 
 
-
-
-    @RequestMapping("/getGymInfo/*/*")
-    public String getGymInfo() {
-
-        return "GymInfo";
-    }
 
     @GetMapping("/getGymInfo/{gym_id}")
     public String getGymInfo(@PathVariable("gym_id") long gym_id, Model model, Principal principal) {
+        if (principal == null) {
+            return "access_error";
+        }
         Gym gym = gymService.findGymById(gym_id);
         Users user = userService.getUser(principal.getName());
         model.addAttribute("gym", gym);

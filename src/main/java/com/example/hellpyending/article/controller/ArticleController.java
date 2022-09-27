@@ -14,6 +14,7 @@ import com.example.hellpyending.user.service.UserSecurityService;
 import com.example.hellpyending.user.service.UserService;
 import com.example.hellpyending.user.entity.Users;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,6 +55,13 @@ public class ArticleController {
         model.addAttribute("paging", paging);
         return "article_list";
     }
+    @GetMapping("/list_new")
+    public String list_new(String kw, Model model, @RequestParam(defaultValue = "0") int page) {
+        Page<Article> paging = articleService.getList(kw, page);
+
+        model.addAttribute("paging", paging);
+        return "new_articleList";
+    }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list/{id}")
     public String list(Principal principal, Model model, @RequestParam(defaultValue = "0") int page, @PathVariable long id, @RequestParam(defaultValue = "") String sortCode) {
@@ -79,6 +87,15 @@ public class ArticleController {
         model.addAttribute("article", article);
         return "article_detail";
     }
+    @GetMapping(value = "/detail_new/{id}")
+    public String detail_new(Model model, @PathVariable long id, ArticleCommentForm articleCommentForm, HttpServletRequest request, HttpServletResponse response) {
+        Article article = articleService.getArticle(id);
+        articleService.setHitCount(id, request, response); // 조회수 증가
+        int pushCount = articleLikeService.countArticleLike(id);
+        model.addAttribute("pushCount",pushCount);
+        model.addAttribute("article", article);
+        return "article_detail_new";
+    }
 
 
 //    @GetMapping("/")
@@ -95,8 +112,25 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String articleCreate(ArticleForm articleForm) {
+    public String articleCreate(ArticleForm articleForm, Principal principal) {
+
+        if (principal==null) {
+            return "access_error";
+
+        }
         return "article_form";
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/create_new")
+    public String articleCreate_new(ArticleForm articleForm, Principal principal) {
+
+        if (principal==null) {
+            return "access_error";
+
+        }
+        return "article_form_new";
     }
 
 
@@ -142,6 +176,9 @@ public class ArticleController {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
+        if (principal == null) {
+            return "access_error";
+        }
         Users users = this.userService.getUser(principal.getName());
         articleService.create(articleForm.getTitle(), articleForm.getContent(), users,files,tags);
         return "redirect:/article/list"; // 질문 저장 후 질문 목록으로 이동
@@ -173,7 +210,9 @@ public class ArticleController {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
-
+        if (principal == null) {
+            return "access_error";
+        }
         Article article = this.articleService.getArticle(articleForm.getId());
 
         if (article == null) {

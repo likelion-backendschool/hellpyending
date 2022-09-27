@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -22,7 +23,10 @@ public class paymentController {
     private final UserService userService;
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/create")
-    public String create(@RequestBody PostPaymentReq postPaymentReq1) {
+    public String create(@RequestBody PostPaymentReq postPaymentReq1, Principal principal) {
+        if (principal == null) {
+            return "access_error";
+        }
         Optional<Users> user = userService.findByNickname(postPaymentReq1.getBuyer_name());
         paymentService.create(postPaymentReq1,user);
         return "index";

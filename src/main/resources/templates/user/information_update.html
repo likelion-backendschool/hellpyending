@@ -37,7 +37,7 @@
             <div th:text="${users?.email}"></div>
             <span>휴대폰 번호</span>
             <div>
-                <input type="text" id="phoneNumber" name="phoneNumber" th:value="${users?.phoneNumber}"
+                <input class="form-control text-3 h-auto py-2" type="text" id="phoneNumber" name="phoneNumber" th:value="${users?.phoneNumber}"
                        placeholder="휴대폰 번호를 입력해주세요" maxlength='11' pattern="[0-9]+" disabled="disabled" required>
             </div>
             <div>

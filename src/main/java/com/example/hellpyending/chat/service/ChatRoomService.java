@@ -63,7 +63,7 @@ public class ChatRoomService {
 
     public int IsExistRoom(Users user, Users another_user) {
         int check  = this.chatRoomUserRepository.IsExistRoom(user.getId(),another_user.getId());
-        if(check==2){
+        if(check!=0){
             return 1;
         }
         else{
