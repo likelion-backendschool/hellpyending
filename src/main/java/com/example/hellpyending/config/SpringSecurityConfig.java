@@ -74,7 +74,7 @@ public class SpringSecurityConfig {
                 .loginPage("/user/login")
                 .failureHandler(customFailureHandler)
                 // login 성공시 루트 페이지로 이동 ( alwayUse를 false로 입력 시 접속 하려던 URL로 바로 이동 )
-                .defaultSuccessUrl("/",false)
+                .defaultSuccessUrl("/user/check",true)
                 // login은 모두 접근 가능
                 .permitAll();
         // oauth2 login
