@@ -1,7 +1,12 @@
 package com.example.hellpyending.user.service;
 
+import com.example.hellpyending.article.domain.Article;
+import com.example.hellpyending.article.domain.ArticleComment;
 import com.example.hellpyending.article.exception.DataNotFoundException;
+import com.example.hellpyending.article.repository.ArticleCommentRepository;
+import com.example.hellpyending.article.repository.ArticleRepository;
 import com.example.hellpyending.config.Util;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.user.repository.UserRepository;
 import com.example.hellpyending.user.entity.Sex;
 import com.example.hellpyending.user.entity.Users;
@@ -12,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +25,10 @@ import java.util.Optional;
 public class UserService {
     private final UserFindService userFindService;
     private final UserRepository userRepository;
+
+    private final ArticleRepository articleRepository;
+
+    private final ArticleCommentRepository articleCommentRepository;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -145,6 +155,20 @@ public class UserService {
     }
 
     public void delete(String username) {
-        userRepository.deleteByUsername(username);
+        Optional<Users> users_ = userRepository.findByUsername(username);
+        Users users = users_.get();
+        List<Article> articles = articleRepository.findByUsers_IdAndDeleteYn(users.getId(),DeleteType.NORMAL);
+        List<ArticleComment> articleComments = articleCommentRepository.findByUsers_IdAndDeleteYn(users.getId(),DeleteType.NORMAL);
+        users.setDeleteYn(DeleteType.DELETE);
+        for (Article article : articles){
+            article.setDeleteYn(DeleteType.DELETE);
+        }
+        for (ArticleComment articleComment : articleComments){
+            articleComment.setDeleteYn(DeleteType.DELETE);
+        }
+        articleRepository.saveAll(articles);
+        articleCommentRepository.saveAll(articleComments);
+        userRepository.save(users);
+
     }
 }

@@ -1,6 +1,7 @@
 package com.example.hellpyending.user.controller;
 
 import com.example.hellpyending.config.UsersContext;
+import com.example.hellpyending.user.entity.DeleteType;
 import com.example.hellpyending.user.service.UserService;
 import com.example.hellpyending.user.dto.UserUpdateForm;
 import com.example.hellpyending.user.entity.UserCreateForm;
@@ -180,6 +181,10 @@ public class UserController {
         String email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
         Optional<Users> users_ = userService.findByEmailOrUsernameOrNickname(email,usersContext.getUsername(),usersContext.getNickname());
         Users users = users_.get();
+        if (users.getDeleteYn() == DeleteType.DELETE){
+            httpSession.invalidate();
+            return "/user/delete_account";
+        }
         if (firstLoginCheck(users)){
             httpSession.invalidate();
             model.addAttribute("users",users);
@@ -272,4 +277,19 @@ public class UserController {
         httpSession.invalidate();
         return "redirect:/";
     }
+
+    @GetMapping("/check")
+    public String check(@AuthenticationPrincipal UsersContext usersContext,HttpSession httpSession){
+        Optional<Users> users_ = userService.findByUsername(usersContext.getUsername());
+        if (!users_.isPresent()){
+            return "access_error";
+        }
+        Users users = users_.get();
+        if (users.getDeleteYn() == DeleteType.DELETE){
+            httpSession.invalidate();
+            return "/user/delete_account";
+        }
+        return "redirect:/";
+    }
+
 }
