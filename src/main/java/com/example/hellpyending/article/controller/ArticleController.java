@@ -61,7 +61,7 @@ public class ArticleController {
         Page<Article> paging = articleService.getList(kw, page);
 
         model.addAttribute("paging", paging);
-        return "new_articleList2";
+        return "index_new";
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list/user")

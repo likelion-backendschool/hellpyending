@@ -11,4 +11,8 @@ public class HelloController {
         return "index";
     }
 
+    public String home_new() {
+        return "index_new";
+    }
+
 }
