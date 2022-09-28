@@ -1,4 +1,4 @@
-<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
+<th:block th:replace="~{/layout/header_new :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
         <h3 th:text="${users.nickname}"></h3>
         <h4 th:text="${users.email}"></h4>

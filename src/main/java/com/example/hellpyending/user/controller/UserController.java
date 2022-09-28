@@ -41,26 +41,26 @@ public class UserController {
     /**
       유저 로그인
      **/
-    /*@GetMapping("/login")
-    String login(@RequestParam(value = "error", required = false)String error,
-                 @RequestParam(value = "exception", required = false)String exception,
-                 UserCreateForm userCreateForm, Model model){
-        model.addAttribute("error", error);
-        model.addAttribute("exception", exception);
-        return "/user/login";
-    }*/
-
-    /**
-     유저 로그인
-     **/
     @GetMapping("/login")
     String login(@RequestParam(value = "error", required = false)String error,
                  @RequestParam(value = "exception", required = false)String exception,
                  UserCreateForm userCreateForm, Model model){
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
-        return "login";
+        return "/user/login";
     }
+
+//    /**
+//     유저 로그인
+//     **/
+//    @GetMapping("/login")
+//    String login(@RequestParam(value = "error", required = false)String error,
+//                 @RequestParam(value = "exception", required = false)String exception,
+//                 UserCreateForm userCreateForm, Model model){
+//        model.addAttribute("error", error);
+//        model.addAttribute("exception", exception);
+//        return "login";
+//    }
 
     /**
      유저 회원가입 창
@@ -69,6 +69,7 @@ public class UserController {
     String signUp(UserCreateForm userCreateForm){
         return "/user/signup";
     }
+
     /**
      유저 회원가입
      **/
@@ -123,7 +124,7 @@ public class UserController {
     String information(Model model, Principal principal, UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
-        return "/user/information";
+        return "/user/information_update";
     }
 
 
@@ -142,19 +143,6 @@ public class UserController {
     }
 
 
-    /**
-     유저 정보 수정 창
-     **/
-    @GetMapping("/information_new/{id}")
-    @PreAuthorize("isAuthenticated()")
-    String information_update_new(Model model, @PathVariable long id, Principal principal,UserUpdateForm userUpdateForm, Authentication authentication,
-                              @AuthenticationPrincipal UserDetails userDetails){
-        Users users = userService.getUser(principal.getName());
-
-        System.out.println("authentication: " + authentication.getPrincipal());
-        model.addAttribute("users",users);
-        return "/user/information_update_new";
-    }
     /**
      유저 정보 수정
      **/

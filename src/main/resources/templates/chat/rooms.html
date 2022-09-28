@@ -1,7 +1,7 @@
 
-<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
+<th:block th:replace="~{/layout/header_new :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
-        <div class="container">
+        <div class="container py-2">
             <div>
                 <ul th:each="room : ${list}">
                     <li><a th:href="@{/chat/room(roomId=${room.roomId})}">[[${room.name}]]</a></li>
