@@ -63,6 +63,8 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.GET,"/user/login").permitAll()
                 .antMatchers(HttpMethod.GET,"/user/signup").permitAll()
                 .antMatchers(HttpMethod.POST,"/user/signup").permitAll()
+                .antMatchers(HttpMethod.GET,"/user/signup_new").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/signup_new").permitAll()
                 .antMatchers("/user/password").permitAll()
                 .antMatchers(HttpMethod.GET,"/user/*").authenticated()
                 // 그 외 요청은 인증 받은 사람만 가능하게 만듦.

@@ -1,284 +1,241 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-
-<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
+<th:block th:replace="~{/layout/header_new :: setContent(~{this :: content})}">
     <th:block th:fragment="content">
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-        <h2 class="border-bottom py-2" th:text="${article.title}"></h2>
+        <div class="container py-4">
 
+            <div class="row">
+                <div class="col">
+                    <div class="blog-posts single-post">
 
-        <div class="d-flex justify-content-between">
-            <div>
-                <h3 th:text="${article.users.nickname}">
-                </h3>
-                <form th:action="@{|/chat/room/${article.users.id}|}" method="post">
-                    <button class="btn btn-primary" role="button"
-                       sec:authorize="isAuthenticated()"
-                       th:if="${article.users != null and #authentication.getPrincipal().getUsername() != article.users.username}"
-                       th:text="채팅하기"></button>
-                </form>
+                        <article class="post post-large blog-single-post border-0 m-0 p-0">
 
-            </div>
-            <div class="d-flex">
-                <div sec:authorize="isAuthenticated()">
-                    <div id="likeBox" style="margin: 4px 10px;">
+                            <div class="post-image ms-0">
+                                <div class="owl-carousel owl-theme show-nav-hover dots-inside nav-inside nav-style-1 nav-light"
+                                     data-plugin-options="{'items': 1, 'margin': 10, 'loop': false, 'nav': true, 'dots': true}">
+                                    <div th:each="articleImage : ${article.articleImgList}">
+                                        <div class="img-thumbnail border-0 p-0 d-block">
+                                            <img class="img-fluid border-radius-0" th:src="@{${articleImage.imageUrl}} "
+                                                 alt="" th:if="articleImage != null">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="post-date ms-0">
+                                <span class="day" th:text="${#temporals.day(article.create)}"></span>
+                                <span class="month" th:text="|${#temporals.month(article.create)} 월|"></span>
+                            </div>
+
+                            <div class="post-content ms-0">
+
+                                <h2 class="font-weight-semi-bold"><a th:text="${article.title}"></a></h2>
+
+                                <div class="post-meta">
+											<span><i class="far fa-user"></i> <a href="#"
+                                                                                 th:text="${article.users.nickname}">
+
+											</a>
+											</span>
+                                    <span><i class="far fa-folder"></i>
+
+												<a class="badge badge-dark badge-sm rounded-pill text-uppercase px-2 py-1 me-1" th:each="tag :${article.articleHashtags}"
+                                                   th:text="|${tag.hashtagName} |"></a>
+											</span>
+                                    <span><i class="far fa-comments"></i> <a href="#"
+                                                                             th:text="${#lists.size(article.articleCommentList)}"></a></span>
+                                    <div class="d-flex">
+                                        <div sec:authorize="isAuthenticated()">
+                                            <div id="likeBox" style="margin: 4px 10px;">
+                                            </div>
+                                        </div>
+                                        <div sec:authorize="!isAuthenticated()">
+                                            <div style="margin: 4px 10px;">
+                                                <i class='bi bi-heart'></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                        <span id="pushCount" th:text="${pushCount}">
+                                        </span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <p th:text="${article.content}"></p>
+                                <div class="post-block mt-5 post-share">
+                                    <h4 class="mb-3">Share this Post</h4>
+
+                                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                                    <div class="addthis_inline_share_toolbox"></div>
+                                    <script type="text/javascript"
+                                            src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60ba220dbab331b0"></script>
+
+                                </div>
+
+                                <div class="post-block mt-4 pt-2 post-author">
+                                    <h4 class="mb-3">Author</h4>
+                                    <div class="img-thumbnail img-thumbnail-no-borders d-block pb-3">
+                                        <a href="blog-post.html">
+                                            <img src="img/avatars/avatar.jpg" alt="">
+                                        </a>
+                                    </div>
+                                    <p><strong class="name"><a href="#" class="text-4 pb-2 pt-2 d-block"
+                                                               th:text="${article.users.nickname}"></a></strong></p>
+                                    <form th:action="@{|/chat/room/${article.users.id}|}" method="post">
+                                        <button class="btn btn-primary" role="button"
+                                                sec:authorize="isAuthenticated()"
+                                                th:if="${article.users != null and #authentication.getPrincipal().getUsername() != article.users.username}"
+                                                th:text="채팅하기"></button>
+                                    </form>
+                                </div>
+                                <div id="comments" class="post-block mt-5 post-comments">
+                                    <h4 class="mb-3" th:text="|Comments ${#lists.size(article.articleCommentList)}| "></h4>
+
+                                    <ul class="comments" th:each="articleComment : ${article.articleCommentList}">
+                                        <li>
+                                            <div class="comment">
+                                                <div class="img-thumbnail img-thumbnail-no-borders d-none d-sm-block">
+                                                    <img class="avatar" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHkAAAB/CAMAAAD8fZ1mAAAAPFBMVEWnp6f///+vr6+kpKShoaHBwcGqqqqdnZ37+/u8vLy2trb4+Pjz8/Pv7+/n5+ff39/T09PZ2dnNzc3Hx8c6VIMWAAADuklEQVRoge3ayXarMAwGYAUbwjy+/7vWJKFNiLF+yQx3cbXpoqf9joxH2XTTRN0N41SUZVFMY9dWqv9B4r+oupTMI+j10yRje7zcpJl15Coc3teHyk3hYZ9haZS1ukTO0033mfhwkNwF3UfeiaDJcXmyjDunbbvd5bwA4DntfmcZhQU0KMOwo8F+hskpDjsam1YguZPAjoYGNiJX3GhahSn2klOhTNDYAuRW1tZzZEB7A3IpTRkbWrysSBlKmpcLecrQl2blWuG67l3Gy4OmsR3dRMuK/jUHP4eysi5loLk5WdWzH0nHyr2usZ3MfWhOFs+cS7CbMk5OlDCZMVLWpkwmjZTvapnr3IxcqWVK4uRaL3Otyfy+0cvmvyyVr/vO1/Xt68bzhXPYdfP2dWuVfn3mznWcLDzMvcl5pFxr5Yz5x/wOUNnaZoqWlV2MP2SwsvZDs/Wpg0437NyJnOhUcwlwjOVl1cGKP1YBcp0pYP4oidQMFAdopCb2T9dJcnEf46cRTL710qTvSLEZqgFKK3HcpgCXhUlbqL6OVVxFSWMpg/IgoQ12pQDWtzOcttwGTCYLxnTCbUZkMnR/8kwZva5D5QqcvS0yiYhktL3RtpbcV40IDc1eUhmpQ6L3NkL5lrC3g/BHFsoNM6rByUsh35owDGxEtPJtDCUNj2SNHCxeGHhAKeQ8MJ8IG1v6zqAMyJKOLZcD+1C2SHCcDN95a+Tgdz4051BJUDaPSOXwcePAURU+S0uWC6HccisGf4DUyewCbQh/TYLLbfjlztLgZoTzhuS8J8R95G2TAXu5BMhVn4lONzabkMRZORe6z0ZP46sVndydw9iC2wuG5SbRFh/J3NOwHZIr0aMdT95TqK8F5I7UBf3FpsC0tilHJvwKW252tS25FZxbQ2E2D7UbMnSUwWLrcaBXzvVd2hd379f2yU1011qFTT1Lt0fuzM6wv6N9y+K6GxKGvg4gXzJclhDGfb12r+VdRrGfHoLycfBXnf9TPqqpfTSdB692p+/yIb36k269svoKUkI3HjnmSQEef/cMv3KlvuMWxd/7119ZfcUtjN8OvsjKh4aKWC7RXnJ9UsaznHzIyheOqni1N502oN7oN/lMd7lvoHO71zNMtcjnuq9iDp0yX69jnslIc+MZHfP7B4p4QKuPuUZKyqfhsVE7Gb0P2jXcHoFOnkVe4ZYsOm2RWoWTL3HdikUnrlLvYTtiS4rHhOlJdKm9ozxR8CLoQLmg6RqZErpkBnOR0Zn7oM8okoviB2g6LR7cnwOlAAAAAElFTkSuQmCC">
+                                                </div>
+                                                <div class="comment-block">
+                                                    <div class="comment-arrow"></div>
+                                                    <span class="comment-by">
+																<strong th:text="${articleComment.users.username}"></strong>
+																<span class="float-end">
+																	<span> <a href="#"><i class="fas fa-reply"></i> 수정해야함</a></span>
+																</span>
+															</span>
+                                                    <p th:text="${articleComment.comment}"></p>
+                                                    <span class="date float-end"
+                                                          th:text="${#temporals.format(articleComment.create, 'yyyy-MM-dd HH:mm')}"></span>
+                                                </div>
+                                                <form th:action="@{|/articleComment/createReply/${articleComment.id}|}"
+                                                      th:object="${articleCommentForm}" method="post" class="my-3">
+                                                    <div th:replace="form_errors :: formErrorsFragment"></div>
+
+                                                    <textarea  th:id="|commentReply${articleComment.id}|" name="content" rows="1" class="form-control"></textarea>
+
+                                                    <input type="submit" name="commentReplySubmit_new"  th:id="|commentReplySubmit${articleComment.id}|" value="답글등록"
+                                                           class="btn btn-primary my-2">
+                                                </form>
+                                            </div>
+
+                                            <ul class="comments reply">
+                                                <li th:each="articleCommentReply : ${articleComment.getChild()}">
+                                                    <div class="comment">
+                                                        <div class="img-thumbnail img-thumbnail-no-borders d-none d-sm-block">
+                                                            <img class="avatar" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHkAAAB/CAMAAAD8fZ1mAAAAPFBMVEWnp6f///+vr6+kpKShoaHBwcGqqqqdnZ37+/u8vLy2trb4+Pjz8/Pv7+/n5+ff39/T09PZ2dnNzc3Hx8c6VIMWAAADuklEQVRoge3ayXarMAwGYAUbwjy+/7vWJKFNiLF+yQx3cbXpoqf9joxH2XTTRN0N41SUZVFMY9dWqv9B4r+oupTMI+j10yRje7zcpJl15Coc3teHyk3hYZ9haZS1ukTO0033mfhwkNwF3UfeiaDJcXmyjDunbbvd5bwA4DntfmcZhQU0KMOwo8F+hskpDjsam1YguZPAjoYGNiJX3GhahSn2klOhTNDYAuRW1tZzZEB7A3IpTRkbWrysSBlKmpcLecrQl2blWuG67l3Gy4OmsR3dRMuK/jUHP4eysi5loLk5WdWzH0nHyr2usZ3MfWhOFs+cS7CbMk5OlDCZMVLWpkwmjZTvapnr3IxcqWVK4uRaL3Otyfy+0cvmvyyVr/vO1/Xt68bzhXPYdfP2dWuVfn3mznWcLDzMvcl5pFxr5Yz5x/wOUNnaZoqWlV2MP2SwsvZDs/Wpg0437NyJnOhUcwlwjOVl1cGKP1YBcp0pYP4oidQMFAdopCb2T9dJcnEf46cRTL710qTvSLEZqgFKK3HcpgCXhUlbqL6OVVxFSWMpg/IgoQ12pQDWtzOcttwGTCYLxnTCbUZkMnR/8kwZva5D5QqcvS0yiYhktL3RtpbcV40IDc1eUhmpQ6L3NkL5lrC3g/BHFsoNM6rByUsh35owDGxEtPJtDCUNj2SNHCxeGHhAKeQ8MJ8IG1v6zqAMyJKOLZcD+1C2SHCcDN95a+Tgdz4051BJUDaPSOXwcePAURU+S0uWC6HccisGf4DUyewCbQh/TYLLbfjlztLgZoTzhuS8J8R95G2TAXu5BMhVn4lONzabkMRZORe6z0ZP46sVndydw9iC2wuG5SbRFh/J3NOwHZIr0aMdT95TqK8F5I7UBf3FpsC0tilHJvwKW252tS25FZxbQ2E2D7UbMnSUwWLrcaBXzvVd2hd379f2yU1011qFTT1Lt0fuzM6wv6N9y+K6GxKGvg4gXzJclhDGfb12r+VdRrGfHoLycfBXnf9TPqqpfTSdB692p+/yIb36k269svoKUkI3HjnmSQEef/cMv3KlvuMWxd/7119ZfcUtjN8OvsjKh4aKWC7RXnJ9UsaznHzIyheOqni1N502oN7oN/lMd7lvoHO71zNMtcjnuq9iDp0yX69jnslIc+MZHfP7B4p4QKuPuUZKyqfhsVE7Gb0P2jXcHoFOnkVe4ZYsOm2RWoWTL3HdikUnrlLvYTtiS4rHhOlJdKm9ozxR8CLoQLmg6RqZErpkBnOR0Zn7oM8okoviB2g6LR7cnwOlAAAAAElFTkSuQmCC">
+                                                        </div>
+                                                        <div class="comment-block">
+                                                            <div class="comment-arrow"></div>
+                                                            <span class="comment-by">
+																		<strong th:text="${articleCommentReply.users.username}"></strong>
+																		<span class="float-end">
+
+																		</span>
+																	</span>
+                                                            <p th:text="${articleCommentReply.comment}"></p>
+                                                            <span class="date float-end" th:text="${#temporals.format(articleCommentReply.create, 'yyyy-MM-dd HH:mm')}"></span>
+                                                            <button type="button"
+                                                                    onclick="modify(this)"
+                                                                    sec:authorize="isAuthenticated()"
+                                                                    th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}">
+                                                                수정</button>
+                                                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}"
+                                                               sec:authorize="isAuthenticated()"
+                                                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"
+                                                            >삭제</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+                                    </ul>
+
+                                </div>
+
+                                <div class="post-block mt-5 post-leave-comment">
+                                    <h4 class="mb-3">Leave a comment</h4>
+
+                                    <form class="contact-form p-4 rounded bg-color-grey" th:action="@{|/articleComment/create/${article.id}|}" th:object="${articleCommentForm}"
+                                          method="post">
+                                        <div class="p-2">
+
+                                            <div class="row">
+                                                <div class="form-group col">
+                                                    <label class="form-label required font-weight-bold text-dark">Comment</label>
+                                                    <textarea maxlength="5000"
+                                                              data-msg-required="Please enter your message." rows="8"
+                                                              class="form-control" name="content" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col mb-0">
+                                                    <input type="submit" value="Post Comment"
+                                                           class="btn btn-primary btn-modern"
+                                                           data-loading-text="Loading...">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </article>
+
                     </div>
                 </div>
-                <div sec:authorize="!isAuthenticated()">
-                    <div style="margin: 4px 10px;">
-                        <i class='bi bi-heart'></i>
-                    </div>
-                </div>
-                <div>
-                <span id="pushCount" th:text="${pushCount}">
-                </span>
-                </div>
-
-            </div>
-        </div>
-
-
-        <div class="card my-3">
-            <div class="card-body">
-                <div class="card-text" style="white-space: pre-line;" th:text="${article.content}"></div>
-
-                <div class="d-flex justify-content-end">
-                    <div class="badge bg-light text-dark p-2 text-start">
-                        <div th:text="${#temporals.format(article.create, 'yyyy-MM-dd HH:mm')}"></div>
-                    </div>
-                </div>
-                <div>
-                    <a th:href="@{|/article/modify/${article.id}|}" class="btn btn-primary" role="button"
-                       sec:authorize="isAuthenticated()"
-                       th:if="${article.users != null and #authentication.getPrincipal().getUsername() == article.users.username}"
-                       th:text="수정"></a>
-                    <a href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}"
-                       class="delete btn btn-primary" role="button"
-                       sec:authorize="isAuthenticated()"
-                       th:if="${article.users != null and #authentication.getPrincipal().getUsername() == article.users.username}"
-                       th:text="삭제"></a>
-                </div>
-            </div>
-        </div>
-        <div th:each="articleImage : ${article.articleImgList}">
-            <img id="imgId" th:src="@{${articleImage.imageUrl}} " alt="첨부이미지" th:if="articleImage != null"/>
-        </div>
-
-        <ul id="tag-list">
-            <div th:each="tag :${article.articleHashtags}">
-                <li class='tag-item' th:text="${tag.hashtagName}"><span idx='"+counter+"'></span></li>
             </div>
 
-        </ul>
-
-        <div id="resultDiv">
-            <p th:if="${msg}!=null" th:text="${msg}"></p>
         </div>
-
-        <!-- 답변의 갯수 표시 -->
-        <h5 class="border-bottom my-3 py-2"
-            th:text="|${#lists.size(article.articleCommentList)}개의 댓글이 있습니다.|"></h5>
-
-        <div class="card my-3" th:each="articleComment : ${article.articleCommentList}">
-            <div class="card-body">
-                <div class="card-text" style="white-space: pre-line;" th:text="${articleComment.comment}"></div>
-                <div class="d-flex justify-content-end">
-                    <div class="badge bg-light text-dark p-2 text-start">
-                        <div th:text="${#temporals.format(articleComment.create, 'yyyy-MM-dd HH:mm')}"></div>
-                    </div>
-                    <form th:action="@{|/articleComment/createReply/${articleComment.id}|}"
-                          th:object="${articleCommentForm}" method="post" class="my-3">
-                        <div th:replace="form_errors :: formErrorsFragment"></div>
-
-                        <textarea  th:id="|commentReply${articleComment.id}|" name="content" rows="1" class="form-control" placeholder="직접입력" required></textarea>
-
-                        <input type="submit" name="commentReplySubmit_new"  th:id="|commentReplySubmit${articleComment.id}|" value="답글등록"
-                               class="btn btn-primary my-2">
-                        <div class="card my-3" th:each="articleCommentReply : ${articleComment.getChild()}">
-                            <button type="button"
-                                    onclick="modify(this)"
-                                    sec:authorize="isAuthenticated()"
-                                    th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}">
-                                수정</button>
-                            <a th:href="@{|/articleComment/delete/${articleCommentReply.id}|}"
-                               sec:authorize="isAuthenticated()"
-                               th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"
-                            >삭제</a>
-
-                            <button sec:authorize="isAuthenticated()"
-                                    th:if="${articleCommentReply.users != null and #authentication.getPrincipal().getUsername() == articleCommentReply.users.username}"
-                                    onclick="commentReplySave(this); return false"
-                                    type="button"
-                                    hidden>
-                                저장
-                            </button>
-                            <input class="card-text" style="white-space: pre-line;"
-                                   id="commentReplyExist"
-                                   th:value="${articleCommentReply.comment}" readonly/>
-                            <span th:text="${articleCommentReply.id}" hidden></span>
-                        </div>
-                    </form>
-                </div>
-                <div class="my-3">
-
-                    <a th:href="@{|/articleComment/modify/${articleComment.id}|}"
-                       class="btn btn-sm btn-outline-secondary"
-                       sec:authorize="isAuthenticated()"
-                       th:if="${articleComment.users != null and #authentication.getPrincipal().getUsername() == articleComment.users.username}"
-                       th:text="수정"></a>
-
-                    <a href="javascript:void(0);" th:data-uri="@{|/articleComment/delete/${articleComment.id}|}"
-                       class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-                       th:if="${articleComment.users != null and #authentication.getPrincipal().getUsername() == articleComment.users.username}"
-                       th:text="삭제"></a>
-                </div>
-            </div>
-        </div>
-        <!-- 답변 반복 끝  -->
-
-        <!-- 답변 작성 -->
-        <form th:action="@{|/articleComment/create/${article.id}|}" th:object="${articleCommentForm}" method="post"
-              class="my-3">
-            <div th:replace="form_errors :: formErrorsFragment"></div>
-
-            <textarea id="commentReply_" name="content" rows="5" class="form-control"></textarea>
-            <input id="commentReplySubmit_" type="submit" value="댓글등록" class="btn btn-primary my-2">
-        </form>
-
-
-        <script layout:fragment="script" type='text/javascript'>
-            function likeStatus() {
-                $.ajax({
-                    url: "/article/likeStatus/[[${article.id}]]",
-                    method: "GET",
-                }).done(function (data) {
-                    if (data == "false") {
-                        $("#likeBox").append("<i class='bi bi-heart'></i>")
-                    } else {
-                        $("#likeBox").append('<i class="bi bi-heart-fill"></i>')
-                    }
-                })
-            }
-
-            $(document).ready(function () {
-                $("#likeBox").empty();
-                likeStatus();
-            })
-
-            $(document).on('click', '#likeBox', function () {
-                let count = parseInt($("#pushCount").text());
-                $.ajax({
-                    url: "/article/pushLike/[[${article.id}]]",
-                    method: "GET",
-                }).done(function (data) {
-                    if (data == "pushLike") {
-                        $("#likeBox").empty();
-                        $("#likeBox").append('<i class="bi bi-heart-fill"></i>')
-                        $("#pushCount").text(++count);
-                    } else {
-                        $("#likeBox").empty();
-                        $("#likeBox").append("<i class='bi bi-heart'></i>")
-                        $("#pushCount").text(--count);
-                    }
-                })
-            })
-
-
-
-
-
-            const delete_elements = document.getElementsByClassName("delete");
-            Array.from(delete_elements).forEach(function (element) {
-                element.addEventListener('click', function () {
-                    if (confirm("정말로 삭제하시겠습니까?")) {
-                        location.href = this.dataset.uri;
-                    }
-                    ;
-                });
-            });
-            const recommend_elements = document.getElementsByClassName("recommend");
-            Array.from(recommend_elements).forEach(function (element) {
-                element.addEventListener('click', function () {
-                    if (confirm("정말로 추천하시겠습니까??")) {
-                        location.href = this.dataset.uri
-                    }
-                    ;
-                });
-            });
-
-            function modify(button){
-                let parentNode = button.parentNode;
-                let Modify = parentNode.childNodes[1];
-                let CommentReply = parentNode.childNodes[7];
-                let Save = parentNode.childNodes[5];
-
-                if (CommentReply.readOnly === true) {
-                    Modify.innerHTML = "수정취소";
-                    CommentReply.readOnly = false;
-                    Save.hidden = false;
-                } else {
-                    Modify.innerHTML = "수정";
-                    CommentReply.readOnly = true;
-                    Save.hidden = true;
-                }
-            }
-            function commentReplySave(button) {
-                let parentNode = button.parentNode;
-                let Modify = parentNode.childNodes[1];
-                let CommentReply = parentNode.childNodes[7];
-                let Save = parentNode.childNodes[5];
-                let SaveCommentReply = parentNode.childNodes[7].value;
-                let CommentId = parentNode.childNodes[9].innerHTML;
-                console.log(SaveCommentReply);
-                console.log(CommentId);
-                $.ajax({
-                    url: "/articleComment/CommentReply/save", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
-                    data: {SaveCommentReply: SaveCommentReply, CommentId:CommentId},  // HTTP 요청과 함께 서버로 보낼 데이터
-                    method: "GET",   // HTTP 요청 메소드(GET, POST 등)
-                    dataType: "html" // 서버에서 보내줄 데이터의 타입
-                })
-                    // HTTP 요청이 성공하면 요청한 데이터가 done() 메소드로 전달됨.
-                    .done(function (json) {
-                        SaveCommentReply.value = json;
-                        Modify.innerHTML = "수정";
-                        CommentReply.readOnly = true;
-                        Save.hidden = true;
-                        // $("<div class=\"content\">").html(json.html).appendTo("body");
-                    })
-                    // HTTP 요청이 실패하면 오류와 상태에 관한 정보가 fail() 메소드로 전달됨.
-                    .fail(function (xhr, status, errorThrown) {
-                        $("#text").html("오류가 발생했다.<br>")
-                            .append("오류명: " + errorThrown + "<br>")
-                            .append("상태: " + status);
-                    })
-                    //
-                    .always(function (xhr, status) {
-                        $("#text").html("요청이 완료되었습니다!");
-                    });
-            }
-        </script>
-
 
     </th:block>
 </th:block>
-<script th:inline="javascript">
 
-    $(document).ready(function(){
-        var commentUserNickName =[[${#authentication.getPrincipal() != 'anonymousUser' ? #authentication.getPrincipal().getUsername : ''}]];
-        console.log(commentUserNickName);
-        var articleUserId =[[${article.users.id}]];
-        console.log(articleUserId);
-        $("#commentReplySubmit_").on("click", function(e){
 
-            console.log(commentUserNickName);
-            console.log(articleUserId);
-            stomp.send('/pub/article/message', {}, JSON.stringify({commentUserNickName: commentUserNickName, articleUserId: articleUserId}));
+<script layout:fragment="script" type='text/javascript'>
 
-            // 유저 닉네임, 답글단 유저 닉네임 , 게시글 작성한 유저 idx
-        });
 
-    });
+    function likeStatus() {
+        $.ajax({
+            url: "/article/likeStatus/[[${article.id}]]",
+            method: "GET",
+        }).done(function (data) {
+            if (data == "false") {
+                $("#likeBox").append("<i class='bi bi-heart'></i>")
+            } else {
+                $("#likeBox").append('<i class="bi bi-heart-fill"></i>')
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        $("#likeBox").empty();
+        likeStatus();
+    })
+
+    $(document).on('click', '#likeBox', function () {
+        let count = parseInt($("#pushCount").text());
+        $.ajax({
+            url: "/article/pushLike/[[${article.id}]]",
+            method: "GET",
+        }).done(function (data) {
+            if (data == "pushLike") {
+                $("#likeBox").empty();
+                $("#likeBox").append('<i class="bi bi-heart-fill"></i>')
+                $("#pushCount").text(++count);
+            } else {
+                $("#likeBox").empty();
+                $("#likeBox").append("<i class='bi bi-heart'></i>")
+                $("#pushCount").text(--count);
+            }
+        })
+    })
 </script>
-</html>
+
+
+
+

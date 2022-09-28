@@ -49,6 +49,19 @@ public class UserController {
         model.addAttribute("exception", exception);
         return "/user/login";
     }
+
+//    /**
+//     유저 로그인
+//     **/
+//    @GetMapping("/login")
+//    String login(@RequestParam(value = "error", required = false)String error,
+//                 @RequestParam(value = "exception", required = false)String exception,
+//                 UserCreateForm userCreateForm, Model model){
+//        model.addAttribute("error", error);
+//        model.addAttribute("exception", exception);
+//        return "login";
+//    }
+
     /**
      유저 회원가입 창
      **/
@@ -56,6 +69,7 @@ public class UserController {
     String signUp(UserCreateForm userCreateForm){
         return "/user/signup";
     }
+
     /**
      유저 회원가입
      **/
@@ -110,8 +124,10 @@ public class UserController {
     String information(Model model, Principal principal, UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
-        return "/user/information";
+        return "/user/information_update";
     }
+
+
     /**
      유저 정보 수정 창
      **/
@@ -125,6 +141,8 @@ public class UserController {
         model.addAttribute("users",users);
         return "/user/information_update";
     }
+
+
     /**
      유저 정보 수정
      **/

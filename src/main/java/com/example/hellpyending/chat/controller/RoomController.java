@@ -52,15 +52,6 @@ public class RoomController {
         return mv;
     }
 
-    //채팅방 개설
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping(value = "/create")
-    public String create(@RequestParam String name, RedirectAttributes rttr){
-
-        log.info("# Create Chat Room , name: " + name);
-        //rttr.addFlashAttribute("roomName", chatRoomRepository.createChatRoomDTO(name));
-        return "redirect:/chat/rooms";
-    }
 
 
     @PreAuthorize("isAuthenticated()")
@@ -109,7 +100,11 @@ public class RoomController {
 
         log.info("# get Chat Room, roomID : " + roomId);
        // model.addAttribute("room", chatRoomRepository.findRoomById(roomId));
+        if (principal==null) {
+            ModelAndView mv = new ModelAndView("access_error");
 
+
+        }
         List<ChatMessageEntity> chatMessage = chatMessageService.getMessageFromRoom(roomId);
         model.addAttribute("room",chatRoomService.findRoomById(roomId));
         model.addAttribute("messageList",chatMessage);
