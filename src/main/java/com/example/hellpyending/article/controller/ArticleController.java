@@ -64,15 +64,15 @@ public class ArticleController {
         return "new_articleList2";
     }
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/list/{id}")
-    public String list(Principal principal, Model model, @RequestParam(defaultValue = "0") int page, @PathVariable long id, @RequestParam(defaultValue = "") String sortCode) {
+    @GetMapping("/list/user")
+    public String list(Principal principal, Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "") String sortCode) {
+        if (principal==null) {
+            return "access_error";
+        }
         Users users = userService.getUser(principal.getName());
 
-        if (!users.getId().equals(id)) {
-            return "access_error";
 
-        }
-        Page<Article> paging = articleService.getList(id , page, sortCode);
+        Page<Article> paging = articleService.getList(users.getId() , page, sortCode);
 
         model.addAttribute("paging", paging);
         return "article_list";
