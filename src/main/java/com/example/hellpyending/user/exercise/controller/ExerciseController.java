@@ -60,6 +60,6 @@ public class ExerciseController {
                 exerciseCreateForm.getHour(),
                 exerciseCreateForm.getCalorie()
         );
-        return "redirect:/exercise/list/%d".formatted(users.getId());
+        return "redirect:/exercise/list";
     }
 }
