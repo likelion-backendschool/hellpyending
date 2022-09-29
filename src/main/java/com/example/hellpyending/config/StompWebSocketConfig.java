@@ -19,7 +19,7 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/tigerShrimp")
-                .setAllowedOrigins("http://localhost:8080")
+                .setAllowedOrigins("172.17.0.1:8080")
                 .withSockJS();
     }
 
