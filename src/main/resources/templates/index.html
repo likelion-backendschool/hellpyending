@@ -1,67 +1,173 @@
+<th:block th:replace="~{/layout/header_new :: setContent(~{this :: content})}">
+    <th:block th:fragment="content">
+
+        <div class="body">
+
+            <div role="main" class="main">
+
+                <section id="intro"
+                         class="section section-with-shape-divider border-0 custom-bg-color-grey-1 overflow-visible m-0 pt-5 pb-5 pb-lg-0">
+                    <div class="container position-relative z-index-2 h-100 py-md-5">
+                        <div class="row align-items-center justify-content-center h-100 pt-5 py-xl-5 my-xl-5">
+                            <div class="col-md-10 col-lg-6 text-center text-sm-end order-2 order-lg-1 pe-lg-0 py-lg-5 my-lg-5">
+                                <h1 class="text-10 ls-0 line-height-1 custom-ws-nowrap mb-1 z-index-1 position-relative text-center text-sm-start">
+									<span class="d-block position-relative">
+										<span class="custom-bg-color-grey-1 z-index-1 position-relative pe-sm-4">
+											<span class="d-inline-block text-color-grey positive-ls-3 custom-font-size-1 custom-letter-spacing-1 appear-animation"
+                                                  data-appear-animation="fadeInLeftShorter"
+                                                  data-appear-animation-delay="1000">INTRODUCING</span>
+										</span>
+										<svg class="d-none d-sm-block position-absolute left-0 top-50pct transform3dy-n50 mt-2"
+                                             height="1" width="99%">
+										  	<line x1="0" y1="0" x2="600" y2="0" stroke="#969696" stroke-width="5"
+                                                  class="appear-animation" data-appear-animation="customSVGLineAnim"
+                                                  data-appear-animation-delay="100"
+                                                  data-appear-animation-duration="2s"></line>
+										</svg>
+									</span>
+                                </h1>
+                                <h1 class="text-13 ls-0 line-height-1 custom-ws-nowrap mb-3 z-index-1 position-relative text-center text-sm-start">
+
+                                    <strong class="font-weight-extra-bold text-3 text-sm-3-4 text-md-4 text-lg-3 text-xl-4 d-inline-block negative-ls-2 position-relative z-index-1 appear-animation" data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="1200">HellpyEnding</strong>
+
+                                </h1>
+                                <p class="font-weight-light text-5 text-center text-sm-end mb-4 appear-animation"
+                                   data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="1400">The best
+                                    choice for your service</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spacer pt-5 pb-4"></div>
+                    <div class="shape-divider shape-divider-bottom" style="height: 215px;">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1920 215"
+                             preserveAspectRatio="xMinYMin">
+                            <path fill="#FFF" d="M-13,24c3.03-0.28,7.53-0.66,13-1c26.45-1.65,46.73-0.59,57,0c76.61,4.41,118,9,118,9
+							c70.55,7.83,105.82,11.74,151,19c32.98,5.3,65.87,11.44,179,37c145.79,32.94,138.71,33.5,203,47c85.09,17.87,149.08,31.32,237,40
+							c113.11,11.17,203.29,8.29,234,7c16.74-0.7,63.49-4.13,157-11c107.74-7.91,117.84-9.32,153-10c52.52-1.02,97.8,0.79,153,3
+							c21.27,0.85,54.96,2.38,96,5c37.55,2.4,68.64,4.91,119,9c30.97,2.52,56.12,4.64,72,6c0,13.33,0,26.67,0,40c-646,0-1292,0-1938,0
+							C-10.33,157.33-11.67,90.67-13,24z"/>
+                        </svg>
+                    </div>
+                </section>
+
+                <section id="features" class="section section-with-shape-divider border-0 bg-transparent m-0 p-0">
+                    <div class="container pt-lg-5 custom-xs-margin-top-1 pt-3 pb-lg-5 mb-lg-5">
+                        <div class="row align-items-start justify-content-center py-5 mt-lg-4 mb-4">
+                            <div class="col-md-9 col-lg-5 col-xl-6 order-2 order-lg-1">
+
+                            </div>
+                            <div class="col-lg-7 col-xl-6 order-1 order-lg-2 mb-5 mb-xl-0 pb-5 pb-xl-0">
+                                <div class="overflow-hidden mb-1">
+                                    <span class="d-block text-color-default custom-letter-spacing-1 text-3-5 mb-0 appear-animation"
+                                          data-appear-animation="maskUp" data-appear-animation-delay="400">Find Your Gym</span>
+                                </div>
+                                <div class="overflow-hidden mb-4">
+                                    <h2 class="font-weight-bold text-9 negative-ls-05 line-height-2 mb-0 appear-animation"
+                                        data-appear-animation="maskUp" data-appear-animation-delay="600">Perfect For
+                                        WorkOut</h2>
+                                </div>
+                                <p class="font-weight-semibold text-4-5 line-height-6 mb-4 appear-animation"
+                                   data-appear-animation="fadeInUpShorter" data-appear-animation-delay="800">자신의 주변 운동시설을 둘러보고 합리적인 가격에 운동을 하세요
+                                </p>
+
+                                <a th:href="@{/gym/search}" data-hash data-hash-offset="0" data-hash-offset-lg="70"
+                                   class="btn btn-primary btn-rounded font-weight-bold text-3-5 px-5 py-3 appear-animation"
+                                   data-appear-animation="fadeInUpShorter"
+                                   data-appear-animation-delay="1200">Find Gym</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spacer pt-5 pb-3 my-lg-5 my-xl-0"></div>
+                    <div class="shape-divider shape-divider-bottom shape-divider-reverse-y" style="height: 215px;">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1920 215"
+                             preserveAspectRatio="xMinYMin">
+                            <path fill="#EFF1F3" d="M-17,20c4.09,0.79,9.94,1.87,17,3c14.01,2.23,24.68,3.35,31,4c25.44,2.62,38.16,3.92,52,5
+								c124.22,9.65,185,12,185,12c68.3,2.64,120.49,4.65,191,2c22.4-0.84,21.56-1.21,158-11c128.51-9.22,140.25-9.68,153-10
+								c22.7-0.57,91-1.79,179,6c80.95,7.16,140.16,18.54,204,31c93.98,18.34,96.08,23.21,217,50c124.45,27.57,213.36,42.61,276,52
+								c77.73,11.66,123.89,15.95,169,18c51.59,2.34,94.89,1.42,126,0c0,16.35,0,32.69,0,49.04c-651.33,0-1302.67,0-1954,0
+								C-14.33,160.69-15.67,90.35-17,20z"/>
+                        </svg>
+                    </div>
+                </section>
+
+                <section
+                        class="section section-with-shape-divider border-0 custom-bg-color-grey-1 overflow-visible z-index-1 m-0 pt-0 pb-1">
+                    <div class="container custom-xs-margin-top-1 pt-3 pb-lg-5 mb-lg-5">
+                        <div class="row align-items-start justify-content-center pb-5 mb-4">
+                            <div class="col-lg-7 col-xl-6 pb-5 pb-lg-0 mb-lg-5 mb-xl-0">
+                                <div class="overflow-hidden mb-1">
+                                    <span class="d-block text-color-default custom-letter-spacing-1 text-3-5 mb-0 appear-animation"
+                                          data-appear-animation="maskUp" data-appear-animation-delay="400">Meet Your New Friends</span>
+                                </div>
+                                <div class="overflow-hidden mb-4">
+                                    <h2 class="font-weight-bold text-9 negative-ls-05 line-height-2 mb-0 appear-animation"
+                                        data-appear-animation="maskUp" data-appear-animation-delay="600">Local Community</h2>
+                                </div>
+                                <p class="font-weight-bold text-4-5 line-height-6 mb-4 appear-animation"
+                                   data-appear-animation="fadeInUpShorter" data-appear-animation-delay="800">동네에 운동하는 친구들과 친목을 다지면서,
+                                    정보를 공유해요 </p>
+                                <a th:href="@{/article/list}" data-hash data-hash-offset="0" data-hash-offset-lg="70"
+                                   class="btn btn-primary btn-rounded font-weight-bold text-3-5 px-5 py-3 appear-animation"
+                                   data-appear-animation="fadeInUpShorter"
+                                   data-appear-animation-delay="1200">Your Community</a>
+                            </div>
+                            <div class="col-md-9 col-lg-5 col-xl-6 mb-5 mb-lg-0">
+                                <div data-plugin-float-element
+                                     data-plugin-options="{'startPos': 'top', 'speed': 0.3, 'transition': true, 'transitionDuration': 1000, 'isInsideSVG': true}">
+                                    <img src="img/demos/product-landing/product-3.png"
+                                         class="img-fluid custom-xl-margin-top-1 appear-animation" alt=""
+                                         data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shape-divider shape-divider-bottom" style="height: 215px;">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1920 215"
+                             preserveAspectRatio="xMinYMin">
+                            <path fill="#FFF" d="M-13,24c3.03-0.28,7.53-0.66,13-1c26.45-1.65,46.73-0.59,57,0c76.61,4.41,118,9,118,9
+							c70.55,7.83,105.82,11.74,151,19c32.98,5.3,65.87,11.44,179,37c145.79,32.94,138.71,33.5,203,47c85.09,17.87,149.08,31.32,237,40
+							c113.11,11.17,203.29,8.29,234,7c16.74-0.7,63.49-4.13,157-11c107.74-7.91,117.84-9.32,153-10c52.52-1.02,97.8,0.79,153,3
+							c21.27,0.85,54.96,2.38,96,5c37.55,2.4,68.64,4.91,119,9c30.97,2.52,56.12,4.64,72,6c0,13.33,0,26.67,0,40c-646,0-1292,0-1938,0
+							C-10.33,157.33-11.67,90.67-13,24z"/>
+                        </svg>
+                    </div>
+                </section>
+
+                <div class="container position-relative z-index-2 pt-5 mt-md-5 mt-xl-0 pt-xl-0">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-md-9 col-lg-5 col-xl-6 mb-5 mb-lg-0">
+
+                        </div>
+                        <div class="col-lg-7 col-xl-6 pb-4">
+                            <div class="overflow-hidden mb-1">
+                                <span class="d-block text-color-default custom-letter-spacing-1 text-3-5 mb-0 appear-animation"
+                                      data-appear-animation="maskUp"
+                                      data-appear-animation-delay="400">Record it</span>
+                            </div>
+                            <div class="overflow-hidden mb-4">
+                                <h2 class="font-weight-bold text-9 negative-ls-05 line-height-2 mb-0 appear-animation"
+                                    data-appear-animation="maskUp" data-appear-animation-delay="600">My exercise Note</h2>
+                            </div>
+                            <p class="font-weight-bold text-4-5 line-height-6 mb-4 appear-animation"
+                               data-appear-animation="fadeInUpShorter" data-appear-animation-delay="800">하루 운동 성과를 저희 서비스를 통해 간편하게 기록하세요</p>
+
+                            <a th:href="@{/exercise/list}"
+                               class="btn btn-primary btn-rounded font-weight-bold text-3-5 px-5 py-3 appear-animation"
+                               data-appear-animation="fadeInUpShorter" data-appear-animation-delay="1200">Write Diary</a>
+                        </div>
+                    </div>
+                </div>
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>다음 지도 API</title>
-</head>
-<body>
-<a th:href="@{/}">홈</a>
-<a th:href="@{/user/signup}">회원가입</a>
-<div id="map" style="width:100%;height:100vh;"></div>    <!--지도 크기를 전체 화면으로 설정-->
-<div id="roadview" style="width:750px;height:350px;"></div>
 
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5d2a5e8680f2b64948b53b13f0626aa8"></script>
-<script>
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-        mapOption = {
-            center: new kakao.maps.LatLng(37.55321, 126.972613), // 지도의 중심좌표- 서울역으로 설정정            level: 4, // 지도의 확대 레벨
-            mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
-        };
 
-    // 지도를 생성함
 
-    var map = new kakao.maps.Map(mapContainer, mapOption);
+            </div>
 
-    // 지도에 마커를 생성하고 표시한다
-    var marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(37.52872, 126.96472), // 마커의 좌표
-        draggable : true, // 마커를 드래그 가능하도록 설정한다
-        map: map // 마커를 표시할 지도 객체
-    });
 
-    var iwContent = '<div style ="padding: 5px">위치 표시</div>';
-    //인포윈도우 표시 위치입니다
+        </div>
 
-    // 인포윈도우를 생성합니다
-    var infowindow = new kakao.maps.InfoWindow({
-        position : iwPosition,
-        content : iwContent
-    });
 
-    // 마커 위에 인포윈도우를 표시
-    infowindow.open(map, marker);
-    //로드뷰를 표시할 div
-    var roadviewContainer = document.getElementById('roadview');
-
-    // 로드뷰 위치
-    var rvPosition = new kakao.maps.LatLng(37.56613, 126.97853);
-
-    //로드뷰 객체를 생성한다
-    var roadview = new kakao.maps.Roadview(roadviewContainer, {
-        panoId : 1050215190, // 로드뷰 시작 지역의 고유 아이디 값
-        panoX : 126.97853, // panoId가 유효하지 않을 경우 지도좌표를 기반으로 데이터를 요청할 수평 좌표값
-        panoY : 37.56613, // panoId가 유효하지 않을 경우 지도좌표를 기반으로 데이터를 요청할 수직 좌표값
-        pan: 93.78217217715192, // 로드뷰 처음 실행시에 바라봐야 할 수평 각
-        tilt: 8.993146749117823, // 로드뷰 처음 실행시에 바라봐야 할 수직 각
-        zoom: -1 // 로드뷰 줌 초기값
-    });
-
-    // 로드뷰 초기화가 완료되었을 때 로드뷰에 마커나 커스텀오버레이를 표시한다
-    kakao.maps.event.addListener(roadview, 'init', function() {
-    });
-
-</script>
-</body>
-</html>
+    </th:block>
+</th:block>

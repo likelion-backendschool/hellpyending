@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="setContent(content)">
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>헬피엔딩</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- Custom styles for this template -->
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+
+
+        <link rel="stylesheet" type="text/css" th:href="@{/css/simple-sidebar.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/gym.css}">
+
+    </head>
+
+    <body>
+
+    <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">잠은 지옥에서 자라</div>
+            <div class="list-group list-group-flush">
+                <a sec:authorize="isAuthenticated()" th:href="@{/article/list}" class="list-group-item list-group-item-action bg-light">동네 게시판</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/gym/search}" class="list-group-item list-group-item-action bg-light">헬스장 찾기</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/user/information}" class="list-group-item list-group-item-action bg-light">마이페이지</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/chat/rooms}" class="list-group-item list-group-item-action bg-light">나의 채팅방</a>
+                <a sec:authorize="!isAuthenticated()" th:href="@{/user/signup}" class="list-group-item list-group-item-action bg-light">회원가입</a>
+                <a sec:authorize="!isAuthenticated()"th:href="@{/user/login}" class="list-group-item list-group-item-action bg-light">로그인</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}" class="list-group-item list-group-item-action bg-light">로그아웃</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="btn btn-primary" id="menu-toggle">Side Bar</button>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+
+                <th:block th:replace="${content}"></th:block>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+        <!-- Bootstrap core JavaScript -->
+        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+        <script>
+            var sockJs = new SockJS("/stomp/tigerShrimp", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+            //1. SockJS를 내부에 들고있는 stomp를 내어줌
+            var stomp = Stomp.over(sockJs);
+            
+        </script>
+        <!-- Menu Toggle Script -->
+        <script>
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        </script>
+    </div>
+
+    <footer class="bg-dark text-light">
+        <div class="container py-3 d-flex justify-content-center">
+            Copyright all rights reserved
+        </div>
+    </footer>
+
+    <th:block layout:fragment="script"></th:block>
+    </body>
+</th:block>
+</html>
+

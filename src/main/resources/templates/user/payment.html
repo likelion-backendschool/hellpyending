@@ -1,0 +1,56 @@
+<th:block th:replace="~{/layout/header_new :: setContent(~{this :: content})}">
+    <th:block th:fragment="content">
+        <div class="container pt-3 pb-2">
+
+            <div class="row pt-2">
+
+                <div class="col-lg-6">
+
+                    <table class="table text-center">
+                        <colgroup>
+                            <col>
+                            <col width="50%">
+                        </colgroup>
+                        <thead class="table-dark">
+                        <tr>
+                            <th>번호</th>
+                            <th>amount</th>
+                            <th>buyer_email</th>
+                            <th>buyer_name</th>
+                            <th>buyer_tel</th>
+                            <th>imp_uid</th>
+                            <th>merchant_uid</th>
+                            <th>pay_method</th>
+                            <th>create_at</th>
+                            <th>update_at</th>
+                            <th>gym_product</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="userPayment : ${users.payment}">
+                            <td th:text="${userPayment.id}"/>
+                            <td th:text="${userPayment.amount}"/>
+                            <td th:text="${userPayment.buyer_email}"/>
+                            <td th:text="${userPayment.buyer_name}"/>
+                            <td th:text="${userPayment.buyer_tel}"/>
+                            <td th:text="${userPayment.imp_uid}"/>
+                            <td th:text="${userPayment.merchant_uid}"/>
+                            <td th:text="${userPayment.pay_method}"/>
+                            <td th:text="${#temporals.format(userPayment.create,'yyyy-MM-dd HH:mm')}"/>
+                            <td th:text="${#temporals.format(userPayment.update,'yyyy-MM-dd HH:mm')}"/>
+                            <td th:text="${userPayment.gym_product}"/>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+    </th:block>
+</th:block>

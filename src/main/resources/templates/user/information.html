@@ -1,0 +1,59 @@
+<th:block th:replace="~{/layout/header_new :: setContent(~{this :: content})}">
+    <th:block th:fragment="content">
+        <h3 th:text="${users.nickname}"></h3>
+        <h4 th:text="${users.email}"></h4>
+        <div>
+            <a th:href="@{|/user/information/${users.id}|}">내 정보 수정</a>
+        </div>
+        <ul>
+            <li>
+                <a th:href="@{|/exercise/list/${users.id}|}">나의 운동 일지</a>
+            </li>
+            <li>
+                <a th:href="@{|/article/list/${users.id}|}">내가 쓴 글</a>
+            </li>
+            <li>
+                <a th:href="@{|/user/payment/${users.id}|}">결제내역</a>
+            </li>
+            <li>
+                <a th:href="@{|/user/delete|}" onclick="!confirm('탈퇴 하시겠습니까?\n탈퇴한 아이디는 한 달 동안 재가입이 안 됩니다.');">회원탈퇴</a>
+            </li>
+        </ul>
+
+
+        <div id="alarm">
+
+        </div>
+    </th:block>
+</th:block>
+
+
+<script th:inline="javascript">
+
+    $(document).ready(function () {
+        var id = [[${users.id}]];
+        console.log(id)
+        stomp.connect({}, function () {
+            console.log("STOMP Connection")
+            //4. subscribe(path, callback)으로 메세지를 받을 수 있음
+            stomp.subscribe("/sub/article/message/"+id, function (article) {
+                var content = JSON.parse(article.body);
+                var message = content.message;
+                var str = '';
+                console.log(1);
+
+                str = "<div class='col-6'>";
+                str += "<div class='alert alert-warning'>";
+                str += "<b>"+ message + "</b>";
+                str += "</div></div>";
+                $("#alarm").append(str);
+                console.log(2);
+
+
+            });
+
+          });
+
+    });
+
+</script>
