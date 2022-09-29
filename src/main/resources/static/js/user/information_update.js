@@ -14,10 +14,6 @@ window.onload = function () {
 
     });
 }
-data.address;
-data.sido;
-data.sigungu;
-data.bname;
 function btnPwdActive() {
     const target1 = document.getElementById('password1');
     const target2 = document.getElementById('password2');
@@ -121,6 +117,8 @@ function id_check() {
 function pwd_check() {
     let pwd2 = $("#password2").val();
     let pwd3 = $("#password3").val();
+    console.log(pwd2);
+    console.log(pwd3);
     if (pwd2 == pwd3) {
         if ($("#pwdcheck").length === 0) {
             $("#pwdcheck").prepend("<span id='pwd_check'>비밀번호가 일치합니다.</span>");

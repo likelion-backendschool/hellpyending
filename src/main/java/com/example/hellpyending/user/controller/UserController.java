@@ -147,7 +147,7 @@ public class UserController {
      유저 정보 수정
      **/
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/information/{id}")
+    @PostMapping("/information")
     String information_update(Model model, Principal principal, @Valid UserUpdateForm UserUpdateForm, BindingResult bindingResult, HttpSession httpSession){
         Users users = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
@@ -177,13 +177,15 @@ public class UserController {
         }
         catch (DataIntegrityViolationException e){
             e.printStackTrace();
+            model.addAttribute("users",users);
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
-            return "/user/signup";
+            return "/user/information_update";
         }
         catch(Exception e) {
             e.printStackTrace();
+            model.addAttribute("users",users);
             bindingResult.reject("signupFailed", e.getMessage());
-            return "/user/signup";
+            return "/user/information_update";
         }
         model.addAttribute("users",users);
         return "redirect:/";
