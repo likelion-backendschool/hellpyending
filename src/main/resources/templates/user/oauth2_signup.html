@@ -21,24 +21,21 @@
                 <div class="col-lg-9">
 
                     <form method="post" th:object="${userOauth2CreateForm}" th:action="@{/user/oauth2/information}">
-                        <div role="alert" th:if="${#fields.hasAnyErrors()}">
-                            <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
+
+                        <div class="form-group row" >
+                            <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required"></label>
+                            <div class="col-lg-9" role="alert" th:if="${#fields.hasAnyErrors()}">
+                                <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
+                            </div>
                         </div>
                         <input name="email" th:value="${users.email}" hidden/>
                         <input name="username" th:value="${users.username}" hidden/>
 
                         <div class="form-group row" >
                             <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">NickName</label>
-                            <div class="col-lg-9">
-                                <input class="form-control text-3 h-auto py-2" type="text"  id="nickname" name="nickname" required>
+                            <div class="col-lg-9" id="check">
+                                <input class="form-control text-3 h-auto py-2 mb-2" type="text"  id="nickname" name="nickname" required>
                                 <button class="btn btn-outline btn-rounded btn-tertiary mb-2 " onclick="id_check(); return false">중복 체크</button>
-                            </div>
-                            <a id="check"></a>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Email</label>
-                            <div class="col-lg-9">
-                                <input class="form-control text-3 h-auto py-2" type="email" name="email"  required>
                             </div>
                         </div>
 
@@ -89,7 +86,7 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2"></label>
                             <div class="col-lg-9">
-                                <input class="form-control text-3 h-auto py-2" type="text" id="상세 주소" name="address_detail"
+                                <input class="form-control text-3 h-auto py-2 mb-2" type="text" id="상세 주소" name="address_detail"
                                        required placeholder="desc">
                                 <button type="button" class="btn btn-outline btn-rounded btn-tertiary mb-2 " id="search_addr" >Search</button>
                             </div>
@@ -100,13 +97,6 @@
                         </div>
 
 
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">new password</label>
-                            <div class="col-lg-9">
-                                <input class="form-control text-3 h-auto py-2" type="password" name="password1"  placeholder="Put in Password"
-                                       required/>
-                            </div>
-                        </div>
                         <div class="form-group row">
                             <div class="form-group col-lg-9">
 
