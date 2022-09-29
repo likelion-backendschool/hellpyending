@@ -49,6 +49,19 @@ public class UserController {
         model.addAttribute("exception", exception);
         return "/user/login";
     }
+
+//    /**
+//     유저 로그인
+//     **/
+//    @GetMapping("/login")
+//    String login(@RequestParam(value = "error", required = false)String error,
+//                 @RequestParam(value = "exception", required = false)String exception,
+//                 UserCreateForm userCreateForm, Model model){
+//        model.addAttribute("error", error);
+//        model.addAttribute("exception", exception);
+//        return "login";
+//    }
+
     /**
      유저 회원가입 창
      **/
@@ -56,6 +69,7 @@ public class UserController {
     String signUp(UserCreateForm userCreateForm){
         return "/user/signup";
     }
+
     /**
      유저 회원가입
      **/
@@ -110,8 +124,10 @@ public class UserController {
     String information(Model model, Principal principal, UserUpdateForm userUpdateForm){
         Users users = userService.getUser(principal.getName());
         model.addAttribute("users",users);
-        return "/user/information";
+        return "/user/information_update";
     }
+
+
     /**
      유저 정보 수정 창
      **/
@@ -125,6 +141,8 @@ public class UserController {
         model.addAttribute("users",users);
         return "/user/information_update";
     }
+
+
     /**
      유저 정보 수정
      **/
@@ -260,13 +278,13 @@ public class UserController {
         return users.getAddress_1st() == null || users.getAddress_2st() == null || users.getAddress_3st() == null || users.getAddress_4st() == null ||
                 users.getPhoneNumber() == null || users.getBirthday() == null || users.getNickname() == null;
     }
-    @GetMapping("/payment/{id}")
-    public String payment(@PathVariable Long id,Model model){
-        Optional<Users> users_ = userService.findById(id);
-        if (!users_.isPresent()){
-            return "/access_error";
+    @GetMapping("/payment")
+    public String payment(Model model,Principal principal){
+        if (principal==null) {
+            return "access_error";
         }
-        Users users = users_.get();
+        Users users = userService.getUser(principal.getName());
+
         model.addAttribute("users",users);
         return "/user/payment";
     }

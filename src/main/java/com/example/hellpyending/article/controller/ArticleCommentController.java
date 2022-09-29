@@ -36,6 +36,9 @@ public class ArticleCommentController {
     public String detail(Principal principal, Model model, @PathVariable long id, @Valid ArticleCommentForm articleCommentForm, BindingResult bindingResult) {
         Article article = this.articleService.getArticle(id);
 
+        if (principal == null) {
+            return "access_error";
+        }
         if ( bindingResult.hasErrors() ) {
             model.addAttribute("article", article);
             return "article_detail";
@@ -51,6 +54,9 @@ public class ArticleCommentController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String articleCommentDelete(Principal principal, @PathVariable("id") long id) {
+        if (principal == null) {
+            return "access_error";
+        }
         ArticleComment articleComment = this.articleCommentService.getArticleComment(id);
 
         if (!articleComment.getUsers().getUsername().equals(principal.getName())) {
@@ -71,6 +77,9 @@ public class ArticleCommentController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String articleModify(ArticleCommentForm articleCommentForm, @PathVariable("id") Long id, Principal principal) {
+        if (principal == null) {
+            return "access_error";
+        }
         ArticleComment articleComment = articleCommentService.getArticleComment(id);
 
         if (!articleComment.getUsers().getUsername().equals(principal.getName())) {
@@ -84,6 +93,10 @@ public class ArticleCommentController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String articleCommentModify(@Valid ArticleCommentForm articleCommentForm, BindingResult bindingResult, @PathVariable("id") Long id, Principal principal) {
+
+        if (principal == null) {
+            return "access_error";
+        }
         if (bindingResult.hasErrors()) {
             return "article_detail";
         }
@@ -118,8 +131,8 @@ public class ArticleCommentController {
 
 //        Users users = userService.getUser(principal.getName());
 
-        if(principal == null){
-            // null 처리
+        if (principal == null) {
+            return "access_error";
         }
 
             ArticleComment articleComment = articleCommentService.createReply(id, articleCommentForm.getContent(), principal.getName());

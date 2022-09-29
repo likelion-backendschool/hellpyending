@@ -31,16 +31,15 @@ import java.time.format.DateTimeFormatter;
 public class ExerciseController {
     private final UserService userService;
     private final ExerciseService exerciseService;
-    @GetMapping("/list/{id}")
+    @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
-    String list(Model model, Principal principal, @PathVariable Long id, @RequestParam(defaultValue = "") String sortCode , @RequestParam(defaultValue = "0") int page){
+    String list(Model model, Principal principal, @RequestParam(defaultValue = "") String sortCode , @RequestParam(defaultValue = "0") int page){
+        if (principal==null) {
+            return "access_error";
+        }
         Users users = userService.getUser(principal.getName());
 
-        if (!users.getId().equals(id)) {
-            return "access_error";
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "읽을권한이 없습니다.");
-        }
-        Page<Exercise> paging = exerciseService.getList(id,page, sortCode);
+        Page<Exercise> paging = exerciseService.getList(users.getId(),page, sortCode);
 
         model.addAttribute("paging", paging);
         return "/user/exercise";
