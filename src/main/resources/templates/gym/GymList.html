@@ -225,8 +225,7 @@
             console.log(curGym);
             console.log(curGym.id);
             var openNewWindow = window.open("about:blank");
-            openNewWindow.location.href = "http://localhost:8080/gym/getGymInfo/" + curGym.lat + "/" + curGym.lng;
-            openNewWindow.location.href = "http://localhost:8080/gym/getGymInfo/" + curGym.id;
+            openNewWindow.location.href = "http://dev.tigershrimp.site:8080/gym/getGymInfo/" + curGym.id;
         }
 
         function getListItem(index, places) {
