@@ -1,13 +1,40 @@
 # hellpyending
 아이디어14팀_헬피엔딩
 
-# 브랜치 설명
+# 1. 브랜치 설명
 
-- master : 저희가 배포할 최종 브랜치입니다. 절대 여기서 작업도 하지 마시고, PR도 하지 말아주세요.
-- dev : 최종 배포하기전 통합 개발 환경입니다. 본인 브랜치에서 작업하신걸 통합할때 여기에다 통합해주세요
+- master : 운영서버
+- dev : 개발서버
 
+# 2. 전체 패키지 구조
+```text
+hellpyending
+  > build
+    > generated : QueryDsl 사용을 위한 QClass 들이 build 되는 디렉토리.
+  > gradle
+  > src.main
+    > java
+      > com.example.hellpyending
+        > config : 설정을 모아둔 패키지
+        > controller 
+        > src : 도메인 로직을 모아둔 페이지
+          > alarm
+          > article
+          > chat
+          > exercise
+          > gym
+          > payment
+          > user
+        DeleteType
+        HellpyendingApplication
+    > resources
+      > static
+      > templates
+      application.yaml 
+      application-{profile}.yml : 스프링 프로필별 프로젝트 설정 파일
+```
 
-### git flow 작성 양식
+# 3. git flow 작성 양식
 
 ``` text
 브랜치 생성 양식
