@@ -1,14 +1,13 @@
 package com.example.hellpyending.src.gym;
 
-import com.example.hellpyending.article.exception.DataNotFoundException;
-import com.example.hellpyending.payment.dto.PostPaymentReq;
-import com.example.hellpyending.payment.service.paymentService;
+import com.example.hellpyending.src.article.exception.DataNotFoundException;
+import com.example.hellpyending.src.payment.service.paymentService;
 import com.example.hellpyending.src.gym.entity.GetAddressRes;
 import com.example.hellpyending.src.gym.entity.GetAddressResInterface;
 
 import com.example.hellpyending.src.gym.entity.Gym;
-import com.example.hellpyending.user.entity.Users;
-import com.example.hellpyending.user.service.UserService;
+import com.example.hellpyending.src.user.entity.Users;
+import com.example.hellpyending.src.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

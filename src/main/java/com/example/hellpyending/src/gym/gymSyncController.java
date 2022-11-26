@@ -1,8 +1,8 @@
 package com.example.hellpyending.src.gym;
 
 import com.example.hellpyending.src.gym.entity.Gym;
-import com.example.hellpyending.user.service.UserService;
-import com.example.hellpyending.user.entity.Users;
+import com.example.hellpyending.src.user.service.UserService;
+import com.example.hellpyending.src.user.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;

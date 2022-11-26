@@ -1,6 +1,6 @@
 package com.example.hellpyending.config;
 
-import com.example.hellpyending.user.entity.Users;
+import com.example.hellpyending.src.user.entity.Users;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

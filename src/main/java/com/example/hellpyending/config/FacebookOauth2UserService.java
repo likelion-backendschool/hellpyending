@@ -1,9 +1,9 @@
 package com.example.hellpyending.config;
 
 
-import com.example.hellpyending.user.service.UserService;
-import com.example.hellpyending.user.entity.UserType;
-import com.example.hellpyending.user.entity.Users;
+import com.example.hellpyending.src.user.service.UserService;
+import com.example.hellpyending.src.user.entity.UserType;
+import com.example.hellpyending.src.user.entity.Users;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

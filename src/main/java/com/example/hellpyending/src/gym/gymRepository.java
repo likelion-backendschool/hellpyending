@@ -1,9 +1,7 @@
 package com.example.hellpyending.src.gym;
 
-import com.example.hellpyending.src.gym.entity.GetAddressRes;
 import com.example.hellpyending.src.gym.entity.GetAddressResInterface;
 import com.example.hellpyending.src.gym.entity.Gym;
-import com.example.hellpyending.user.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

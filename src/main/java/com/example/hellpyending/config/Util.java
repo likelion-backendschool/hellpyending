@@ -1,6 +1,6 @@
 package com.example.hellpyending.config;
 
-import com.example.hellpyending.user.entity.Users;
+import com.example.hellpyending.src.user.entity.Users;
 
 import java.util.Optional;
 
